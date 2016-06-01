@@ -12,7 +12,7 @@ Later on I might implement a voicerecord feature.
 ##### UML sketch
 
 I'll be using the Dropbox API to save the data to. Every file will be uploaded and read from dropbox. I will also need a table to store tags in.
-This means I will have a SQLite database, which stores the users tags for each filename.
+This means I will have a SQLite database, which stores the users tags for each filename (both fields will store a string) and an id field (auto-incrementing integer).
 (I might later on start using the FireBase API as a database instead of the Dropbox API + SQL Database, I'm looking into that)
 
 This is what the UML will look like:
