@@ -1,8 +1,5 @@
 # Design Document
 
-An overview of your application
-Map the separate parts of the solution onto the framework(s) that you are using. What APIs, methods or techniques do you need to implement each feature? Think about and fully express how the user interface will be handled, where the data is coming from, and how the various parts will work together to form a complete application.
-
 ##### User Interface Map
 
 The user interface will look like this:
