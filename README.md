@@ -23,15 +23,11 @@ The app will have a log in screen that is connected to the dropbox API. The user
 
 When clicked on a year the user is directed to the subjects the user has added. 
 
-![Year and subjects screen](doc/jaren_vakken.jpg)
+![User Interface](doc/user_interface.jpg)
 
 Subjects and feedback can be deleted or have their names changed by doing a long click on the name. By doing this an alert dialog will pop up that has the option of deleting the files or changing the names.
 
-![Subjects and subject screen](doc/vakken_vak.jpg)
-
 The subject part of the database can be divided between a files upload part and a view files in database part. The files that can be uploaded are either a PDF, Doc, JPEG or PNG file or the user can make a picture and save a file directly that way. 
-
-![Subject and feedback screen](doc/vak_feedback.jpg)
 
 Saved feedbacks are connected to the part that makes viewing files possible because this will make sure the saved files can be accessed and viewed later on. The log in, file adding and file accessing part are the main components of the app (with the photo-making option being a sub category of the upload part).
 
