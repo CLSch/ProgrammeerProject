@@ -16,6 +16,7 @@
         android:text="Hier komt de feedback te staan!"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="100dp"
-        android:textSize="25dp"/>
+        android:textSize="25dp"
+        android:id="@+id/tvFB"/>
 
 </LinearLayout>

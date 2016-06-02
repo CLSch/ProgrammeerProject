@@ -14,4 +14,6 @@
     <string name="add_feedback">Add Feedback</string>
     <string name="add">Add</string>
     <string name="write_note_here">Write Note Here</string>
+    <string name="constructive">Constructive</string>
+    <string name="compliment">Compliment</string>
 </resources>

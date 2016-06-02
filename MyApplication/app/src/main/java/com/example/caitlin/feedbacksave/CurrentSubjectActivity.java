@@ -13,7 +13,7 @@ public class CurrentSubjectActivity extends AppCompatActivity {
     ListView lvSubject;
     // dit wordt waarschijnlijk een arraylist van feedback objects
     ArrayList<String> feedbackList = new ArrayList<>();
-    CustomSubjectsAdapter adapter;
+    CustomFeedbackAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class CurrentSubjectActivity extends AppCompatActivity {
     }
 
     public void makeAdapter(){
-        adapter = new CustomSubjectsAdapter(this, feedbackList);
+        adapter = new CustomFeedbackAdapter(this, feedbackList);
         lvSubject = (ListView) findViewById(R.id.lvFeedback);
         //listviewToDo.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         assert lvSubject != null;
@@ -35,7 +35,7 @@ public class CurrentSubjectActivity extends AppCompatActivity {
     }
 
     public void addPhotoClick(View v){
-        Toast.makeText(this, "Add Photo from Galery", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Add Photo from Galery", Toast.LENGTH_SHORT).show();
         Intent addPhotoFeedbackIntent = new Intent(this, AddPhotoFeedback.class);
         // geef alle feedback mee
         //allSubjectsIntent.putExtra("NameTable", tableName);
@@ -47,7 +47,6 @@ public class CurrentSubjectActivity extends AppCompatActivity {
     }
 
     public void addNoteClick(View v){
-        Toast.makeText(this, "Make a note", Toast.LENGTH_SHORT).show();
         Intent addNoteIntent = new Intent(this, AddNote.class);
         // geef alle feedback mee
         //allSubjectsIntent.putExtra("NameTable", tableName);
