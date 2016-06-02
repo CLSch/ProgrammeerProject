@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">FeedbackSave</string>
+    <string name="schoolyears">Schoolyears</string>
+    <string name="subjects">Subjects</string>
+    <string name="or_make_a_new_account">Or make a new account <a href="http://www.google.com/">http://www.google.com/</a></string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="login">Login</string>
+</resources>

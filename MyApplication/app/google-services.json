@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "658569488742",
+    "firebase_url": "https://project-1258991994024708208.firebaseio.com",
+    "project_id": "project-1258991994024708208",
+    "storage_bucket": "project-1258991994024708208.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:658569488742:android:220c6042c0f6a390",
+        "android_client_info": {
+          "package_name": "com.example.caitlin.feedbacksave"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "658569488742-kgq0bv0caq62nndqu96e9b15a5dsq407.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAttoan9TaXsBoy081CLunetivDtNbwRlo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
