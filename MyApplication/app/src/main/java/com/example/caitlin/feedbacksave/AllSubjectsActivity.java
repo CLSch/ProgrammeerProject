@@ -2,12 +2,38 @@ package com.example.caitlin.feedbacksave;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class AllSubjectsActivity extends AppCompatActivity {
+    ListView lvASubjects;
+    ArrayList<String> subjectsList = new ArrayList<>();
+    CustomSubjectsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_subjects);
+
+        subjectsList.add("Prog Project"); // HARDCODED !!!!
+        subjectsList.add("Heuristieken"); // HARDCODED !!!!
+
+        makeAdapter();
+    }
+
+    public void makeAdapter(){
+        adapter = new CustomSubjectsAdapter(this, subjectsList);
+        lvASubjects = (ListView) findViewById(R.id.lvAllSubjects);
+        //listviewToDo.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        assert lvASubjects != null;
+        lvASubjects.setAdapter(adapter);
+    }
+
+    public void addSubjectClick(View v){
+        Toast.makeText(this, "add a subject", Toast.LENGTH_LONG).show();
+        // laat alert dialog zien voor de naam van het subject
     }
 }

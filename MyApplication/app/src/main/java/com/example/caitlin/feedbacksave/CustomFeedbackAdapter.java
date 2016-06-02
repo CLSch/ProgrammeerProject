@@ -13,14 +13,14 @@ import java.util.ArrayList;
 /**
  * Created by Caitlin on 02-06-16.
  */
-public class CustomYearsAdapter extends ArrayAdapter{
-    // of StringArrayList?
-    ArrayList<String> years;
+public class CustomFeedbackAdapter extends ArrayAdapter {
+    // wordt later waarschijnlijk arraylist met Feedback Objects
+    ArrayList<String> feedback;
     Context context;
 
-    public CustomYearsAdapter (Context context, ArrayList<String> data) {
+    public CustomFeedbackAdapter (Context context, ArrayList<String> data) {
         super(context, 0, data);
-        this.years = data;
+        this.feedback = data;
         this.context = context;
     }
 
@@ -34,7 +34,7 @@ public class CustomYearsAdapter extends ArrayAdapter{
             view = inflater.inflate(R.layout.listview_items, parent, false);
         }
 
-        final String thisListItem = years.get(pos);
+        final String thisListItem = feedback.get(pos);
 //
 //        // put Todolist names in textview for listview
         TextView tvList = (TextView) view.findViewById(R.id.tvInListView);
@@ -44,10 +44,14 @@ public class CustomYearsAdapter extends ArrayAdapter{
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent allSubjectsIntent = new Intent(context, AllSubjectsActivity.class);
-                // geef alle vakken mee
+                // OPEN DE FEEDBACK, HEB JE API VOOR NODIG?
+
+                // CHECK OF FB EEN FOTO IS OF EEN MEMO EN OPEN DE JUISTE INTENT!!!
+
+                Intent photoFeedbackIntent = new Intent(context, PhotoFeedback.class);
+                // geef alle feedback mee
                 //allSubjectsIntent.putExtra("NameTable", tableName);
-                context.startActivity(allSubjectsIntent);
+                context.startActivity(photoFeedbackIntent);
             }
         });
 
@@ -55,8 +59,7 @@ public class CustomYearsAdapter extends ArrayAdapter{
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                // EVENTUEEL EEN JAAR VERWIJDEREN??? DOE MAAR WEL???
-                // DOE WEL EEN ALERT DIALOG MET "R U SURE?"
+                // MAAK EEN ALERT DIALOG
 
 //                Toast.makeText(context, "item is deleted" , Toast.LENGTH_LONG).show();
 //
@@ -70,4 +73,5 @@ public class CustomYearsAdapter extends ArrayAdapter{
         });
         return view;
     }
+
 }

@@ -10,14 +10,22 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.caitlin.feedbacksave.YearsActivity">
 
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/subjects"
-        android:id="@+id/tvAS" />
+        android:id="@+id/tvASubject" />
 
     <ListView
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content" />
+        android:layout_width="wrap_content"
+        android:id="@+id/lvAllSubjects"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addSubjectBtn"
+        android:text="@string/add_subject"
+        android:onClick="addSubjectClick"
+        android:layout_gravity="center_horizontal"/>
 </LinearLayout>

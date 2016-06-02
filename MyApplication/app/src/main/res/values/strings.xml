@@ -6,4 +6,12 @@
     <string name="password">Password</string>
     <string name="username">Username</string>
     <string name="login">Login</string>
+    <string name="add_year">Add Year</string>
+    <string name="add_subject">Add Subject</string>
+    <string name="feedback_name">Feedback Name</string>
+    <string name="add_tags">Add Tags</string>
+    <string name="feedback_type">Feedback Type:</string>
+    <string name="add_feedback">Add Feedback</string>
+    <string name="add">Add</string>
+    <string name="write_note_here">Write Note Here</string>
 </resources>
