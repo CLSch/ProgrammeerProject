@@ -28,6 +28,8 @@ import java.util.Map;
 
 // https://github.com/firebase/quickstart-android/blob/master/auth/app/src/main/java/com/google/firebase/quickstart/auth/EmailPasswordActivity.java#L101-L107
 // google samples gebruikt
+
+// SETTINGS KNOP TOEVOEGEN MET LOGOUT????
 public class LoginActivity extends AppCompatActivity {
     EditText userName;
     EditText passWord;
@@ -42,17 +44,16 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        auth.addAuthStateListener(authListener);
+        auth = FirebaseAuth.getInstance();
 
         userName = (EditText) findViewById(R.id.etUsername);
-        passWord = (EditText) findViewById(R.id.etPassword);
+        passWord = (EditText) findViewById(R.id.etLPassword);
         errorMes = (TextView) findViewById(R.id.tvErrorLogin);
 
         errorMes.setTextColor(Color.RED);
 
         rootRef = FirebaseDatabase.getInstance().getReference();
         mRef = new Firebase("https://project-1258991994024708208.firebaseio.com");
-        auth = FirebaseAuth.getInstance();
 
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -113,6 +114,12 @@ public class LoginActivity extends AppCompatActivity {
         String pw = passWord.getText().toString();
 
         loginUser(un, pw);
+    }
+
+    public void registerClick (View v) {
+        Intent registerIntent = new Intent(this, RegisterActivity.class);
+        startActivity(registerIntent);
+        finish();
     }
 
     public boolean formValidation(String mail, String passWord) {

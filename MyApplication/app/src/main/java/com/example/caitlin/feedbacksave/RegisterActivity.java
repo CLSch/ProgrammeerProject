@@ -40,7 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        auth.addAuthStateListener(authListener);
+        auth = FirebaseAuth.getInstance();
 
         userMail = (EditText) findViewById(R.id.etEmail);
         passWord = (EditText) findViewById(R.id.etRPassword);
@@ -51,7 +51,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         rootRef = FirebaseDatabase.getInstance().getReference();
         mRef = new Firebase("https://project-1258991994024708208.firebaseio.com");
-        auth = FirebaseAuth.getInstance();
 
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -93,7 +92,7 @@ public class RegisterActivity extends AppCompatActivity {
                 // the auth state listener will be notified and logic to handle the
                 // signed in user can be handled in the listener.
                 if (!task.isSuccessful()) {
-                    Toast.makeText(RegisterActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Authentication failed creating an account.", Toast.LENGTH_SHORT).show();
                 } else {
                     // login user
                 }
@@ -143,6 +142,12 @@ public class RegisterActivity extends AppCompatActivity {
         String pwc = passWordC.getText().toString();
 
         createAccount(um, pw, pwc);
+    }
+
+    public void loginClick (View v) {
+        Intent loginIntent = new Intent(this, LoginActivity.class);
+        startActivity(loginIntent);
+        finish();
     }
 
     public boolean formValidation(String mail, String passWord, String passWordControl) {

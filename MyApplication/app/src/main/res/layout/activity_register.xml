@@ -11,7 +11,7 @@
     tools:context="com.example.caitlin.feedbacksave.LoginActivity">
 
     <EditText
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
@@ -39,16 +39,16 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:id="@+id/tvErrorReg"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="57dp"
         android:text=""
         android:textSize="18sp"
         android:textAlignment="center"
         android:visibility="invisible"/>
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/signInButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <!--<com.google.android.gms.common.SignInButton-->
+        <!--android:id="@+id/signInButton"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
 
     <Button
         android:layout_width="match_parent"
@@ -58,5 +58,14 @@
         android:id="@+id/loginBtn"
         android:layout_gravity="center_horizontal"
         android:onClick="registerClick"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/already_have_an_account"
+        android:layout_gravity="center_horizontal"
+        android:clickable="true"
+        android:onClick="loginClick"/>
+
 </LinearLayout>
 
