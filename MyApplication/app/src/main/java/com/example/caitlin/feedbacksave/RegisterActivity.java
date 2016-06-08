@@ -24,7 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Map;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends SuperActivity {
     EditText userMail;
     EditText passWord;
     EditText passWordC;

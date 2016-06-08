@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_name"
+        android:id="@+id/logout_button"
         android:icon="@drawable/logout_button_1"
-        android:title="Logout"
-        app:showAsAction="always"
+        android:title="@string/logout"
+        android:visible="true"
         android:orderInCategory="0"
-        android:onClick="logOutClick"/>
-
+        android:onClick="logOutClick"
+        app:showAsAction="always"/>
 </menu>

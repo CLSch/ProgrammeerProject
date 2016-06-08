@@ -19,8 +19,8 @@ public class SuperActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        ActionBar actionBar = getActionBar();
-        actionBar.show();
+//        ActionBar actionBar = getActionBar();
+//        actionBar.show();
     }
 
     @Override
@@ -30,7 +30,7 @@ public class SuperActivity extends AppCompatActivity {
         return true;
     }
 
-    public void logOutClick() {
+    public void logOutClick(MenuItem item) {
         auth.signOut();
         //updateUI(null);
         Intent logOutIntent = new Intent(this, LoginActivity.class);
@@ -41,6 +41,7 @@ public class SuperActivity extends AppCompatActivity {
         finish();
         // close all activities
     }
+
 
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {

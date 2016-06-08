@@ -30,7 +30,7 @@ import java.util.Map;
 // google samples gebruikt
 
 // SETTINGS KNOP TOEVOEGEN MET LOGOUT????
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends SuperActivity {
     EditText userName;
     EditText passWord;
     Firebase mRef;
