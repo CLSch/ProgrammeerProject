@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class AllSubjectsActivity extends AppCompatActivity {
+public class AllSubjectsActivity extends SuperActivity {
     ListView lvASubjects;
     ArrayList<String> subjectsList = new ArrayList<>();
     CustomSubjectsAdapter adapter;

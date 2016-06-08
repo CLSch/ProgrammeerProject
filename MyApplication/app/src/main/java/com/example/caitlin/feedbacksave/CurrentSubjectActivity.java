@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class CurrentSubjectActivity extends AppCompatActivity {
+public class CurrentSubjectActivity extends SuperActivity {
     ListView lvSubject;
     // dit wordt waarschijnlijk een arraylist van feedback objects
     ArrayList<String> feedbackList = new ArrayList<>();

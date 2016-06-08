@@ -73,7 +73,7 @@ public class RegisterActivity extends SuperActivity {
 //        auth.addAuthStateListener(authListener);
 //    }
 
-    public void createAccount(String mail, String passWord, String passWordControl) {
+    public void createAccount(final String mail, final String passWord,final String passWordControl) {
 
         if (!formValidation(mail, passWord, passWordControl)) {
             errorMes.setVisibility(View.VISIBLE);
@@ -92,9 +92,10 @@ public class RegisterActivity extends SuperActivity {
                 // the auth state listener will be notified and logic to handle the
                 // signed in user can be handled in the listener.
                 if (!task.isSuccessful()) {
+                    Log.d("task", task.getException().toString());
                     Toast.makeText(RegisterActivity.this, "Authentication failed creating an account.", Toast.LENGTH_SHORT).show();
                 } else {
-                    // login user
+                    loginUser(mail, passWord);
                 }
 
                 // [START_EXCLUDE]
@@ -106,33 +107,33 @@ public class RegisterActivity extends SuperActivity {
 
 
     // OF LAAD LOGIN VIA LOGINACTIVITY VERLOPEN??????
-    public void loginUser(String mail, String passWord) {
-        Log.d("signIn:", mail);
-
-        // [START sign_in_with_email]
-        auth.signInWithEmailAndPassword(mail, passWord).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-
-                // If sign in fails, display a message to the user. If sign in succeeds
-                // the auth state listener will be notified and logic to handle the
-                // signed in user can be handled in the listener.
-                if (!task.isSuccessful()) {
-                    Log.w("signInWithEmail", task.getException());
-                    Toast.makeText(RegisterActivity.this, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    // laad in juiste database voor volgende activity
-                    Intent yearsIntent = new Intent(RegisterActivity.this, YearsActivity.class);
-                    // krijg iets terug van de API en stop dat in de extra??
-                    //yearsIntent.putExtra("NameTable", listName);
-                    startActivity(yearsIntent);
-                    finish();
-                }
-            }
-        });
-    }
+//    public void loginUser(String mail, String passWord) {
+//        Log.d("signIn:", mail);
+//
+//        // [START sign_in_with_email]
+//        auth.signInWithEmailAndPassword(mail, passWord).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//            @Override
+//            public void onComplete(@NonNull Task<AuthResult> task) {
+//
+//                // If sign in fails, display a message to the user. If sign in succeeds
+//                // the auth state listener will be notified and logic to handle the
+//                // signed in user can be handled in the listener.
+//                if (!task.isSuccessful()) {
+//                    Log.d("signInWithEmail", task.getException().toString());
+//                    Toast.makeText(RegisterActivity.this, "Authentication failed.",
+//                            Toast.LENGTH_SHORT).show();
+//                }
+//                else {
+//                    // laad in juiste database voor volgende activity
+//                    Intent yearsIntent = new Intent(RegisterActivity.this, YearsActivity.class);
+//                    // krijg iets terug van de API en stop dat in de extra??
+//                    //yearsIntent.putExtra("NameTable", listName);
+//                    startActivity(yearsIntent);
+//                    finish();
+//                }
+//            }
+//        });
+//    }
 
 
     public void registerClick (View v) {

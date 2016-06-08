@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class AddPhotoFeedback extends AppCompatActivity {
+public class AddPhotoFeedback extends SuperActivity {
     EditText etTag;
 
     @Override

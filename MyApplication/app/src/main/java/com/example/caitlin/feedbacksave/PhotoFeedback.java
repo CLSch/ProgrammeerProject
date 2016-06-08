@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class PhotoFeedback extends AppCompatActivity {
+public class PhotoFeedback extends SuperActivity {
     TextView tvFeedback;
 
     @Override

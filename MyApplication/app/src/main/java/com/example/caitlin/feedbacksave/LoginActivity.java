@@ -42,6 +42,7 @@ public class LoginActivity extends SuperActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Firebase.setAndroidContext(this);
         setContentView(R.layout.activity_login);
 
         auth = FirebaseAuth.getInstance();
@@ -76,42 +77,47 @@ public class LoginActivity extends SuperActivity {
 //        auth.addAuthStateListener(authListener);
 //    }
 
-    public void loginUser(String eMail, String passWord) {
-        Log.d("signIn:", eMail);
-        if (!formValidation(eMail, passWord)) {
-            errorMes.setVisibility(View.VISIBLE);
-            return;
-        }
-
-        // [START sign_in_with_email]
-        auth.signInWithEmailAndPassword(eMail, passWord).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-
-                // If sign in fails, display a message to the user. If sign in succeeds
-                // the auth state listener will be notified and logic to handle the
-                // signed in user can be handled in the listener.
-                if (!task.isSuccessful()) {
-                    Log.w("signInWithEmail", task.getException());
-                    Toast.makeText(LoginActivity.this, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    // laad in juiste database voor volgende activity
-                    Intent yearsIntent = new Intent(LoginActivity.this, YearsActivity.class);
-                    // krijg iets terug van de API en stop dat in de extra??
-                    //yearsIntent.putExtra("NameTable", listName);
-                    startActivity(yearsIntent);
-                    finish();
-                }
-
-            }
-        });
-    }
+//    public void loginUser(String eMail, String passWord) {
+//        Log.d("signIn:", eMail);
+//        if (!formValidation(eMail, passWord)) {
+//            errorMes.setVisibility(View.VISIBLE);
+//            return;
+//        }
+//
+//        // [START sign_in_with_email]
+//        auth.signInWithEmailAndPassword(eMail, passWord).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//            @Override
+//            public void onComplete(@NonNull Task<AuthResult> task) {
+//
+//                // If sign in fails, display a message to the user. If sign in succeeds
+//                // the auth state listener will be notified and logic to handle the
+//                // signed in user can be handled in the listener.
+//                if (!task.isSuccessful()) {
+//                    Log.d("signInWithEmail", task.getException().toString());
+//                    Toast.makeText(LoginActivity.this, "Authentication failed.",
+//                            Toast.LENGTH_SHORT).show();
+//                } else {
+//                    // laad in juiste database voor volgende activity
+//                    Intent yearsIntent = new Intent(LoginActivity.this, YearsActivity.class);
+//                    // krijg iets terug van de API en stop dat in de extra??
+//                    //yearsIntent.putExtra("NameTable", listName);
+//                    startActivity(yearsIntent);
+//                    finish();
+//                }
+//
+//            }
+//        });
+//    }
 
     public void loginClick (View v) {
         // iets laten checken met de firebase? API.
         String un = userName.getText().toString();
         String pw = passWord.getText().toString();
+
+        if (!formValidation(un, pw)) {
+            errorMes.setVisibility(View.VISIBLE);
+            return;
+        }
 
         loginUser(un, pw);
     }

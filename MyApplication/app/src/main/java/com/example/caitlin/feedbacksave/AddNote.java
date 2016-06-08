@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class AddNote extends AppCompatActivity {
+public class AddNote extends SuperActivity {
     EditText etTag;
 
     @Override

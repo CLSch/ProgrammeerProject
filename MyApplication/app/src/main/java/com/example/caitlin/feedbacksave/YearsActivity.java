@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class YearsActivity extends AppCompatActivity {
+public class YearsActivity extends SuperActivity {
     // krijg list terug uit FireBase API?
     ArrayList<String> yearsList = new ArrayList<>();
     CustomYearsAdapter adapter;
