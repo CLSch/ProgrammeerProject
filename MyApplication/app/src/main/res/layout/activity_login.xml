@@ -23,11 +23,21 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="140dp"
+        android:layout_marginBottom="40dp"
         android:hint="@string/password"
         android:inputType="textPassword"
         android:id="@+id/etLPassword"
         android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/tvErrorLogin"
+        android:layout_marginBottom="80dp"
+        android:text=""
+        android:textSize="18sp"
+        android:textAlignment="center"
+        android:visibility="invisible"/>
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/signInButton"

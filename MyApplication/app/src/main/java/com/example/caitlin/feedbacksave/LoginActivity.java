@@ -1,12 +1,14 @@
 package com.example.caitlin.feedbacksave;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.AuthData;
@@ -30,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText userName;
     EditText passWord;
     Firebase mRef;
+    TextView errorMes;
     DatabaseReference rootRef;
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
@@ -43,6 +46,9 @@ public class LoginActivity extends AppCompatActivity {
 
         userName = (EditText) findViewById(R.id.etUsername);
         passWord = (EditText) findViewById(R.id.etPassword);
+        errorMes = (TextView) findViewById(R.id.tvErrorLogin);
+
+        errorMes.setTextColor(Color.RED);
 
         rootRef = FirebaseDatabase.getInstance().getReference();
         mRef = new Firebase("https://project-1258991994024708208.firebaseio.com");
@@ -69,58 +75,34 @@ public class LoginActivity extends AppCompatActivity {
 //        auth.addAuthStateListener(authListener);
 //    }
 
-    public void createAccount(String userName, String passWord) {
-
-        if (!formValidation(userName, passWord)) {
-            // give error
-            // make user do it again
-            // rode tekst onder de box die visible wordt hierdoor?
+    public void loginUser(String eMail, String passWord) {
+        Log.d("signIn:", eMail);
+        if (!formValidation(eMail, passWord)) {
+            errorMes.setVisibility(View.VISIBLE);
+            return;
         }
 
-        auth.createUserWithEmailAndPassword(userName, passWord)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        //Log.d("createUserWithEmail:onComplete", task.isSuccessful().);
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                        }
-
-                        // [START_EXCLUDE]
-                        //hideProgressDialog();
-                        // [END_EXCLUDE]
-                    }
-                });
-
-
-
-        mRef.createUser("e-mail", "password", new Firebase.ValueResultHandler<Map<String, Object>>() {
+        // [START sign_in_with_email]
+        auth.signInWithEmailAndPassword(eMail, passWord).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
-            public void onSuccess(Map<String, Object> result) {
-                Log.d("created user with uid: ", result.get("uid").toString());
-            }
+            public void onComplete(@NonNull Task<AuthResult> task) {
 
-            @Override
-            public void onError(FirebaseError firebaseError) {
-                // there was an error
-            }
-        });
-    }
+                // If sign in fails, display a message to the user. If sign in succeeds
+                // the auth state listener will be notified and logic to handle the
+                // signed in user can be handled in the listener.
+                if (!task.isSuccessful()) {
+                    Log.w("signInWithEmail", task.getException());
+                    Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    // laad in juiste database voor volgende activity
+                    Intent yearsIntent = new Intent(LoginActivity.this, YearsActivity.class);
+                    // krijg iets terug van de API en stop dat in de extra??
+                    //yearsIntent.putExtra("NameTable", listName);
+                    startActivity(yearsIntent);
+                    finish();
+                }
 
-    public void loginUser() {
-        mRef.authWithPassword("e-mail", "password", new Firebase.AuthResultHandler() {
-            @Override
-            public void onAuthenticated(AuthData authData) {
-                Log.d("User ID: ", authData.getUid());
-                Log.d("Provider: ", authData.getProvider());
-            }
-            @Override
-            public void onAuthenticationError(FirebaseError firebaseError) {
-                // there was an error
             }
         });
     }
@@ -130,26 +112,24 @@ public class LoginActivity extends AppCompatActivity {
         String un = userName.getText().toString();
         String pw = passWord.getText().toString();
 
-        createAccount();
-
-
-        // laad in juiste database voor volgende activity
-        Intent yearsIntent = new Intent(this, YearsActivity.class);
-        // krijg iets terug van de API en stop dat in de extra??
-        //yearsIntent.putExtra("NameTable", listName);
-        startActivity(yearsIntent);
-        finish();
+        loginUser(un, pw);
     }
 
-    public boolean formValidation(String userName, String passWord) {
+    public boolean formValidation(String mail, String passWord) {
         // als alle ingevulde velden gecheckt zijn return true
         // als iets fout is false
-        Boolean isValid = true;
 
-        if (userName.length() == 0 || passWord.length() == 0) {
-            isValid = false;
+        if (mail.length() == 0 || passWord.length() == 0) {
+            errorMes.setText(R.string.fill_in_all_fields);
+            return false;
         }
-        return isValid;
+
+        // check password en username met de database???
+//        if (!passWord.equals(passWordControl)) {
+//            errorMes.setText(R.string.passwords_match);
+//            return false;
+//        }
+        return true;
     }
 
 

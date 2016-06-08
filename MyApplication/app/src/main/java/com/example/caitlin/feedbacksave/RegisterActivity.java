@@ -45,7 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
         userMail = (EditText) findViewById(R.id.etEmail);
         passWord = (EditText) findViewById(R.id.etRPassword);
         passWordC = (EditText) findViewById(R.id.etRPasswordControl);
-        errorMes = (TextView) findViewById(R.id.tvError);
+        errorMes = (TextView) findViewById(R.id.tvErrorReg);
 
         errorMes.setTextColor(Color.RED);
 
@@ -105,26 +105,36 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    public void loginUser() {
-        mRef.authWithPassword("e-mail", "password", new Firebase.AuthResultHandler() {
-            @Override
-            public void onAuthenticated(AuthData authData) {
-                Log.d("User ID: ", authData.getUid());
-                Log.d("Provider: ", authData.getProvider());
 
-                // laad in juiste database voor volgende activity
-                Intent yearsIntent = new Intent(RegisterActivity.this, YearsActivity.class);
-                // krijg iets terug van de API en stop dat in de extra??
-                //yearsIntent.putExtra("NameTable", listName);
-                startActivity(yearsIntent);
-                finish();
-            }
+    // OF LAAD LOGIN VIA LOGINACTIVITY VERLOPEN??????
+    public void loginUser(String mail, String passWord) {
+        Log.d("signIn:", mail);
+
+        // [START sign_in_with_email]
+        auth.signInWithEmailAndPassword(mail, passWord).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
-            public void onAuthenticationError(FirebaseError firebaseError) {
-                // there was an error
+            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                // If sign in fails, display a message to the user. If sign in succeeds
+                // the auth state listener will be notified and logic to handle the
+                // signed in user can be handled in the listener.
+                if (!task.isSuccessful()) {
+                    Log.w("signInWithEmail", task.getException());
+                    Toast.makeText(RegisterActivity.this, "Authentication failed.",
+                            Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    // laad in juiste database voor volgende activity
+                    Intent yearsIntent = new Intent(RegisterActivity.this, YearsActivity.class);
+                    // krijg iets terug van de API en stop dat in de extra??
+                    //yearsIntent.putExtra("NameTable", listName);
+                    startActivity(yearsIntent);
+                    finish();
+                }
             }
         });
     }
+
 
     public void registerClick (View v) {
         // iets laten checken met de firebase? API.
