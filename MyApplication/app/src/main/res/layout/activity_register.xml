@@ -11,23 +11,39 @@
     tools:context="com.example.caitlin.feedbacksave.LoginActivity">
 
     <EditText
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:inputType="textPersonName"
-        android:hint="@string/username"
-        android:id="@+id/etUsername"
-        android:layout_gravity="center_horizontal" />
+        android:layout_marginBottom="40dp"
+        android:inputType="textEmailAddress"
+        android:hint="@string/yourmailadress_mail_com"
+        android:id="@+id/etEmail" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="140dp"
+        android:layout_marginBottom="40dp"
         android:hint="@string/password"
         android:inputType="textPassword"
-        android:id="@+id/etLPassword"
-        android:layout_gravity="center_horizontal" />
+        android:id="@+id/etRPassword" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:hint="@string/repeat_password"
+        android:inputType="textPassword"
+        android:id="@+id/etRPasswordControl" />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/tvError"
+        android:layout_marginBottom="80dp"
+        android:text=""
+        android:textSize="18dp"
+        android:textAlignment="center"
+        android:visibility="invisible"/>
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/signInButton"
@@ -41,13 +57,6 @@
         android:text="@string/login"
         android:id="@+id/loginBtn"
         android:layout_gravity="center_horizontal"
-        android:onClick="loginClick"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/or_make_a_new_account"
-        android:layout_gravity="center_horizontal"
-        android:autoLink="web"/>
-
+        android:onClick="registerClick"/>
 </LinearLayout>
+

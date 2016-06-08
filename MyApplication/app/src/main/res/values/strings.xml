@@ -16,4 +16,8 @@
     <string name="write_note_here">Write Note Here</string>
     <string name="constructive">Constructive</string>
     <string name="compliment">Compliment</string>
+    <string name="repeat_password">Repeat Password</string>
+    <string name="yourmailadress_mail_com">yourmailadress@mail.com</string>
+    <string name="fill_in_all_fields">Fill in all fields!</string>
+    <string name="passwords_match">Your passwords don\'t match</string>
 </resources>
