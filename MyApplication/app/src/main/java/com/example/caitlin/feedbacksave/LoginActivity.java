@@ -35,14 +35,13 @@ public class LoginActivity extends SuperActivity {
     EditText passWord;
     Firebase mRef;
     TextView errorMes;
-    DatabaseReference rootRef;
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Firebase.setAndroidContext(this);
+        //Firebase.setAndroidContext(this);
         setContentView(R.layout.activity_login);
 
         auth = FirebaseAuth.getInstance();
@@ -53,7 +52,6 @@ public class LoginActivity extends SuperActivity {
 
         errorMes.setTextColor(Color.RED);
 
-        rootRef = FirebaseDatabase.getInstance().getReference();
         mRef = new Firebase("https://project-1258991994024708208.firebaseio.com");
 
         authListener = new FirebaseAuth.AuthStateListener() {
