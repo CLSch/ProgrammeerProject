@@ -29,6 +29,7 @@ public class FeedbackSave extends android.app.Application {
     StorageReference imagesRef;
     StorageReference photoRef;
     private Uri mDownloadUrl = null;
+    private StorageReference mStorageRef;
     //DatabaseReference rootRef;
     //StorageReference rootRef;
 
@@ -88,7 +89,7 @@ public class FeedbackSave extends android.app.Application {
     /////////
 
 
-    
+
 
     // [START upload_from_uri]
     private void uploadFromUri(Uri fileUri) {
@@ -104,15 +105,21 @@ public class FeedbackSave extends android.app.Application {
 
         Log.d("uploadFromUri:dst:", photoRef.getPath());
         photoRef.putFile(fileUri)
-                .addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // Upload succeeded
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                        // Get the public download URL
-                        mDownloadUrl = taskSnapshot.getMetadata().getDownloadUrl();]
-                    }
-                })
+            }
+        })
+//                .addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                    @Override
+//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                        // Upload succeeded
+//
+//                        // Get the public download URL
+//                        mDownloadUrl = taskSnapshot.getMetadata().getDownloadUrl();
+//                    }
+//                })
                 .addOnFailureListener((Executor) this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
