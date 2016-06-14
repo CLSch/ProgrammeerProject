@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -22,9 +23,10 @@ import java.io.InputStream;
 
 public class PhotoFeedback extends SuperActivity {
     //TextView tvFeedback;
-    StorageReference photoRef;
+    //StorageReference photoRef;
     String downloadPath;
-    ImageView ivFeedback;
+    String photoRefPath;
+    //ImageView ivFeedback;
     Uri uploadUri;
 
     @Override
@@ -32,14 +34,19 @@ public class PhotoFeedback extends SuperActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_feedback);
 
-        ivFeedback = (ImageView) findViewById(R.id.ivFB);
+        //ivFeedback = (ImageView) findViewById(R.id.ivFB);
         //tvFeedback = (TextView) findViewById(R.id.tvFB);
 
         Bundle extras = getIntent().getExtras();
-        photoRef = extras.getParcelable("photoRef");
+        //photoRef = extras.getParcelable("photoRef");
+        //photoRefPath = extras.getString("photoRefPath");
         //uploadUri = extras.get
         downloadPath = extras.getString("path");
-        Log.d("photoRef extra", photoRef.toString());
+        Log.d("path extra", downloadPath);
+
+        downloadPhoto();
+
+        //photoRef = storageRootRefTest.child(photoRefPath);
     }
 
 //    private void beginDownload() {
@@ -69,19 +76,10 @@ public class PhotoFeedback extends SuperActivity {
         storageRootRefTest.child(downloadPath).getStream().addOnSuccessListener(new OnSuccessListener<StreamDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(StreamDownloadTask.TaskSnapshot taskSnapshot) {
-                Log.d("download succes", "ja");
-                Bitmap bmImage = null;
-                try {
-                    InputStream stream = taskSnapshot.getStream();
-                    bmImage = BitmapFactory.decodeStream(stream);
-                } catch (Exception e) {
-                    Log.e("Error", e.getMessage());
-                    e.printStackTrace();
-                }
+                new ImageDownloadAsyncTask((ImageView) findViewById(R.id.ivFB)).execute(taskSnapshot);
 
-                ivFeedback.setImageBitmap(bmImage);
-                //close stream????
-                // Local temp file has been created
+                Toast.makeText(PhotoFeedback.this, "ivfeedback is gezet", Toast.LENGTH_SHORT).show();
+                //Log.d("ivfeedback", ivFeedback.toString());
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

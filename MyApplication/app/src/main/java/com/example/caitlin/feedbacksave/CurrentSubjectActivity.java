@@ -16,7 +16,8 @@ public class CurrentSubjectActivity extends SuperActivity {
     // dit wordt waarschijnlijk een arraylist van feedback objects
     ArrayList<String> feedbackList = new ArrayList<>();
     CustomFeedbackAdapter adapter;
-    StorageReference photoRef;
+    //StorageReference photoRef;
+    //String photorefPath;
     String path;
 
     @Override
@@ -25,9 +26,19 @@ public class CurrentSubjectActivity extends SuperActivity {
         setContentView(R.layout.activity_current_subject);
 
         Bundle extras = getIntent().getExtras();
-        photoRef = extras.getParcelable("photoRef");
-        //uploadUri = extras.get
-        path = extras.getString("path");
+
+        path = "/photos/40146";
+
+//        if (extras.getString("path") == null) {
+//            //photorefPath = "photos/40146";
+//            path = "/photos/40146";
+//        }
+//        else {
+//            //photorefPath = extras.getString("photorefPath");
+//            //photoRef = extras.getParcelable("photoRef");
+//            //uploadUri = extras.get
+//            path = extras.getString("path");
+//        }
 
         feedbackList.add("Feedback 10-12-14"); // HARDCODED !!!!
         feedbackList.add("FB van Hannah"); // HARDCODED !!!!
@@ -36,7 +47,7 @@ public class CurrentSubjectActivity extends SuperActivity {
     }
 
     public void makeAdapter(){
-        adapter = new CustomFeedbackAdapter(this, feedbackList, photoRef, path);
+        adapter = new CustomFeedbackAdapter(this, feedbackList, path);
         lvSubject = (ListView) findViewById(R.id.lvFeedback);
         //listviewToDo.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         assert lvSubject != null;

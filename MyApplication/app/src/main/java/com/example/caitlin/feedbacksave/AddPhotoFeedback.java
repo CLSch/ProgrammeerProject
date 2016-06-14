@@ -117,7 +117,9 @@ public class AddPhotoFeedback extends SuperActivity {
 
                 Intent currentSubjectIntent = new Intent(AddPhotoFeedback.this, CurrentSubjectActivity.class);
                 AddPhotoFeedback.this.startActivity(currentSubjectIntent);
-                currentSubjectIntent.putExtra("photoRef", (Parcelable) photoRef);
+                //Log.d("photoRefPath", photoRef.getPath());
+                //currentSubjectIntent.putExtra("photorefPath", photoRef.getPath());
+                //currentSubjectIntent.putExtra("photoRef", (Parcelable) photoRef);
                 String path = "photos/" + uploadUri.getLastPathSegment();
                 //currentSubjectIntent.putExtra("uploadUri", uploadUri);
                 currentSubjectIntent.putExtra("path", path);

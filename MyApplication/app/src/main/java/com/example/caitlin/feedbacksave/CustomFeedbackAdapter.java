@@ -20,14 +20,15 @@ public class CustomFeedbackAdapter extends ArrayAdapter {
     // wordt later waarschijnlijk arraylist met Feedback Objects
     ArrayList<String> feedback;
     Context context;
-    StorageReference photoRef;
+    //StorageReference photoRef;
+    //String photoRefPath;
     String path;
 
-    public CustomFeedbackAdapter (Context context, ArrayList<String> data, StorageReference ref, String downloadPath) {
+    public CustomFeedbackAdapter (Context context, ArrayList<String> data, String downloadPath) {
         super(context, 0, data);
         this.feedback = data;
         this.context = context;
-        this.photoRef = ref;
+        //this.photoRefPath = ref;
         this.path = downloadPath;
     }
 
@@ -58,7 +59,8 @@ public class CustomFeedbackAdapter extends ArrayAdapter {
                 Intent photoFeedbackIntent = new Intent(context, PhotoFeedback.class);
                 // geef feedback mee
                 photoFeedbackIntent.putExtra("path", path);
-                photoFeedbackIntent.putExtra("photoRef", (Parcelable) photoRef);
+                //photoFeedbackIntent.putExtra("photoRef", (Parcelable) photoRef);
+                //photoFeedbackIntent.putExtra("photoRefPath", photoRefPath);
                 context.startActivity(photoFeedbackIntent);
             }
         });
