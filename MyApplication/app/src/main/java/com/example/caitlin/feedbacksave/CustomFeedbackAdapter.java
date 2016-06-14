@@ -2,11 +2,14 @@ package com.example.caitlin.feedbacksave;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -17,11 +20,15 @@ public class CustomFeedbackAdapter extends ArrayAdapter {
     // wordt later waarschijnlijk arraylist met Feedback Objects
     ArrayList<String> feedback;
     Context context;
+    StorageReference photoRef;
+    String path;
 
-    public CustomFeedbackAdapter (Context context, ArrayList<String> data) {
+    public CustomFeedbackAdapter (Context context, ArrayList<String> data, StorageReference ref, String downloadPath) {
         super(context, 0, data);
         this.feedback = data;
         this.context = context;
+        this.photoRef = ref;
+        this.path = downloadPath;
     }
 
     /** get the view and return it*/
@@ -49,8 +56,9 @@ public class CustomFeedbackAdapter extends ArrayAdapter {
                 // CHECK OF FB EEN FOTO IS OF EEN MEMO EN OPEN DE JUISTE INTENT!!!
 
                 Intent photoFeedbackIntent = new Intent(context, PhotoFeedback.class);
-                // geef alle feedback mee
-                //allSubjectsIntent.putExtra("NameTable", tableName);
+                // geef feedback mee
+                photoFeedbackIntent.putExtra("path", path);
+                photoFeedbackIntent.putExtra("photoRef", (Parcelable) photoRef);
                 context.startActivity(photoFeedbackIntent);
             }
         });

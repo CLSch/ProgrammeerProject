@@ -11,20 +11,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class SuperActivity extends AppCompatActivity {
     private FirebaseAuth auth;
+    StorageReference storageRootRefTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Firebase.setAndroidContext(this);
         setContentView(R.layout.activity_super);
 
         auth = FirebaseAuth.getInstance();
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+
+        storageRootRefTest = storage.getReferenceFromUrl("gs://project-1258991994024708208.appspot.com");
 
 //        ActionBar actionBar = getActionBar();
 //        actionBar.show();

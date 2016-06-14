@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,10 +18,13 @@ import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.io.Serializable;
+import java.util.ArrayList;
 
 public class AddPhotoFeedback extends SuperActivity {
     EditText etTag;
@@ -30,6 +34,8 @@ public class AddPhotoFeedback extends SuperActivity {
     StorageReference imagesRef;
     StorageReference photoRef;
     UploadTask uploadTask;
+    String FBName;
+    String tags;
     Uri uploadUri;
     Uri downloadUri;
     boolean checkPerm;
@@ -56,17 +62,17 @@ public class AddPhotoFeedback extends SuperActivity {
        checkPerm = Utility.checkPermission(AddPhotoFeedback.this);
     }
 
-    public void createRef(String FBName) {
-        // Create a reference to "mountains.jpg"
-        // filename als het jpg is?? hoe kijken voor png/jpg? wat als een naam al een extentie heeft???
-        String childName = FBName + ".jpg";
-        photoRef = storageRootRef.child(childName);
-
-        // Create a reference to 'images/mountains.jpg'
-        String imagesName = "images/" + childName;
-        imagesRef = storageRootRef.child(imagesName);
-
-    }
+//    public void createRef(String FBName) {
+//        // Create a reference to "mountains.jpg"
+//        // filename als het jpg is?? hoe kijken voor png/jpg? wat als een naam al een extentie heeft???
+//        String childName = FBName + ".jpg";
+//        photoRef = storageRootRef.child(childName);
+//
+//        // Create a reference to 'images/mountains.jpg'
+//        String imagesName = "images/" + childName;
+//        imagesRef = storageRootRef.child(imagesName);
+//
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -75,6 +81,7 @@ public class AddPhotoFeedback extends SuperActivity {
         if (requestCode == SELECT_FILE && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
             uploadUri = data.getData();
+            // METADATA
             uploadPhotoFromFile();
         }
     }
@@ -87,7 +94,13 @@ public class AddPhotoFeedback extends SuperActivity {
 //        StorageReference riversRef = storageRootRef.child("images/"+file.getLastPathSegment());
 
         final StorageReference photoRef = storageRootRef.child("photos").child(uploadUri.getLastPathSegment());
-        uploadTask = photoRef.putFile(uploadUri);
+
+        String finalTags = tags.substring(0, tags.lastIndexOf(","));
+
+        StorageMetadata metadata = new StorageMetadata.Builder().setCustomMetadata("name", FBName).setCustomMetadata("tags", finalTags)
+                .build();
+
+        uploadTask = photoRef.putFile(uploadUri, metadata);
 
 // Register observers to listen for when the download is done or if it fails
         uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -104,6 +117,10 @@ public class AddPhotoFeedback extends SuperActivity {
 
                 Intent currentSubjectIntent = new Intent(AddPhotoFeedback.this, CurrentSubjectActivity.class);
                 AddPhotoFeedback.this.startActivity(currentSubjectIntent);
+                currentSubjectIntent.putExtra("photoRef", (Parcelable) photoRef);
+                String path = "photos/" + uploadUri.getLastPathSegment();
+                //currentSubjectIntent.putExtra("uploadUri", uploadUri);
+                currentSubjectIntent.putExtra("path", path);
                 Toast.makeText(AddPhotoFeedback.this, "Feedback is toegevoegd (of niet)", Toast.LENGTH_SHORT).show();
                 finish();
             }
@@ -129,8 +146,7 @@ public class AddPhotoFeedback extends SuperActivity {
 
     public void addFeedbackClick (View v){
 
-        String FBName = etFBName.getText().toString();
-        createRef(FBName);
+        FBName = etFBName.getText().toString();
 
         if (checkPerm) {
             galleryIntent();
@@ -166,6 +182,7 @@ public class AddPhotoFeedback extends SuperActivity {
     }
 
     public void addTagClick(View v){
+        tags += etTag.getText().toString() + ", ";
         Toast.makeText(this, "Tag is toegevoegd", Toast.LENGTH_SHORT).show();
         etTag.setText("");
     }

@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.storage.StorageReference;
+
 import java.util.ArrayList;
 
 public class CurrentSubjectActivity extends SuperActivity {
@@ -14,11 +16,18 @@ public class CurrentSubjectActivity extends SuperActivity {
     // dit wordt waarschijnlijk een arraylist van feedback objects
     ArrayList<String> feedbackList = new ArrayList<>();
     CustomFeedbackAdapter adapter;
+    StorageReference photoRef;
+    String path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_subject);
+
+        Bundle extras = getIntent().getExtras();
+        photoRef = extras.getParcelable("photoRef");
+        //uploadUri = extras.get
+        path = extras.getString("path");
 
         feedbackList.add("Feedback 10-12-14"); // HARDCODED !!!!
         feedbackList.add("FB van Hannah"); // HARDCODED !!!!
@@ -27,7 +36,7 @@ public class CurrentSubjectActivity extends SuperActivity {
     }
 
     public void makeAdapter(){
-        adapter = new CustomFeedbackAdapter(this, feedbackList);
+        adapter = new CustomFeedbackAdapter(this, feedbackList, photoRef, path);
         lvSubject = (ListView) findViewById(R.id.lvFeedback);
         //listviewToDo.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         assert lvSubject != null;

@@ -10,13 +10,17 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.caitlin.feedbacksave.PhotoFeedback">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hier komt de feedback te staan!"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="100dp"
-        android:textSize="25dp"
-        android:id="@+id/tvFB"/>
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Hier komt de feedback te staan!"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:textSize="20sp"-->
+        <!--android:id="@+id/tvFB"/>-->
+
+    <ImageView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/ivFB" />
 
 </LinearLayout>
