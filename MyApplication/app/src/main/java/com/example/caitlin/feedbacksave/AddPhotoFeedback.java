@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -29,6 +30,8 @@ public class AddPhotoFeedback extends SuperActivity {
     StorageReference imagesRef;
     StorageReference photoRef;
     UploadTask uploadTask;
+    Uri uploadUri;
+    Uri downloadUri;
     boolean checkPerm;
     private static int RESULT_LOAD_IMAGE = 1;
     private static int SELECT_FILE = 1;
@@ -65,24 +68,44 @@ public class AddPhotoFeedback extends SuperActivity {
 
     }
 
-    public void uploadPhotoFromFile() {
-        Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
-        StorageReference riversRef = storageRootRef.child("images/"+file.getLastPathSegment());
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        final StorageReference photoRef = storageRootRef.child("photos").child(fileUri.getLastPathSegment());
-        uploadTask = riversRef.putFile(file);
+        if (requestCode == SELECT_FILE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+            uploadUri = data.getData();
+            uploadPhotoFromFile();
+        }
+    }
+
+
+    public void uploadPhotoFromFile() {
+
+
+//        Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
+//        StorageReference riversRef = storageRootRef.child("images/"+file.getLastPathSegment());
+
+        final StorageReference photoRef = storageRootRef.child("photos").child(uploadUri.getLastPathSegment());
+        uploadTask = photoRef.putFile(uploadUri);
 
 // Register observers to listen for when the download is done or if it fails
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
+                Toast.makeText(AddPhotoFeedback.this, "Error: upload failed", Toast.LENGTH_SHORT).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                downloadUri = taskSnapshot.getDownloadUrl();
+                Log.d("downloadUri is", downloadUri.toString());
+
+                Intent currentSubjectIntent = new Intent(AddPhotoFeedback.this, CurrentSubjectActivity.class);
+                AddPhotoFeedback.this.startActivity(currentSubjectIntent);
+                Toast.makeText(AddPhotoFeedback.this, "Feedback is toegevoegd (of niet)", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
     }
@@ -116,10 +139,10 @@ public class AddPhotoFeedback extends SuperActivity {
         // als er eentje leeg is geef daar een melding van
 
         //als beiden zijn ingevuld
-        Intent currentSubjectIntent = new Intent(this, CurrentSubjectActivity.class);
-        this.startActivity(currentSubjectIntent);
-        Toast.makeText(this, "Feedback is toegevoegd (of niet)", Toast.LENGTH_SHORT).show();
-        finish();
+//        Intent currentSubjectIntent = new Intent(this, CurrentSubjectActivity.class);
+//        this.startActivity(currentSubjectIntent);
+//        Toast.makeText(this, "Feedback is toegevoegd (of niet)", Toast.LENGTH_SHORT).show();
+//        finish();
 
     }
 
@@ -137,10 +160,9 @@ public class AddPhotoFeedback extends SuperActivity {
     }
 
     private void galleryIntent()
-    {
-        Intent intent = new Intent();
-        intent.setType("image/*");
+    {   Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");
         startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
+        Toast.makeText(this, "in galleryIntent", Toast.LENGTH_SHORT).show();
     }
 
     public void addTagClick(View v){
