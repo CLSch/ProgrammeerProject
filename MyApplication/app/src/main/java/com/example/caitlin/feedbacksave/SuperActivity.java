@@ -38,7 +38,7 @@ public class SuperActivity extends AppCompatActivity {
 
         // gebruik token om dbApi te initialiseren
         // als er geen token is ga naar years activity
-        dBApi
+        //dBApi
 
 //        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
 //        String token = prefs.getString(ACCESS_TOKEN_NAME, null);

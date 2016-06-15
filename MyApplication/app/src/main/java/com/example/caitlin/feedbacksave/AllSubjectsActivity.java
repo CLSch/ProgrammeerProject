@@ -22,13 +22,13 @@ public class AllSubjectsActivity extends SuperActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_subjects);
 
-        Bundle extras = getIntent().getExtras();
-        DropBoxAPIWrapper dbWrapper = (DropBoxAPIWrapper) extras.getSerializable("apiWrapper");
-        assert dbWrapper != null;
-        dbApi = dbWrapper.getDropBoxAPI();
+        //Bundle extras = getIntent().getExtras();
+        //DropBoxAPIWrapper dbWrapper = (DropBoxAPIWrapper) extras.getSerializable("apiWrapper");
+        //assert dbWrapper != null;
+        //dbApi = dbWrapper.getDropBoxAPI();
 //        dbApi = extras.getParcelable("dbApi");
 
-        Log.d("dit is dbApi in ASA", dBApi.toString());
+        //Log.d("dit is dbApi in ASA", dBApi.toString());
 
         subjectsList.add("Prog Project"); // HARDCODED !!!!
         subjectsList.add("Heuristieken"); // HARDCODED !!!!
@@ -37,7 +37,7 @@ public class AllSubjectsActivity extends SuperActivity {
     }
 
     public void makeAdapter(){
-        adapter = new CustomSubjectsAdapter(this, subjectsList, dbApi);
+        adapter = new CustomSubjectsAdapter(this, subjectsList);
         lvASubjects = (ListView) findViewById(R.id.lvAllSubjects);
         //listviewToDo.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         assert lvASubjects != null;

@@ -20,11 +20,11 @@ public class CustomYearsAdapter extends ArrayAdapter{
     // of StringArrayList?
     ArrayList<String> years;
     Context context;
-    DropboxAPI dbApi;
+    //DropboxAPI dbApi;
 
-    public CustomYearsAdapter (Context context, ArrayList<String> data, DropboxAPI dBApi) {
+    public CustomYearsAdapter (Context context, ArrayList<String> data) {
         super(context, 0, data);
-        this.dbApi = dBApi;
+        //this.dbApi = dBApi;
         this.years = data;
         this.context = context;
     }
@@ -49,10 +49,10 @@ public class CustomYearsAdapter extends ArrayAdapter{
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DropBoxAPIWrapper apiWrapper = new DropBoxAPIWrapper(dbApi);
+                //DropBoxAPIWrapper apiWrapper = new DropBoxAPIWrapper(dbApi);
                 Intent allSubjectsIntent = new Intent(context, AllSubjectsActivity.class);
                 // geef alle vakken mee
-                allSubjectsIntent.putExtra("apiWrapper", apiWrapper);
+                //allSubjectsIntent.putExtra("apiWrapper", apiWrapper);
                 context.startActivity(allSubjectsIntent);
             }
         });

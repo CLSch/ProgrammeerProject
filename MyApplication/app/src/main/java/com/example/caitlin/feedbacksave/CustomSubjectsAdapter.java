@@ -18,13 +18,13 @@ import java.util.ArrayList;
 public class CustomSubjectsAdapter extends ArrayAdapter {
     ArrayList<String> subjects;
     Context context;
-    DropboxAPI dropboxAPI;
+    //DropboxAPI dropboxAPI;
 
-    public CustomSubjectsAdapter (Context context, ArrayList<String> data, DropboxAPI dbApi) {
+    public CustomSubjectsAdapter (Context context, ArrayList<String> data) {
         super(context, 0, data);
         this.subjects = data;
         this.context = context;
-        this.dropboxAPI = dbApi;
+        //this.dropboxAPI = dbApi;
     }
 
     /** get the view and return it*/
@@ -47,10 +47,10 @@ public class CustomSubjectsAdapter extends ArrayAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DropBoxAPIWrapper dbWrapper = new DropBoxAPIWrapper(dropboxAPI);
+                //DropBoxAPIWrapper dbWrapper = new DropBoxAPIWrapper(dropboxAPI);
                 Intent currentSubjectsIntent = new Intent(context, CurrentSubjectActivity.class);
                 // geef alle feedback mee
-                currentSubjectsIntent.putExtra("dbWrapper", dbWrapper);
+                //currentSubjectsIntent.putExtra("dbWrapper", dbWrapper);
                 context.startActivity(currentSubjectsIntent);
             }
         });

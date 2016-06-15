@@ -118,14 +118,13 @@ public class YearsActivity extends SuperActivity {
 
         // oke maar die boven oncreate zijn final etc, dus wordt dit wel opgeslagen??
         SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
-        SharedPreferences prefs = getSharedPreferences(dBApi, dBApi);
         SharedPreferences.Editor edit = prefs.edit();
         edit.putString(ACCESS_TOKEN_NAME, accessToken);
         edit.commit();
     }
 
     public void makeAdapter(){
-        adapter = new CustomYearsAdapter(this, yearsList, dBApi);
+        adapter = new CustomYearsAdapter(this, yearsList);
         lvYears = (ListView) findViewById(R.id.lvYear);
         //listviewToDo.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         assert lvYears != null;

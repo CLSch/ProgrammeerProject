@@ -27,10 +27,10 @@ public class CurrentSubjectActivity extends SuperActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_subject);
 
-        Bundle extras = getIntent().getExtras();
-        wrapper = (DropBoxAPIWrapper) extras.getSerializable( "dbWrapper");
-        assert wrapper != null;
-        dBApi = wrapper.getDropBoxAPI();
+        //Bundle extras = getIntent().getExtras();
+        //wrapper = (DropBoxAPIWrapper) extras.getSerializable( "dbWrapper");
+        //assert wrapper != null;
+        //dBApi = wrapper.getDropBoxAPI();
 
 
         //path = "/photos/40146";
@@ -53,7 +53,7 @@ public class CurrentSubjectActivity extends SuperActivity {
     }
 
     public void makeAdapter(){
-        adapter = new CustomFeedbackAdapter(this, feedbackList, dbApi);
+        adapter = new CustomFeedbackAdapter(this, feedbackList);
         lvSubject = (ListView) findViewById(R.id.lvFeedback);
         //listviewToDo.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         assert lvSubject != null;
@@ -63,7 +63,7 @@ public class CurrentSubjectActivity extends SuperActivity {
     public void addPhotoClick(View v){
         //Toast.makeText(this, "Add Photo from Galery", Toast.LENGTH_SHORT).show();
         Intent addPhotoFeedbackIntent = new Intent(this, AddPhotoFeedback.class);
-        addPhotoFeedbackIntent.putExtra("dbWrapper", wrapper);
+        //addPhotoFeedbackIntent.putExtra("dbWrapper", wrapper);
         // geef alle feedback mee
         //allSubjectsIntent.putExtra("NameTable", tableName);
         this.startActivity(addPhotoFeedbackIntent);
@@ -76,7 +76,7 @@ public class CurrentSubjectActivity extends SuperActivity {
     public void addNoteClick(View v){
         Intent addNoteIntent = new Intent(this, AddNote.class);
         // geef alle feedback mee
-        addNoteIntent.putExtra("dbWrapper", wrapper);
+        //addNoteIntent.putExtra("dbWrapper", wrapper);
         this.startActivity(addNoteIntent);
     }
 }
