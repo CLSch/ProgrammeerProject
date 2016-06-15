@@ -11,6 +11,8 @@ import android.provider.MediaStore;
 
 /**
  * Created by Caitlin on 15-06-16.
+ *
+ * https://www.sitepoint.com/adding-the-dropbox-api-to-an-android-app/
  */
 public class URI_to_Path {
     public static String getPath(final Context context, final Uri uri) {

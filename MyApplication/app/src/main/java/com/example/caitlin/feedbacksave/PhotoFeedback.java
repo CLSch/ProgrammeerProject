@@ -1,6 +1,9 @@
 package com.example.caitlin.feedbacksave;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -8,15 +11,19 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dropbox.core.v2.files.FileMetadata;
+import com.dropbox.core.v2.files.Metadata;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.List;
 
 public class PhotoFeedback extends SuperActivity {
     //TextView tvFeedback;
@@ -31,19 +38,68 @@ public class PhotoFeedback extends SuperActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_feedback);
 
+        
+
         //ivFeedback = (ImageView) findViewById(R.id.ivFB);
         //tvFeedback = (TextView) findViewById(R.id.tvFB);
 
-        Bundle extras = getIntent().getExtras();
+        //Bundle extras = getIntent().getExtras();
         //photoRef = extras.getParcelable("photoRef");
         //photoRefPath = extras.getString("photoRefPath");
         //uploadUri = extras.get
-        downloadPath = extras.getString("path");
-        Log.d("path extra", downloadPath);
+        //downloadPath = extras.getString("path");
+        //Log.d("path extra", downloadPath);
 
-        //downloadPhoto();
+        downloadFile();
 
         //photoRef = storageRootRefTest.child(photoRefPath);
+    }
+
+    private void downloadFile(FileMetadata file) {
+        final ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setCancelable(false);
+        dialog.setMessage("Downloading");
+        dialog.show();
+
+        new DownloadFileAsyncTask(PhotoFeedback.this, DropBoxClient.getClient(getToken()), new DownloadFileAsyncTask.Callback() {
+            @Override
+            public void onDownloadComplete(File result) {
+                dialog.dismiss();
+
+                if (result != null) {
+                    viewFileInExternalApp(result);
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+                dialog.dismiss();
+
+                Log.d("Failed to dwnld file.", "rottig");
+                Toast.makeText(PhotoFeedback.this,
+                        "An error has occurred",
+                        Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }).execute(file);
+
+    }
+
+    private void viewFileInExternalApp(File result) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        String ext = result.getName().substring(result.getName().indexOf(".") + 1);
+        String type = mime.getMimeTypeFromExtension(ext);
+
+        intent.setDataAndType(Uri.fromFile(result), type);
+
+        // Check for a handler first to avoid a crash
+        PackageManager manager = getPackageManager();
+        List<ResolveInfo> resolveInfo = manager.queryIntentActivities(intent, 0);
+        if (resolveInfo.size() > 0) {
+            startActivity(intent);
+        }
     }
 
 

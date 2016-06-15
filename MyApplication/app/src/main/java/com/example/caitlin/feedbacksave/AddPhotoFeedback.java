@@ -24,6 +24,8 @@ import java.io.FileInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+// https://www.sitepoint.com/adding-the-dropbox-api-to-an-android-app/
+
 public class AddPhotoFeedback extends SuperActivity {
     EditText etTag;
     EditText etFBName;
