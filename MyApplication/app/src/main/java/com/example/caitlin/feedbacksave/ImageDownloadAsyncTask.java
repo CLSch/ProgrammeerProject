@@ -63,7 +63,7 @@ public class ImageDownloadAsyncTask extends AsyncTask<StreamDownloadTask.TaskSna
         int imageHeight = options.outHeight;
         int imageWidth = options.outWidth;
         Log.d("Tot nu toe", "overleeft");
-        //stream.reset();
+        //stream2.reset();
         //String imageType = options.outMimeType;
         if(imageWidth > imageHeight) {
             options.inSampleSize = calculateInSampleSize(options,512,256);//if landscape
@@ -72,6 +72,7 @@ public class ImageDownloadAsyncTask extends AsyncTask<StreamDownloadTask.TaskSna
         }
         Log.d("if else", "overleeft");
         options.inJustDecodeBounds = false;
+        Log.d("voor", "factory");
         bmImage2 = BitmapFactory.decodeStream(stream2, null, options);
         Log.d("bmImage2", bmImage2.toString());
     }
