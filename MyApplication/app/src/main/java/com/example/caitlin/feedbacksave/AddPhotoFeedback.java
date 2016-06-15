@@ -35,12 +35,15 @@ public class AddPhotoFeedback extends SuperActivity {
     boolean checkPerm;
     private static int RESULT_LOAD_IMAGE = 1;
     private static int SELECT_FILE = 1;
+    private static int IMAGE_REQUEST_CODE = 1;
+    private String ACCESS_TOKEN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_photo_feedback);
 
+        ACCESS_TOKEN = getToken();
 
         etTag = (EditText) findViewById(R.id.etTagsPhoto);
         etFBName = (EditText) findViewById(R.id.etFBName);
@@ -64,17 +67,46 @@ public class AddPhotoFeedback extends SuperActivity {
 //
 //    }
 
+    private void upload() {
+        if (ACCESS_TOKEN == null)return;
+        //Select image to upload
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+        startActivityForResult(Intent.createChooser(intent,
+                "Upload to Dropbox"), IMAGE_REQUEST_CODE);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == SELECT_FILE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-
-            uploadUri = data.getData();
-            // METADATA
-            //uploadPhotoFromFile();
+        if (resultCode != RESULT_OK || data == null) return;
+        // Check which request we're responding to
+        if (requestCode == IMAGE_REQUEST_CODE) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                //Image URI received
+                File file = new File(URI_to_Path.getPath(getApplication(), data.getData()));
+                if (file != null) {
+                    //Initialize UploadTask
+                    new UploadPhotoAsyncTask(DropBoxClient.getClient(ACCESS_TOKEN), file, getApplicationContext()).execute();
+                }
+            }
         }
     }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == SELECT_FILE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+//
+//            uploadUri = data.getData();
+//            // METADATA
+//            //uploadPhotoFromFile();
+//        }
+//    }
 
 //    public void uploadPhotoFromFile() {
 //        File tmpFile = new File(uploadUri, "IMG_2012-03-12_10-22-09_thumb.jpg");

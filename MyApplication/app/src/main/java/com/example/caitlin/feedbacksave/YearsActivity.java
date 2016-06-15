@@ -23,8 +23,8 @@ public class YearsActivity extends SuperActivity {
     final static private String APP_SECRET = "ke82ftjb4b07ivk";
     //private boolean loggedIn;
     //private String accessToken;
-    final static private String ACCOUNT_PREFS_NAME = "prefs";
-    final static private String ACCESS_TOKEN_NAME = "ACCESS_TOKEN";
+//    final static private String ACCOUNT_PREFS_NAME = "prefs";
+//    final static private String ACCESS_TOKEN_NAME = "ACCESS_TOKEN";
     AndroidAuthSession session;
 
     @Override
@@ -113,15 +113,15 @@ public class YearsActivity extends SuperActivity {
         //dBApi = new DropboxAPI<AndroidAuthSession>(session);
     }
 
-    private void storeKeys(String accessToken) {
-        // Save the access key for later
-
-        // oke maar die boven oncreate zijn final etc, dus wordt dit wel opgeslagen??
-        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
-        SharedPreferences.Editor edit = prefs.edit();
-        edit.putString(ACCESS_TOKEN_NAME, accessToken);
-        edit.commit();
-    }
+//    private void storeKeys(String accessToken) {
+//        // Save the access key for later
+//
+//        // oke maar die boven oncreate zijn final etc, dus wordt dit wel opgeslagen??
+//        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+//        SharedPreferences.Editor edit = prefs.edit();
+//        edit.putString(ACCESS_TOKEN_NAME, accessToken);
+//        edit.commit();
+//    }
 
     public void makeAdapter(){
         adapter = new CustomYearsAdapter(this, yearsList);

@@ -46,6 +46,7 @@ public class PhotoFeedback extends SuperActivity {
         //photoRef = storageRootRefTest.child(photoRefPath);
     }
 
+
 //    private void beginDownload() {
 //        // Get path
 //        //String path = "photos/" + mFileUri.getLastPathSegment();
