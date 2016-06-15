@@ -36,6 +36,10 @@ public class SuperActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_super);
 
+        // gebruik token om dbApi te initialiseren
+        // als er geen token is ga naar years activity
+        dBApi
+
 //        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
 //        String token = prefs.getString(ACCESS_TOKEN_NAME, null);
 
@@ -79,6 +83,10 @@ public class SuperActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.logout_menu, menu);
         return true;
+    }
+
+    public void setdBApi(DropboxAPI dbApi){
+        dBApi = dbApi;
     }
 
 //    protected void onResume() {

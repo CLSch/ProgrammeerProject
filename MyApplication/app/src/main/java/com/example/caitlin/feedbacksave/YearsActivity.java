@@ -118,6 +118,7 @@ public class YearsActivity extends SuperActivity {
 
         // oke maar die boven oncreate zijn final etc, dus wordt dit wel opgeslagen??
         SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+        SharedPreferences prefs = getSharedPreferences(dBApi, dBApi);
         SharedPreferences.Editor edit = prefs.edit();
         edit.putString(ACCESS_TOKEN_NAME, accessToken);
         edit.commit();

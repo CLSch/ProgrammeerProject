@@ -14,9 +14,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dropbox.client2.DropboxAPI;
+import com.dropbox.client2.exception.DropboxException;
+import com.dropbox.client2.exception.DropboxUnlinkedException;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -71,6 +75,20 @@ public class AddPhotoFeedback extends SuperActivity {
             //uploadPhotoFromFile();
         }
     }
+
+//    public void uploadPhotoFromFile() {
+//        File tmpFile = new File(uploadUri, "IMG_2012-03-12_10-22-09_thumb.jpg");
+//
+//        FileInputStream fis = new FileInputStream(tmpFile);
+//
+//        try {
+//            DropboxAPI.Entry newEntry = dBApi.putFileOverwrite("IMG_2012-03-12_10-22-09_thumb.jpg", fis, tmpFile.length(), null);
+//        } catch (DropboxUnlinkedException e) {
+//            Log.e("DbExampleLog", "User has unlinked.");
+//        } catch (DropboxException e) {
+//            Log.e("DbExampleLog", "Something went wrong while uploading.");
+//        }
+//    }
 
 
 //    public void uploadPhotoFromFile() {
