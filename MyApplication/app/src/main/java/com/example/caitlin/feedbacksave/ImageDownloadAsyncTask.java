@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.StreamDownloadTask;
+
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +18,7 @@ import java.io.InputStream;
 /**
  * Created by Caitlin on 14-06-16.
  */
-public class ImageDownloadAsyncTask extends AsyncTask<StreamDownloadTask.TaskSnapshot, Void, Bitmap> {
+public class ImageDownloadAsyncTask extends AsyncTask<String, Void, Bitmap> {
     ImageView bmImage;
     Bitmap bmImage2;
 
@@ -29,21 +29,14 @@ public class ImageDownloadAsyncTask extends AsyncTask<StreamDownloadTask.TaskSna
 
 
     /** Convert an image url to a bitmap image. */
-    protected Bitmap doInBackground(StreamDownloadTask.TaskSnapshot... taskSnapshots) {
-        StreamDownloadTask.TaskSnapshot task = taskSnapshots[0];
+    protected Bitmap doInBackground(String... urls) {
+        String url = urls[0];
 
         Log.d("download succes", "ja");
         Bitmap bmImage2 = null;
         try {
-            InputStream stream1 = task.getStream();
-            InputStream stream2 = task.getStream();
-            Log.d("stream werkt1", stream1.toString());
-            Log.d("stream werkt2", stream2.toString());
-            resizeBitmap(stream1, stream2);
-            Log.d("ik ben succesvol uit", "resizeBitmap");
-            assert bmImage2 != null;
-            Log.d("bmImage2", bmImage2.toString());
-            //bmImage2 = BitmapFactory.decodeStream(stream);
+            // doe iets
+            Log.d("check", "alles");
         } catch (Exception e) {
             Log.e("Error", e.getMessage());
             e.printStackTrace();

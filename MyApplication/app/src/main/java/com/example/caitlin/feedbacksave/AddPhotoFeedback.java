@@ -14,14 +14,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageMetadata;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,10 +24,6 @@ public class AddPhotoFeedback extends SuperActivity {
     EditText etTag;
     EditText etFBName;
     TextView errorMes;
-    StorageReference storageRootRef;
-    StorageReference imagesRef;
-    StorageReference photoRef;
-    UploadTask uploadTask;
     String FBName;
     String tags;
     Uri uploadUri;
@@ -45,12 +35,8 @@ public class AddPhotoFeedback extends SuperActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Firebase.setAndroidContext(this);
         setContentView(R.layout.activity_add_photo_feedback);
 
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-
-        storageRootRef = storage.getReferenceFromUrl("gs://project-1258991994024708208.appspot.com");
 
         etTag = (EditText) findViewById(R.id.etTagsPhoto);
         etFBName = (EditText) findViewById(R.id.etFBName);
@@ -82,52 +68,52 @@ public class AddPhotoFeedback extends SuperActivity {
 
             uploadUri = data.getData();
             // METADATA
-            uploadPhotoFromFile();
+            //uploadPhotoFromFile();
         }
     }
 
 
-    public void uploadPhotoFromFile() {
-
-
-//        Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
-//        StorageReference riversRef = storageRootRef.child("images/"+file.getLastPathSegment());
-
-        final StorageReference photoRef = storageRootRef.child("photos").child(uploadUri.getLastPathSegment());
-
-        String finalTags = tags.substring(0, tags.lastIndexOf(","));
-
-        StorageMetadata metadata = new StorageMetadata.Builder().setCustomMetadata("name", FBName).setCustomMetadata("tags", finalTags)
-                .build();
-
-        uploadTask = photoRef.putFile(uploadUri, metadata);
-
-// Register observers to listen for when the download is done or if it fails
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(AddPhotoFeedback.this, "Error: upload failed", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                downloadUri = taskSnapshot.getDownloadUrl();
-                Log.d("downloadUri is", downloadUri.toString());
-
-                Intent currentSubjectIntent = new Intent(AddPhotoFeedback.this, CurrentSubjectActivity.class);
-                AddPhotoFeedback.this.startActivity(currentSubjectIntent);
-                //Log.d("photoRefPath", photoRef.getPath());
-                //currentSubjectIntent.putExtra("photorefPath", photoRef.getPath());
-                //currentSubjectIntent.putExtra("photoRef", (Parcelable) photoRef);
-                String path = "photos/" + uploadUri.getLastPathSegment();
-                //currentSubjectIntent.putExtra("uploadUri", uploadUri);
-                currentSubjectIntent.putExtra("path", path);
-                Toast.makeText(AddPhotoFeedback.this, "Feedback is toegevoegd (of niet)", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        });
-    }
+//    public void uploadPhotoFromFile() {
+//
+//
+////        Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
+////        StorageReference riversRef = storageRootRef.child("images/"+file.getLastPathSegment());
+//
+//        final StorageReference photoRef = storageRootRef.child("photos").child(uploadUri.getLastPathSegment());
+//
+//        String finalTags = tags.substring(0, tags.lastIndexOf(","));
+//
+//        StorageMetadata metadata = new StorageMetadata.Builder().setCustomMetadata("name", FBName).setCustomMetadata("tags", finalTags)
+//                .build();
+//
+//        uploadTask = photoRef.putFile(uploadUri, metadata);
+//
+//// Register observers to listen for when the download is done or if it fails
+//        uploadTask.addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception exception) {
+//                Toast.makeText(AddPhotoFeedback.this, "Error: upload failed", Toast.LENGTH_SHORT).show();
+//            }
+//        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//            @Override
+//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+//                downloadUri = taskSnapshot.getDownloadUrl();
+//                Log.d("downloadUri is", downloadUri.toString());
+//
+//                Intent currentSubjectIntent = new Intent(AddPhotoFeedback.this, CurrentSubjectActivity.class);
+//                AddPhotoFeedback.this.startActivity(currentSubjectIntent);
+//                //Log.d("photoRefPath", photoRef.getPath());
+//                //currentSubjectIntent.putExtra("photorefPath", photoRef.getPath());
+//                //currentSubjectIntent.putExtra("photoRef", (Parcelable) photoRef);
+//                String path = "photos/" + uploadUri.getLastPathSegment();
+//                //currentSubjectIntent.putExtra("uploadUri", uploadUri);
+//                currentSubjectIntent.putExtra("path", path);
+//                Toast.makeText(AddPhotoFeedback.this, "Feedback is toegevoegd (of niet)", Toast.LENGTH_SHORT).show();
+//                finish();
+//            }
+//        });
+//    }
 
     public boolean formValidation(String name) {
         // als alle ingevulde velden gecheckt zijn return true

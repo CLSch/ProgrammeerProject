@@ -6,17 +6,9 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.firebase.client.Firebase;
-import com.firebase.client.authentication.Constants;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageMetadata;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.util.concurrent.Executor;
@@ -25,22 +17,13 @@ import java.util.concurrent.Executor;
  * Created by Caitlin on 06-06-16.
  */
 public class FeedbackSave extends android.app.Application {
-    StorageReference storageRef;
-    StorageReference imagesRef;
-    StorageReference photoRef;
-    private Uri mDownloadUrl = null;
-    private StorageReference mStorageRef;
+
     //DatabaseReference rootRef;
     //StorageReference rootRef;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Firebase.setAndroidContext(this);
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-
-        //rootRef = FirebaseStorage.getInstance().getReference();
-        storageRef = storage.getReferenceFromUrl("gs://project-1258991994024708208.appspot.com");
 
         //rootRef = FirebaseDatabase.getInstance().getReference();
     }

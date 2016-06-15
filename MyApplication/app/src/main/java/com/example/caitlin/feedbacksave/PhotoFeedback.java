@@ -14,9 +14,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StreamDownloadTask;
 
 import java.io.File;
 import java.io.InputStream;
@@ -44,7 +41,7 @@ public class PhotoFeedback extends SuperActivity {
         downloadPath = extras.getString("path");
         Log.d("path extra", downloadPath);
 
-        downloadPhoto();
+        //downloadPhoto();
 
         //photoRef = storageRootRefTest.child(photoRefPath);
     }
@@ -65,28 +62,28 @@ public class PhotoFeedback extends SuperActivity {
 
     //islandRef = storageRef.child("images/island.jpg");
 
-    public void downloadPhoto() {
-
-        //File localFile = File.createTempFile("images", "jpg");
-
-//        photoRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-//            @Override
-//            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot)
+//    public void downloadPhoto() {
 //
-        storageRootRefTest.child(downloadPath).getStream().addOnSuccessListener(new OnSuccessListener<StreamDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(StreamDownloadTask.TaskSnapshot taskSnapshot) {
-                new ImageDownloadAsyncTask((ImageView) findViewById(R.id.ivFB)).execute(taskSnapshot);
-
-                Toast.makeText(PhotoFeedback.this, "ivfeedback is gezet", Toast.LENGTH_SHORT).show();
-                //Log.d("ivfeedback", ivFeedback.toString());
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Log.w("download:FAILURE", exception);
-                // close stream????
-            }
-        });
-    }
+//        //File localFile = File.createTempFile("images", "jpg");
+//
+////        photoRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+////            @Override
+////            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot)
+////
+//        storageRootRefTest.child(downloadPath).getStream().addOnSuccessListener(new OnSuccessListener<StreamDownloadTask.TaskSnapshot>() {
+//            @Override
+//            public void onSuccess(StreamDownloadTask.TaskSnapshot taskSnapshot) {
+//                new ImageDownloadAsyncTask((ImageView) findViewById(R.id.ivFB)).execute(taskSnapshot);
+//
+//                Toast.makeText(PhotoFeedback.this, "ivfeedback is gezet", Toast.LENGTH_SHORT).show();
+//                //Log.d("ivfeedback", ivFeedback.toString());
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception exception) {
+//                Log.w("download:FAILURE", exception);
+//                // close stream????
+//            }
+//        });
+//    }
 }

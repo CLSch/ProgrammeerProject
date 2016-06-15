@@ -2,11 +2,14 @@ package com.example.caitlin.feedbacksave;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.dropbox.client2.DropboxAPI;
 
 import java.util.ArrayList;
 
@@ -17,9 +20,11 @@ public class CustomYearsAdapter extends ArrayAdapter{
     // of StringArrayList?
     ArrayList<String> years;
     Context context;
+    DropboxAPI dbApi;
 
-    public CustomYearsAdapter (Context context, ArrayList<String> data) {
+    public CustomYearsAdapter (Context context, ArrayList<String> data, DropboxAPI dBApi) {
         super(context, 0, data);
+        this.dbApi = dBApi;
         this.years = data;
         this.context = context;
     }
@@ -46,7 +51,7 @@ public class CustomYearsAdapter extends ArrayAdapter{
             public void onClick(View view) {
                 Intent allSubjectsIntent = new Intent(context, AllSubjectsActivity.class);
                 // geef alle vakken mee
-                //allSubjectsIntent.putExtra("NameTable", tableName);
+                //allSubjectsIntent.putExtra("dbApi", (Parcelable) dbApi);
                 context.startActivity(allSubjectsIntent);
             }
         });

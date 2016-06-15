@@ -2,9 +2,12 @@ package com.example.caitlin.feedbacksave;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.dropbox.client2.DropboxAPI;
 
 import java.util.ArrayList;
 
@@ -12,11 +15,17 @@ public class AllSubjectsActivity extends SuperActivity {
     ListView lvASubjects;
     ArrayList<String> subjectsList = new ArrayList<>();
     CustomSubjectsAdapter adapter;
+    DropboxAPI dbApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_subjects);
+
+//        Bundle extras = getIntent().getExtras();
+//        dbApi = extras.getParcelable("dbApi");
+
+        Log.d("dit is dbApi in ASA", dBApi.toString());
 
         subjectsList.add("Prog Project"); // HARDCODED !!!!
         subjectsList.add("Heuristieken"); // HARDCODED !!!!
