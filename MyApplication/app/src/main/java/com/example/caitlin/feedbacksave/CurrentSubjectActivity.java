@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.dropbox.client2.DropboxAPI;
+
 import java.util.ArrayList;
 
 public class CurrentSubjectActivity extends SuperActivity {
@@ -16,7 +18,9 @@ public class CurrentSubjectActivity extends SuperActivity {
     CustomFeedbackAdapter adapter;
     //StorageReference photoRef;
     //String photorefPath;
-    String path;
+    //String path;
+    DropboxAPI dbApi;
+    DropBoxAPIWrapper wrapper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +28,12 @@ public class CurrentSubjectActivity extends SuperActivity {
         setContentView(R.layout.activity_current_subject);
 
         Bundle extras = getIntent().getExtras();
+        wrapper = (DropBoxAPIWrapper) extras.getSerializable( "dbWrapper");
+        assert wrapper != null;
+        dBApi = wrapper.getDropBoxAPI();
 
-        path = "/photos/40146";
+
+        //path = "/photos/40146";
 
 //        if (extras.getString("path") == null) {
 //            //photorefPath = "photos/40146";
@@ -45,7 +53,7 @@ public class CurrentSubjectActivity extends SuperActivity {
     }
 
     public void makeAdapter(){
-        adapter = new CustomFeedbackAdapter(this, feedbackList, path);
+        adapter = new CustomFeedbackAdapter(this, feedbackList, dbApi);
         lvSubject = (ListView) findViewById(R.id.lvFeedback);
         //listviewToDo.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         assert lvSubject != null;
@@ -55,6 +63,7 @@ public class CurrentSubjectActivity extends SuperActivity {
     public void addPhotoClick(View v){
         //Toast.makeText(this, "Add Photo from Galery", Toast.LENGTH_SHORT).show();
         Intent addPhotoFeedbackIntent = new Intent(this, AddPhotoFeedback.class);
+        addPhotoFeedbackIntent.putExtra("dbWrapper", wrapper);
         // geef alle feedback mee
         //allSubjectsIntent.putExtra("NameTable", tableName);
         this.startActivity(addPhotoFeedbackIntent);
@@ -67,7 +76,7 @@ public class CurrentSubjectActivity extends SuperActivity {
     public void addNoteClick(View v){
         Intent addNoteIntent = new Intent(this, AddNote.class);
         // geef alle feedback mee
-        //allSubjectsIntent.putExtra("NameTable", tableName);
+        addNoteIntent.putExtra("dbWrapper", wrapper);
         this.startActivity(addNoteIntent);
     }
 }

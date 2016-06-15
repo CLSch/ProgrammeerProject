@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.dropbox.client2.DropboxAPI;
+
 import java.util.ArrayList;
 
 /**
@@ -20,14 +22,14 @@ public class CustomFeedbackAdapter extends ArrayAdapter {
     Context context;
     //StorageReference photoRef;
     //String photoRefPath;
-    String path;
+    DropboxAPI dropboxAPI;
 
-    public CustomFeedbackAdapter (Context context, ArrayList<String> data, String downloadPath) {
+    public CustomFeedbackAdapter (Context context, ArrayList<String> data, DropboxAPI dbApi) {
         super(context, 0, data);
         this.feedback = data;
         this.context = context;
         //this.photoRefPath = ref;
-        this.path = downloadPath;
+        this.dropboxAPI = dbApi;
     }
 
     /** get the view and return it*/
@@ -53,10 +55,11 @@ public class CustomFeedbackAdapter extends ArrayAdapter {
                 // OPEN DE FEEDBACK, HEB JE API VOOR NODIG?
 
                 // CHECK OF FB EEN FOTO IS OF EEN MEMO EN OPEN DE JUISTE INTENT!!!
+                DropBoxAPIWrapper dbWrapper = new DropBoxAPIWrapper(dropboxAPI);
 
                 Intent photoFeedbackIntent = new Intent(context, PhotoFeedback.class);
                 // geef feedback mee
-                photoFeedbackIntent.putExtra("path", path);
+                photoFeedbackIntent.putExtra("dbWrapper", dbWrapper);
                 //photoFeedbackIntent.putExtra("photoRef", (Parcelable) photoRef);
                 //photoFeedbackIntent.putExtra("photoRefPath", photoRefPath);
                 context.startActivity(photoFeedbackIntent);

@@ -49,9 +49,10 @@ public class CustomYearsAdapter extends ArrayAdapter{
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DropBoxAPIWrapper apiWrapper = new DropBoxAPIWrapper(dbApi);
                 Intent allSubjectsIntent = new Intent(context, AllSubjectsActivity.class);
                 // geef alle vakken mee
-                //allSubjectsIntent.putExtra("dbApi", (Parcelable) dbApi);
+                allSubjectsIntent.putExtra("apiWrapper", apiWrapper);
                 context.startActivity(allSubjectsIntent);
             }
         });

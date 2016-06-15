@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.dropbox.client2.DropboxAPI;
+
 import java.util.ArrayList;
 
 /**
@@ -16,11 +18,13 @@ import java.util.ArrayList;
 public class CustomSubjectsAdapter extends ArrayAdapter {
     ArrayList<String> subjects;
     Context context;
+    DropboxAPI dropboxAPI;
 
-    public CustomSubjectsAdapter (Context context, ArrayList<String> data) {
+    public CustomSubjectsAdapter (Context context, ArrayList<String> data, DropboxAPI dbApi) {
         super(context, 0, data);
         this.subjects = data;
         this.context = context;
+        this.dropboxAPI = dbApi;
     }
 
     /** get the view and return it*/
@@ -43,9 +47,10 @@ public class CustomSubjectsAdapter extends ArrayAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DropBoxAPIWrapper dbWrapper = new DropBoxAPIWrapper(dropboxAPI);
                 Intent currentSubjectsIntent = new Intent(context, CurrentSubjectActivity.class);
                 // geef alle feedback mee
-                //allSubjectsIntent.putExtra("NameTable", tableName);
+                currentSubjectsIntent.putExtra("dbWrapper", dbWrapper);
                 context.startActivity(currentSubjectsIntent);
             }
         });
