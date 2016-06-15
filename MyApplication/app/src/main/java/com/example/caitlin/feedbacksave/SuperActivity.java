@@ -22,7 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 
 public class SuperActivity extends AppCompatActivity {
-    DropboxAPI<AndroidAuthSession> dBApi;
+//    DropboxAPI<AndroidAuthSession> dBApi;
 //    final static private String APP_KEY = "8iyoeiil5cpfeay";
 //    final static private String APP_SECRET = "ke82ftjb4b07ivk";
 //    //private boolean loggedIn;
@@ -95,9 +95,9 @@ public class SuperActivity extends AppCompatActivity {
         return true;
     }
 
-    public void setdBApi(DropboxAPI dbApi){
-        dBApi = dbApi;
-    }
+//    public void setdBApi(DropboxAPI dbApi){
+//        dBApi = dbApi;
+//    }
 
 //    protected void onResume() {
 //        super.onResume();
@@ -161,7 +161,7 @@ public class SuperActivity extends AppCompatActivity {
 
 
 //        // Remove credentials from the session
-        dBApi.getSession().unlink();
+        DropBoxAPIManager.getInstance().dBApi.getSession().unlink();
 //
 //        // Clear our stored keys
         clearKeys();

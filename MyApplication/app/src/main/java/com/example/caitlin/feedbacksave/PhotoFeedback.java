@@ -38,7 +38,7 @@ public class PhotoFeedback extends SuperActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_feedback);
 
-        
+
 
         //ivFeedback = (ImageView) findViewById(R.id.ivFB);
         //tvFeedback = (TextView) findViewById(R.id.tvFB);
@@ -50,7 +50,7 @@ public class PhotoFeedback extends SuperActivity {
         //downloadPath = extras.getString("path");
         //Log.d("path extra", downloadPath);
 
-        downloadFile();
+        //downloadFile();
 
         //photoRef = storageRootRefTest.child(photoRefPath);
     }

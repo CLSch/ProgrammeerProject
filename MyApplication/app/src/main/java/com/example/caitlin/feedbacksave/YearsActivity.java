@@ -61,10 +61,10 @@ public class YearsActivity extends SuperActivity {
             initialization();
         }
 
-        dBApi = new DropboxAPI<AndroidAuthSession>(session);
-        Log.d("dbApi 1", dBApi.toString());
-        dBApi.getSession().startOAuth2Authentication(YearsActivity.this);
-        Log.d("dbApi 2", dBApi.toString());
+        DropBoxAPIManager.getInstance().dBApi = new DropboxAPI<AndroidAuthSession>(session);
+        Log.d("dbApi 1", DropBoxAPIManager.getInstance().dBApi.toString());
+        DropBoxAPIManager.getInstance().dBApi.getSession().startOAuth2Authentication(YearsActivity.this);
+        Log.d("dbApi 2", DropBoxAPIManager.getInstance().dBApi.toString());
 
 
 
@@ -80,10 +80,10 @@ public class YearsActivity extends SuperActivity {
         // IS DEZE NODIG???
         //session = dBApi.getSession();
 
-        if (dBApi.getSession().authenticationSuccessful()) {
+        if (DropBoxAPIManager.getInstance().dBApi.getSession().authenticationSuccessful()) {
             try {
                 // Required to complete auth, sets the access token on the session
-                dBApi.getSession().finishAuthentication();
+                DropBoxAPIManager.getInstance().dBApi.getSession().finishAuthentication();
 
                 //AccessTokenPair tokens = session.getAccessTokenPair();
                 //TokenPair tokens = session.getAccessTokenPair();
