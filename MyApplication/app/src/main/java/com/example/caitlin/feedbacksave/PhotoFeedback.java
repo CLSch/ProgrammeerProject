@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.DropBoxManager;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,7 +30,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
 
 public class PhotoFeedback extends SuperActivity {
     //TextView tvFeedback;
@@ -90,6 +93,16 @@ public class PhotoFeedback extends SuperActivity {
 //        }
 
         //photoRef = storageRootRefTest.child(photoRefPath);
+    }
+
+    private final Handler handler(){
+        public void handleMessage(Message message){
+            ArrayList<String> result = message.getData().getStringArraylist("");
+
+            for (String fileName : result) {
+
+            }
+        }
     }
 
     private void downloadFile(FileMetadata file) {

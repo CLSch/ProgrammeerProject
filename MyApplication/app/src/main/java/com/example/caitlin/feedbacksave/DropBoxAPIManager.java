@@ -3,6 +3,7 @@ package com.example.caitlin.feedbacksave;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -15,6 +16,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.logging.Handler;
 
 /**
  * Created by Caitlin on 16-06-16.
@@ -139,5 +141,9 @@ public class DropBoxAPIManager {
 
     public void downloadFile(Context context) {
         new DownloadFileAsyncTask2(context).execute("hoi");
+    }
+
+    public void metaData() {
+        new MetaDataAsyncTask(dBApi, pathName, handler).execute();
     }
 }
