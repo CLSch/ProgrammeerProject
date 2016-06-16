@@ -140,10 +140,4 @@ public class DropBoxAPIManager {
     public void downloadFile(Context context) {
         new DownloadFileAsyncTask2(context).execute("hoi");
     }
-
-    public void getMetadata() {
-        com.dropbox.client2.DropboxAPI.Entry dirent = dBApi.metadata("/20160601_213528.jpg", 1000, null, false, null);
-        File file = new ArrayList<com.dropbox.client2.DropboxAPI.Entry>();
-        String dir = "/20160601_213528.jpg";
-    }
 }
