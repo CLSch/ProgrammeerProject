@@ -95,15 +95,15 @@ public class PhotoFeedback extends SuperActivity {
         //photoRef = storageRootRefTest.child(photoRefPath);
     }
 
-    private final Handler handler(){
-        public void handleMessage(Message message){
-            ArrayList<String> result = message.getData().getStringArraylist("");
-
-            for (String fileName : result) {
-
-            }
-        }
-    }
+//    private final Handler handler(){
+//        public void handleMessage(Message message){
+//            ArrayList<String> result = message.getData().getStringArraylist("");
+//
+//            for (String fileName : result) {
+//
+//            }
+//        }
+//    }
 
     private void downloadFile(FileMetadata file) {
         final ProgressDialog dialog = new ProgressDialog(this);

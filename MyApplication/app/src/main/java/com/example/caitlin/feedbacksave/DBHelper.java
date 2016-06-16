@@ -147,8 +147,8 @@ public class DBHelper extends SQLiteOpenHelper {
             do {
                 // MAAK YEAR OBJECT
                 Year year = new Year();
-                year.setId(cursor.getInt((cursor.getColumnIndex(KEY_ID))));
-                year.setNote((cursor.getString(cursor.getColumnIndex(KEY_YEARS))));
+                //year.setId(cursor.getInt((cursor.getColumnIndex(KEY_ID))));
+                //year.setNote((cursor.getString(cursor.getColumnIndex(KEY_YEARS))));
 
                 // adding to todo list
                 years.add(year);
@@ -164,30 +164,31 @@ public class DBHelper extends SQLiteOpenHelper {
 
         ArrayList<HashMap<String, String>> todoList = new ArrayList();
 
-        String query = "SELECT " + KEY_ID + ", " + KEY_TODO + " FROM " + TABLE;
-        Cursor cursor = db.rawQuery(query, null);
+        //String query = "SELECT " + KEY_ID + ", " + KEY_TODO + " FROM " + TABLE;
+        //Cursor cursor = db.rawQuery(query, null);
 
         // set cursor to the beginning of the database
-        if (cursor.moveToFirst()){
-            do {
-                // add id and to-do from current row to hashmap
-                HashMap<String, String> todoI = new HashMap<>();
-                todoI.put("id", cursor.getString(cursor.getColumnIndex(KEY_ID)));
-                todoI.put("todo", cursor.getString(cursor.getColumnIndex(KEY_TODO)));
-
-                todoList.add(todoI);
-            }
-            while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-        return todoList;
-    }
-
-    /** delete to-do's from database */
-    public void delete(int id) {
-        SQLiteDatabase db = getWritableDatabase();
-        db.delete(TABLE, " " + KEY_ID + " = ? ", new String[] {String.valueOf(id)});
-        db.close();
+//        if (cursor.moveToFirst()){
+//            do {
+//                // add id and to-do from current row to hashmap
+//                HashMap<String, String> todoI = new HashMap<>();
+//                todoI.put("id", cursor.getString(cursor.getColumnIndex(KEY_ID)));
+//                todoI.put("todo", cursor.getString(cursor.getColumnIndex(KEY_TODO)));
+//
+//                todoList.add(todoI);
+//            }
+//            while (cursor.moveToNext());
+//        }
+//        cursor.close();
+//        db.close();
+//        return todoList;
+//    }
+//
+//    /** delete to-do's from database */
+//    public void delete(int id) {
+//        SQLiteDatabase db = getWritableDatabase();
+//        db.delete(TABLE, " " + KEY_ID + " = ? ", new String[] {String.valueOf(id)});
+//        db.close();
+        return null;
     }
 }

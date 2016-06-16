@@ -143,7 +143,7 @@ public class DropBoxAPIManager {
         new DownloadFileAsyncTask2(context).execute("hoi");
     }
 
-    public void metaData() {
-        new MetaDataAsyncTask(dBApi, pathName, handler).execute();
-    }
+//    public void metaData() {
+//        new MetaDataAsyncTask(dBApi, pathName, handler).execute();
+//    }
 }
