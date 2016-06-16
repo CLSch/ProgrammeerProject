@@ -45,7 +45,7 @@ public class AddPhotoFeedback extends SuperActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_photo_feedback);
 
-        ACCESS_TOKEN = getToken();
+        ACCESS_TOKEN = DropBoxAPIManager.getInstance().getToken();
 
         etTag = (EditText) findViewById(R.id.etTagsPhoto);
         etFBName = (EditText) findViewById(R.id.etFBName);

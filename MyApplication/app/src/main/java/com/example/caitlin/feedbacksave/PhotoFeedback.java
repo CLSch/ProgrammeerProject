@@ -54,7 +54,7 @@ public class PhotoFeedback extends SuperActivity {
 
         //downloadFile();
 
-        DropboxAPI.Entry();
+        //DropboxAPI.Entry();
 
         //photoRef = storageRootRefTest.child(photoRefPath);
     }
@@ -66,7 +66,7 @@ public class PhotoFeedback extends SuperActivity {
         dialog.setMessage("Downloading");
         dialog.show();
 
-        new DownloadFileAsyncTask(PhotoFeedback.this, DropBoxClient.getClient(getToken()), new DownloadFileAsyncTask.Callback() {
+        new DownloadFileAsyncTask(PhotoFeedback.this, DropBoxClient.getClient(DropBoxAPIManager.getInstance().getToken()), new DownloadFileAsyncTask.Callback() {
             @Override
             public void onDownloadComplete(File result) {
                 dialog.dismiss();

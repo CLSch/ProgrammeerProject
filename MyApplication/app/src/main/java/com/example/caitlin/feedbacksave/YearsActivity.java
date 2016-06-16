@@ -19,21 +19,21 @@ public class YearsActivity extends SuperActivity {
     ArrayList<String> yearsList = new ArrayList<>();
     CustomYearsAdapter adapter;
     ListView lvYears;
-    final static private String APP_KEY = "8iyoeiil5cpfeay";
-    final static private String APP_SECRET = "ke82ftjb4b07ivk";
+//    final static private String APP_KEY = "8iyoeiil5cpfeay";
+//    final static private String APP_SECRET = "ke82ftjb4b07ivk";
     //private boolean loggedIn;
     //private String accessToken;
 //    final static private String ACCOUNT_PREFS_NAME = "prefs";
 //    final static private String ACCESS_TOKEN_NAME = "ACCESS_TOKEN";
-    AndroidAuthSession session;
+//    AndroidAuthSession session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_years);
 
-        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
-        String token = prefs.getString(ACCESS_TOKEN_NAME, null);
+//        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+//        String token = prefs.getString(ACCESS_TOKEN_NAME, null);
 
 
         /// INTERNET ///////////
@@ -47,24 +47,24 @@ public class YearsActivity extends SuperActivity {
         ///////////////////
 
 //        Log.d("token is", token);
-        if (token != null) {
-//            // initialize key en secret
-            //AccessTokenPair accessToken = new AccessTokenPair(key, secret);
-            AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
-            session = new AndroidAuthSession(appKeys, token);
-            Log.d("in if stat, ses =", session.toString());
-//
-            //session = new AndroidAuthSession(appKeys);
-            session.setOAuth2AccessToken(token);
-        }
-        else {
-            initialization();
-        }
+//        if (token != null) {
+////            // initialize key en secret
+//            //AccessTokenPair accessToken = new AccessTokenPair(key, secret);
+//            AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
+//            session = new AndroidAuthSession(appKeys, token);
+//            Log.d("in if stat, ses =", session.toString());
+////
+//            //session = new AndroidAuthSession(appKeys);
+//            session.setOAuth2AccessToken(token);
+//        }
+//        else {
+//            initialization();
+//        }
 
-        DropBoxAPIManager.getInstance().dBApi = new DropboxAPI<AndroidAuthSession>(session);
-        Log.d("dbApi 1", DropBoxAPIManager.getInstance().dBApi.toString());
+//        DropBoxAPIManager.getInstance().dBApi = new DropboxAPI<AndroidAuthSession>(session);
+//        Log.d("dbApi 1", DropBoxAPIManager.getInstance().dBApi.toString());
         DropBoxAPIManager.getInstance().dBApi.getSession().startOAuth2Authentication(YearsActivity.this);
-        Log.d("dbApi 2", DropBoxAPIManager.getInstance().dBApi.toString());
+//        Log.d("dbApi 2", DropBoxAPIManager.getInstance().dBApi.toString());
 
 
 
@@ -77,41 +77,43 @@ public class YearsActivity extends SuperActivity {
     protected void onResume() {
         super.onResume();
 
+        DropBoxAPIManager.getInstance().resume();
+
         // IS DEZE NODIG???
         //session = dBApi.getSession();
 
-        if (DropBoxAPIManager.getInstance().dBApi.getSession().authenticationSuccessful()) {
-            try {
-                // Required to complete auth, sets the access token on the session
-                DropBoxAPIManager.getInstance().dBApi.getSession().finishAuthentication();
-
-                //AccessTokenPair tokens = session.getAccessTokenPair();
-                //TokenPair tokens = session.getAccessTokenPair();
-                String token = session.getOAuth2AccessToken();
-                Log.d("Tokenpair tokens is", token);
-                storeKeys(token);
-
-//                Intent yearsIntent = new Intent(this, YearsActivity.class);
-//                this.startActivity(yearsIntent);
-//                finish();
-
-                // sla deze token op in shared preferences
-                //accessToken = dBApi.getSession().getOAuth2AccessToken();
-            } catch (IllegalStateException e) {
-                Log.i("DbAuthLog", "Error authenticating", e);
-                Toast.makeText(this, "Something went wrong while authenticating", Toast.LENGTH_SHORT).show();
-            }
-        }
+//        if (DropBoxAPIManager.getInstance().dBApi.getSession().authenticationSuccessful()) {
+//            try {
+//                // Required to complete auth, sets the access token on the session
+//                DropBoxAPIManager.getInstance().dBApi.getSession().finishAuthentication();
+//
+//                //AccessTokenPair tokens = session.getAccessTokenPair();
+//                //TokenPair tokens = session.getAccessTokenPair();
+//                String token = session.getOAuth2AccessToken();
+//                Log.d("Tokenpair tokens is", token);
+//                storeKeys(token);
+//
+////                Intent yearsIntent = new Intent(this, YearsActivity.class);
+////                this.startActivity(yearsIntent);
+////                finish();
+//
+//                // sla deze token op in shared preferences
+//                //accessToken = dBApi.getSession().getOAuth2AccessToken();
+//            } catch (IllegalStateException e) {
+//                Log.i("DbAuthLog", "Error authenticating", e);
+//                Toast.makeText(this, "Something went wrong while authenticating", Toast.LENGTH_SHORT).show();
+//            }
+//        }
     }
 
-    public void initialization() {
-        AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
-        session = new AndroidAuthSession(appKeys);
-        Log.d("dit is session", session.toString());
-        //dBApi = new DropboxAPI<AndroidAuthSession>(session);
-        //Log.d("in initialization, ses=", session.toString());
-        //dBApi = new DropboxAPI<AndroidAuthSession>(session);
-    }
+//    public void initialization() {
+//        AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
+//        session = new AndroidAuthSession(appKeys);
+//        Log.d("dit is session", session.toString());
+//        //dBApi = new DropboxAPI<AndroidAuthSession>(session);
+//        //Log.d("in initialization, ses=", session.toString());
+//        //dBApi = new DropboxAPI<AndroidAuthSession>(session);
+//    }
 
 //    private void storeKeys(String accessToken) {
 //        // Save the access key for later

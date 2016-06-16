@@ -27,9 +27,9 @@ public class SuperActivity extends AppCompatActivity {
 //    final static private String APP_SECRET = "ke82ftjb4b07ivk";
 //    //private boolean loggedIn;
 //    //private String accessToken;
-    private String token;
-    final static String ACCOUNT_PREFS_NAME = "prefs";
-    static String ACCESS_TOKEN_NAME = "ACCESS_TOKEN";
+//    private String token;
+//    final static String ACCOUNT_PREFS_NAME = "prefs";
+//    static String ACCESS_TOKEN_NAME = "ACCESS_TOKEN";
 //    AndroidAuthSession session;
 
     @Override
@@ -79,14 +79,14 @@ public class SuperActivity extends AppCompatActivity {
 //        actionBar.show();
     }
 
-    public String getToken() {
-        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
-        return prefs.getString(ACCESS_TOKEN_NAME, null);
-    }
-
-    public void setToken(String token) {
-        ACCESS_TOKEN_NAME = token;
-    }
+//    public String getToken() {
+//        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+//        return prefs.getString(ACCESS_TOKEN_NAME, null);
+//    }
+//
+//    public void setToken(String token) {
+//        ACCESS_TOKEN_NAME = token;
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -134,35 +134,28 @@ public class SuperActivity extends AppCompatActivity {
 //        //dBApi = new DropboxAPI<AndroidAuthSession>(session);
 //    }
 
-    public void storeKeys(String accessToken) {
-        // Save the access key for later
-
-        // oke maar die boven oncreate zijn final etc, dus wordt dit wel opgeslagen??
-        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
-        SharedPreferences.Editor edit = prefs.edit();
-        edit.putString(ACCESS_TOKEN_NAME, accessToken);
-        edit.commit();
-    }
-
-    private void clearKeys() {
-        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
-        SharedPreferences.Editor edit = prefs.edit();
-        edit.clear();
-        edit.commit();
-    }
+//    public void storeKeys(String accessToken) {
+//        // Save the access key for later
+//
+//        // oke maar die boven oncreate zijn final etc, dus wordt dit wel opgeslagen??
+//        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+//        SharedPreferences.Editor edit = prefs.edit();
+//        edit.putString(ACCESS_TOKEN_NAME, accessToken);
+//        edit.commit();
+//    }
+//
+//    private void clearKeys() {
+//        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+//        SharedPreferences.Editor edit = prefs.edit();
+//        edit.clear();
+//        edit.commit();
+//    }
 
 
     public void logOutClick(MenuItem item) {
         //LOG OUT FOR DROPBOX
 
-
-//        // Remove credentials from the session
-        DropBoxAPIManager.getInstance().dBApi.getSession().unlink();
-//
-//        // Clear our stored keys
-        clearKeys();
-//        // Change UI state to display logged out version
-//        setLoggedIn(false);
+        DropBoxAPIManager.getInstance().logOut();
 
         //updateUI(null);
         Intent yearsActivityIntent = new Intent(this, YearsActivity.class);
