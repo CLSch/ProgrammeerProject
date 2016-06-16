@@ -23,10 +23,8 @@ public class AllSubjectsActivity extends SuperActivity {
         setContentView(R.layout.activity_all_subjects);
 
         //Bundle extras = getIntent().getExtras();
-        //DropBoxAPIWrapper dbWrapper = (DropBoxAPIWrapper) extras.getSerializable("apiWrapper");
-        //assert dbWrapper != null;
-        //dbApi = dbWrapper.getDropBoxAPI();
-//        dbApi = extras.getParcelable("dbApi");
+
+
 
         //Log.d("dit is dbApi in ASA", dBApi.toString());
 

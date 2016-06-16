@@ -37,56 +37,13 @@ public class SuperActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_super);
 
-        // gebruik token om dbApi te initialiseren
-        // als er geen token is ga naar years activity
-        //dBApi
-
 //        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
 //        String token = prefs.getString(ACCESS_TOKEN_NAME, null);
-
-
-        /// INTERNET ///////////
-        //String token = getTokenFromPreferences();
-//        if (token != null) {
-
-//            session.setOAuth2AccessToken(token);
-//        } else {
-//            mDBApi.getSession().startOAuth2Authentication(MyActivity.this);
-//        }
-        ///////////////////
-
-//        Log.d("token is", token);
-//        if (token != null) {
-////            // initialize key en secret
-//            //AccessTokenPair accessToken = new AccessTokenPair(key, secret);
-//            AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
-//            session = new AndroidAuthSession(appKeys, token);
-//            Log.d("in if stat, ses =", session.toString());
-////
-//            //session = new AndroidAuthSession(appKeys);
-//            session.setOAuth2AccessToken(token);
-//        }
-//        else {
-//            initialization();
-//        }
-//
-//        dBApi = new DropboxAPI<AndroidAuthSession>(session);
-//        Log.d("dbApi 1", dBApi.toString());
-//        dBApi.getSession().startOAuth2Authentication(SuperActivity.this);
-//        Log.d("dbApi 2", dBApi.toString());
 
 //        ActionBar actionBar = getActionBar();
 //        actionBar.show();
     }
 
-//    public String getToken() {
-//        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
-//        return prefs.getString(ACCESS_TOKEN_NAME, null);
-//    }
-//
-//    public void setToken(String token) {
-//        ACCESS_TOKEN_NAME = token;
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -94,63 +51,6 @@ public class SuperActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.logout_menu, menu);
         return true;
     }
-
-//    protected void onResume() {
-//        super.onResume();
-//
-//        // IS DEZE NODIG???
-//        //session = dBApi.getSession();
-//
-//        if (dBApi.getSession().authenticationSuccessful()) {
-//            try {
-//                // Required to complete auth, sets the access token on the session
-//                dBApi.getSession().finishAuthentication();
-//
-//                //AccessTokenPair tokens = session.getAccessTokenPair();
-//                //TokenPair tokens = session.getAccessTokenPair();
-//                String token = session.getOAuth2AccessToken();
-//                Log.d("Tokenpair tokens is", token);
-//                storeKeys(token);
-//
-////                Intent yearsIntent = new Intent(this, YearsActivity.class);
-////                this.startActivity(yearsIntent);
-////                finish();
-//
-//                // sla deze token op in shared preferences
-//                //accessToken = dBApi.getSession().getOAuth2AccessToken();
-//            } catch (IllegalStateException e) {
-//                Log.i("DbAuthLog", "Error authenticating", e);
-//                Toast.makeText(this, "Something went wrong while authenticating", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
-
-//    public void initialization() {
-//        AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
-//        session = new AndroidAuthSession(appKeys);
-//        Log.d("dit is session", session.toString());
-//        //dBApi = new DropboxAPI<AndroidAuthSession>(session);
-//        //Log.d("in initialization, ses=", session.toString());
-//        //dBApi = new DropboxAPI<AndroidAuthSession>(session);
-//    }
-
-//    public void storeKeys(String accessToken) {
-//        // Save the access key for later
-//
-//        // oke maar die boven oncreate zijn final etc, dus wordt dit wel opgeslagen??
-//        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
-//        SharedPreferences.Editor edit = prefs.edit();
-//        edit.putString(ACCESS_TOKEN_NAME, accessToken);
-//        edit.commit();
-//    }
-//
-//    private void clearKeys() {
-//        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
-//        SharedPreferences.Editor edit = prefs.edit();
-//        edit.clear();
-//        edit.commit();
-//    }
-
 
     public void logOutClick(MenuItem item) {
         //LOG OUT FOR DROPBOX

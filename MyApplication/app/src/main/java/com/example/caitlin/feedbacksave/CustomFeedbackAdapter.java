@@ -20,6 +20,7 @@ public class CustomFeedbackAdapter extends ArrayAdapter {
     // wordt later waarschijnlijk arraylist met Feedback Objects
     ArrayList<String> feedback;
     Context context;
+    String fileName;
     //StorageReference photoRef;
     //String photoRefPath;
     //DropboxAPI dropboxAPI;
@@ -55,13 +56,14 @@ public class CustomFeedbackAdapter extends ArrayAdapter {
                 // OPEN DE FEEDBACK, HEB JE API VOOR NODIG?
 
                 // CHECK OF FB EEN FOTO IS OF EEN MEMO EN OPEN DE JUISTE INTENT!!!
-                //DropBoxAPIWrapper dbWrapper = new DropBoxAPIWrapper(dropboxAPI);
+
 
                 Intent photoFeedbackIntent = new Intent(context, PhotoFeedback.class);
                 // geef feedback mee
                 //photoFeedbackIntent.putExtra("dbWrapper", dbWrapper);
                 //photoFeedbackIntent.putExtra("photoRef", (Parcelable) photoRef);
                 //photoFeedbackIntent.putExtra("photoRefPath", photoRefPath);
+                photoFeedbackIntent.putExtra("Filename", thisListItem);
                 context.startActivity(photoFeedbackIntent);
             }
         });

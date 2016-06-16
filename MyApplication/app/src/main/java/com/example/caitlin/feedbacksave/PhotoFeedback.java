@@ -1,6 +1,7 @@
 package com.example.caitlin.feedbacksave;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -18,12 +19,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dropbox.client2.DropboxAPI;
+import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.Metadata;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -32,6 +36,7 @@ public class PhotoFeedback extends SuperActivity {
     //StorageReference photoRef;
     String downloadPath;
     String photoRefPath;
+    String fileName;
     //ImageView ivFeedback;
     Uri uploadUri;
 
@@ -45,7 +50,8 @@ public class PhotoFeedback extends SuperActivity {
         //ivFeedback = (ImageView) findViewById(R.id.ivFB);
         //tvFeedback = (TextView) findViewById(R.id.tvFB);
 
-        //Bundle extras = getIntent().getExtras();
+        Bundle extras = getIntent().getExtras();
+        fileName = extras.getString("Filename");
         //photoRef = extras.getParcelable("photoRef");
         //photoRefPath = extras.getString("photoRefPath");
         //uploadUri = extras.get
@@ -54,7 +60,34 @@ public class PhotoFeedback extends SuperActivity {
 
         //downloadFile();
 
+        Context context = this;
+        DropBoxAPIManager.getInstance().downloadFile(context);
+
         //DropboxAPI.Entry();
+//        DropboxAPI.Entry existingEntry = null;
+//        try {
+//            existingEntry = DropBoxAPIManager.getInstance().getDropBoxApi().metadata("/20160601_213528.jpg", 1, null, false, null);
+//            Log.d("DB rev is", existingEntry.rev);
+//        } catch (DropboxException e) {
+//            e.printStackTrace();
+//            Log.d("shit failed", "too bad");
+//        }
+//        Log.i("DbExampleLog", "The file's rev is now: " + existingEntry.rev);
+
+        //String root = DropboxAPI.Entry.root;
+//        String outPath = "app_folder/FeedbackSave/" + fileName;
+//        File outFile = new File(outPath);
+//        FileInputStream fis = null;
+//        try {
+//            fis = new FileInputStream(outFile);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            mRequest = DropBoxAPIManager.getInstance().getDropBoxApi().putFileOverwriteRequest("/"+fileName, fis, outFile.length(),null);
+//        } catch (DropboxException e) {
+//            e.printStackTrace();
+//        }
 
         //photoRef = storageRootRefTest.child(photoRefPath);
     }

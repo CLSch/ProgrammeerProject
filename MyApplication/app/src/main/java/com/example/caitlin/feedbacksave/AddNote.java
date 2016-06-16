@@ -29,9 +29,6 @@ public class AddNote extends SuperActivity {
         setContentView(R.layout.activity_add_note);
 
         Bundle extras = getIntent().getExtras();
-        DropBoxAPIWrapper dbWrapper = (DropBoxAPIWrapper) extras.getSerializable("dbWrapper");
-        assert dbWrapper != null;
-        dbApi = dbWrapper.getDropBoxAPI();
 
         etTag = (EditText) findViewById(R.id.etTagsNote);
         // verschuif focus van naam naar tags bij add.

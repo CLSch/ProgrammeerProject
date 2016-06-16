@@ -20,7 +20,6 @@ public class CurrentSubjectActivity extends SuperActivity {
     //String photorefPath;
     //String path;
     DropboxAPI dbApi;
-    DropBoxAPIWrapper wrapper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +27,6 @@ public class CurrentSubjectActivity extends SuperActivity {
         setContentView(R.layout.activity_current_subject);
 
         //Bundle extras = getIntent().getExtras();
-        //wrapper = (DropBoxAPIWrapper) extras.getSerializable( "dbWrapper");
-        //assert wrapper != null;
-        //dBApi = wrapper.getDropBoxAPI();
-
 
         //path = "/photos/40146";
 

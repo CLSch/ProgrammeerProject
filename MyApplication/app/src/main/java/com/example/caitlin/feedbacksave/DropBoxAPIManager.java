@@ -1,5 +1,6 @@
 package com.example.caitlin.feedbacksave;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -7,7 +8,13 @@ import android.widget.Toast;
 
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
+import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.session.AppKeyPair;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
 
 /**
  * Created by Caitlin on 16-06-16.
@@ -60,6 +67,10 @@ public class DropBoxAPIManager {
         AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
         session = new AndroidAuthSession(appKeys);
 
+    }
+
+    public DropboxAPI getDropBoxApi() {
+        return dBApi;
     }
 
     public void resume() {
@@ -125,4 +136,14 @@ public class DropBoxAPIManager {
         //updateUI(null);
     }
 
+
+    public void downloadFile(Context context) {
+        new DownloadFileAsyncTask2(context).execute("hoi");
+    }
+
+    public void getMetadata() {
+        com.dropbox.client2.DropboxAPI.Entry dirent = dBApi.metadata("/20160601_213528.jpg", 1000, null, false, null);
+        File file = new ArrayList<com.dropbox.client2.DropboxAPI.Entry>();
+        String dir = "/20160601_213528.jpg";
+    }
 }

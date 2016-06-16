@@ -47,7 +47,7 @@ public class CustomSubjectsAdapter extends ArrayAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //DropBoxAPIWrapper dbWrapper = new DropBoxAPIWrapper(dropboxAPI);
+
                 Intent currentSubjectsIntent = new Intent(context, CurrentSubjectActivity.class);
                 // geef alle feedback mee
                 //currentSubjectsIntent.putExtra("dbWrapper", dbWrapper);
