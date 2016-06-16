@@ -95,10 +95,6 @@ public class SuperActivity extends AppCompatActivity {
         return true;
     }
 
-//    public void setdBApi(DropboxAPI dbApi){
-//        dBApi = dbApi;
-//    }
-
 //    protected void onResume() {
 //        super.onResume();
 //
@@ -178,19 +174,10 @@ public class SuperActivity extends AppCompatActivity {
         // close all activities
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_name) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+        // sla nieuwste versie van DB op
+    }
 }

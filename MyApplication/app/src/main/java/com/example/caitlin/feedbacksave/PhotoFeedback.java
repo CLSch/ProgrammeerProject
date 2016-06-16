@@ -7,6 +7,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.DropBoxManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dropbox.client2.DropboxAPI;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.Metadata;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -51,6 +53,8 @@ public class PhotoFeedback extends SuperActivity {
         //Log.d("path extra", downloadPath);
 
         //downloadFile();
+
+        DropboxAPI.Entry();
 
         //photoRef = storageRootRefTest.child(photoRefPath);
     }
