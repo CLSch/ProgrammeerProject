@@ -2,8 +2,10 @@ package com.example.caitlin.feedbacksave;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.dropbox.client2.DropboxAPI;
@@ -20,9 +22,11 @@ import java.io.FileOutputStream;
  */
 public class DownloadFileAsyncTask2 extends AsyncTask<String, Void, File> {
     Context con;
+    ImageView ivFB;
 
-    DownloadFileAsyncTask2(Context context) {
+    DownloadFileAsyncTask2(Context context, ImageView ivFeedback) {
         this.con = context;
+        this.ivFB = ivFeedback;
     }
 
 //    protected void onPostExecute(File result) {
@@ -32,7 +36,7 @@ public class DownloadFileAsyncTask2 extends AsyncTask<String, Void, File> {
     protected File doInBackground(String... params) {
         Log.d("in doInBackground", "begin");
         String filename = params[0];
-        File file = new File("app_folder/FeedbackSave/20160601_213528.jpg");
+        File file = new File(this.con.getFilesDir() ,"20160601_213528.jpg");
         Log.d("dit is file", file.toString());
         FileOutputStream outputStream = null;
         try {
@@ -53,13 +57,17 @@ public class DownloadFileAsyncTask2 extends AsyncTask<String, Void, File> {
             e.printStackTrace();
         }
         Log.i("DbExampleLog", "The file's rev is: " + info.getMetadata().rev);
-        return null;
+        return file;
     }
 
 
     @Override
     protected void onPostExecute(File file) {
         super.onPostExecute(file);
-        Toast.makeText(con, "Image uploaded successfully", Toast.LENGTH_SHORT).show();
+
+        String filePath = file.getPath();
+        Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+        ivFB.setImageBitmap(bitmap);
+        Toast.makeText(con, "Image downloaded successfully", Toast.LENGTH_SHORT).show();
     }
 }

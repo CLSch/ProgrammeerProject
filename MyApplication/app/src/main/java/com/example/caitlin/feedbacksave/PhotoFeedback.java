@@ -63,8 +63,8 @@ public class PhotoFeedback extends SuperActivity {
 
         //downloadFile();
 
-        Context context = this;
-        DropBoxAPIManager.getInstance().downloadFile(context);
+//        Context context = this;
+//        DropBoxAPIManager.getInstance().downloadFile(context);
 
         //DropboxAPI.Entry();
 //        DropboxAPI.Entry existingEntry = null;

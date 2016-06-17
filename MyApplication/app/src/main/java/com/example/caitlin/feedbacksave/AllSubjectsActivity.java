@@ -4,11 +4,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.dropbox.client2.DropboxAPI;
+import com.dropbox.client2.exception.DropboxException;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 public class AllSubjectsActivity extends SuperActivity {
@@ -16,6 +21,7 @@ public class AllSubjectsActivity extends SuperActivity {
     ArrayList<String> subjectsList = new ArrayList<>();
     CustomSubjectsAdapter adapter;
     DropboxAPI dbApi;
+    ImageView imageTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +30,7 @@ public class AllSubjectsActivity extends SuperActivity {
 
         //Bundle extras = getIntent().getExtras();
 
-
+//        imageTest = (ImageView) findViewById(R.id.ivTest);
 
         //Log.d("dit is dbApi in ASA", dBApi.toString());
 
@@ -44,6 +50,8 @@ public class AllSubjectsActivity extends SuperActivity {
 
     public void addSubjectClick(View v){
         Toast.makeText(this, "add a subject", Toast.LENGTH_LONG).show();
+
+        new DownloadFileAsyncTask2(this, (ImageView) findViewById(R.id.ivTest)).execute("");
         // laat alert dialog zien voor de naam van het subject
     }
 }
