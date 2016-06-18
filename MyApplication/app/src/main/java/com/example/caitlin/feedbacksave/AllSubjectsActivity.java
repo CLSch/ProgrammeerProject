@@ -20,19 +20,16 @@ public class AllSubjectsActivity extends SuperActivity {
     ListView lvASubjects;
     ArrayList<String> subjectsList = new ArrayList<>();
     CustomSubjectsAdapter adapter;
-    DropboxAPI dbApi;
-    ImageView imageTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_subjects);
 
-        //Bundle extras = getIntent().getExtras();
+//        Bundle extras = getIntent().getExtras();
+//        subjectName = extras.getString("subjectName");
 
-//        imageTest = (ImageView) findViewById(R.id.ivTest);
-
-        //Log.d("dit is dbApi in ASA", dBApi.toString());
+        
 
         subjectsList.add("Prog Project"); // HARDCODED !!!!
         subjectsList.add("Heuristieken"); // HARDCODED !!!!
@@ -50,8 +47,6 @@ public class AllSubjectsActivity extends SuperActivity {
 
     public void addSubjectClick(View v){
         Toast.makeText(this, "add a subject", Toast.LENGTH_LONG).show();
-
-        new DownloadFileAsyncTask2(this, (ImageView) findViewById(R.id.ivTest)).execute("");
         // laat alert dialog zien voor de naam van het subject
     }
 }

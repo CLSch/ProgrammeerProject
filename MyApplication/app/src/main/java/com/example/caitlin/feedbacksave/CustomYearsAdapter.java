@@ -16,7 +16,7 @@ import java.util.ArrayList;
 /**
  * Created by Caitlin on 02-06-16.
  */
-public class CustomYearsAdapter extends ArrayAdapter{
+public class CustomYearsAdapter extends ArrayAdapter<String>{
     // of StringArrayList?
     ArrayList<String> years;
     Context context;
@@ -51,7 +51,6 @@ public class CustomYearsAdapter extends ArrayAdapter{
             public void onClick(View view) {
                 Intent allSubjectsIntent = new Intent(context, AllSubjectsActivity.class);
                 // geef alle vakken mee
-                //allSubjectsIntent.putExtra("apiWrapper", apiWrapper);
                 context.startActivity(allSubjectsIntent);
             }
         });

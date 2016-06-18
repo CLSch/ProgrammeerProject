@@ -18,6 +18,7 @@ public class YearsActivity extends SuperActivity {
     ArrayList<String> yearsList = new ArrayList<>();
     CustomYearsAdapter adapter;
     ListView lvYears;
+    DBHelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +30,11 @@ public class YearsActivity extends SuperActivity {
 
         DropBoxAPIManager.getInstance().dBApi.getSession().startOAuth2Authentication(YearsActivity.this);
 
-        yearsList.add("Year 1"); // HARDCODED !!!!
-        yearsList.add("Year 2"); // HARDCODED !!!!
+        if (helper.readAllYears() == null) {
+            helper.createYear();
+        }
 
+        addYearsToList();
         makeAdapter();
     }
 
@@ -48,7 +51,17 @@ public class YearsActivity extends SuperActivity {
         lvYears.setAdapter(adapter);
     }
 
+    public void addYearsToList() {
+        ArrayList<Year> temp = helper.readAllYears();
+        for (int i = 0; i < temp.size(); i++) {
+            yearsList.add(temp.get(i).getName());
+        }
+    }
+
     public void addYearClick(View v) {
         Toast.makeText(this, "add a year", Toast.LENGTH_SHORT).show();
+        helper.createYear();
+        addYearsToList();
+        adapter.notifyDataSetChanged();
     }
 }

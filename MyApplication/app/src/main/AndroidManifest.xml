@@ -42,7 +42,6 @@
         <activity android:name=".PhotoFeedback" />
         <activity android:name=".AddPhotoFeedback" />
         <activity android:name=".AddNote" />
-        <activity android:name=".RegisterActivity" />
         <activity android:name=".SuperActivity"></activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
         <meta-data

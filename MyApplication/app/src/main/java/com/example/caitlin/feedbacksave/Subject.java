@@ -3,14 +3,13 @@ package com.example.caitlin.feedbacksave;
 import java.io.Serializable;
 
 /**
- * Created by Caitlin on 16-06-16.
+ * Created by Caitlin on 18-06-16.
  */
-public class Year implements Serializable {
-
+public class Subject implements Serializable {
     int id;
     String name;
 
-    public Year(){
+    public Subject(){
 
     }
 

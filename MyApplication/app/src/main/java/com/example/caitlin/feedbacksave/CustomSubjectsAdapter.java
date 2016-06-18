@@ -15,7 +15,7 @@ import java.util.ArrayList;
 /**
  * Created by Caitlin on 02-06-16.
  */
-public class CustomSubjectsAdapter extends ArrayAdapter {
+public class CustomSubjectsAdapter extends ArrayAdapter<String> {
     ArrayList<String> subjects;
     Context context;
     //DropboxAPI dropboxAPI;
@@ -50,7 +50,7 @@ public class CustomSubjectsAdapter extends ArrayAdapter {
 
                 Intent currentSubjectsIntent = new Intent(context, CurrentSubjectActivity.class);
                 // geef alle feedback mee
-                //currentSubjectsIntent.putExtra("dbWrapper", dbWrapper);
+                currentSubjectsIntent.putExtra("subjectName", thisListItem);
                 context.startActivity(currentSubjectsIntent);
             }
         });

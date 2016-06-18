@@ -16,7 +16,7 @@ import java.util.ArrayList;
 /**
  * Created by Caitlin on 02-06-16.
  */
-public class CustomFeedbackAdapter extends ArrayAdapter {
+public class CustomFeedbackAdapter extends ArrayAdapter<String> {
     // wordt later waarschijnlijk arraylist met Feedback Objects
     ArrayList<String> feedback;
     Context context;
