@@ -20,6 +20,7 @@ public class AllSubjectsActivity extends SuperActivity {
     ListView lvASubjects;
     ArrayList<String> subjectsList = new ArrayList<>();
     CustomSubjectsAdapter adapter;
+    DBHelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +30,14 @@ public class AllSubjectsActivity extends SuperActivity {
 //        Bundle extras = getIntent().getExtras();
 //        subjectName = extras.getString("subjectName");
 
-        
+        if (helper.readAllYears() != null) {
+            addSubjectsToList();
+        }
 
-        subjectsList.add("Prog Project"); // HARDCODED !!!!
-        subjectsList.add("Heuristieken"); // HARDCODED !!!!
+//        subjectsList.add("Prog Project"); // HARDCODED !!!!
+//        subjectsList.add("Heuristieken"); // HARDCODED !!!!
 
-        makeAdapter();
+        makeAdapter(); // ook maken als er niks in staat?
     }
 
     public void makeAdapter(){
@@ -45,8 +48,21 @@ public class AllSubjectsActivity extends SuperActivity {
         lvASubjects.setAdapter(adapter);
     }
 
+    public void addSubjectsToList() {
+        ArrayList<Subject> temp = helper.readAllSubjects();
+        for (int i = 0; i < temp.size(); i++) {
+            subjectsList.add(temp.get(i).getName());
+        }
+    }
+
     public void addSubjectClick(View v){
         Toast.makeText(this, "add a subject", Toast.LENGTH_LONG).show();
         // laat alert dialog zien voor de naam van het subject
+
+        // TODO alertdialog
+
+        helper.createSubject(String name);
+        addSubjectsToList();
+        adapter.notifyDataSetChanged();
     }
 }
