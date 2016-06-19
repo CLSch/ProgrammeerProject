@@ -30,7 +30,8 @@ public class YearsActivity extends SuperActivity {
 
         DropBoxAPIManager.getInstance().dBApi.getSession().startOAuth2Authentication(YearsActivity.this);
 
-        if (helper.readAllYears() == null) {
+        ArrayList<Year> temp = helper.readAllYears();
+        if (temp == null) {
             helper.createYear();
         }
 

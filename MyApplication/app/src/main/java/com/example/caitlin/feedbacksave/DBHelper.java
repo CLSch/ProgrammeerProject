@@ -7,6 +7,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,6 +71,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_SUBJECTS);
         db.execSQL(CREATE_TABLE_NOTES);
         db.execSQL(CREATE_TABLE_PHOTOS);
+        Log.d("onCreate", "gets called");
     }
 
     /** upgrade database when helper object is made and there is one already */
@@ -79,6 +81,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PHOTOS);
         onCreate(db);
+        Log.d("onUpgrade", "gets called");
     }
 
 
@@ -105,26 +108,29 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // GET ALL YEARS
     public ArrayList<Year> readAllYears() {
+        Log.d("Helemaal bovenaan", "gekomen");
         SQLiteDatabase db = getReadableDatabase();
+        Log.d("Na db", "gekomen");
         ArrayList<Year> years = new ArrayList<>();
-
         //String query = "SELECT " + KEY_ID + ", " + KEY_YEARS + " FROM " + TABLE_YEARS;
         String query = "SELECT * FROM " + TABLE_YEARS;
-
+        Log.d("voor cursor", "gekomen");
         Cursor cursor = db.rawQuery(query, null);
+        Log.d("Hier ben ik", "gekomen");
         if (cursor.moveToFirst()) {
             do {
                 // MAAK YEAR OBJECT
+                Log.d("bovenaan do", "gekomen");
                 Year year = new Year();
                 year.setId(cursor.getInt((cursor.getColumnIndex(KEY_ID))));
                 year.setName((cursor.getString(cursor.getColumnIndex(KEY_YEARS))));
 
                 // adding to years arraylist
                 years.add(year);
-
+                Log.d("onderaan do", "gekomen");
             } while (cursor.moveToNext());
         }
-
+        Log.d("bij return", "gekomen");
         return years;
     }
 
