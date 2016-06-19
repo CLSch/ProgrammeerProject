@@ -1,9 +1,13 @@
 package com.example.caitlin.feedbacksave;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -21,6 +25,7 @@ public class AllSubjectsActivity extends SuperActivity {
     ArrayList<String> subjectsList = new ArrayList<>();
     CustomSubjectsAdapter adapter;
     DBHelper helper;
+    String alertInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +65,43 @@ public class AllSubjectsActivity extends SuperActivity {
         // laat alert dialog zien voor de naam van het subject
 
         // TODO alertdialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Make new suject");
 
-        helper.createSubject(String name);
+// Set up the input
+        final EditText input = new EditText(this);
+        input.setHint("Subject name");
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        for (int i = 0; i < subjectsList.size(); i++) {
+            if (input.getText() == null || input.getText().toString().equals(subjectsList.get(i))) {
+                input.setHint("Write here a unique subject name");
+            }
+            else{
+                builder.setView(input);
+            }
+        }
+
+
+// Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                alertInput = input.getText().toString();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+
+        /////
+
+        helper.createSubject(alertInput);
         addSubjectsToList();
         adapter.notifyDataSetChanged();
     }
