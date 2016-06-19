@@ -67,12 +67,14 @@ public class YearsActivity extends SuperActivity {
     }
 
     public void addYearClick(View v) {
-        Toast.makeText(this, "add a year", Toast.LENGTH_SHORT).show();
         helper.createYear();
+        adapter.clear();
         addYearsToList();
+        Log.d("DIT IS YEARSLIST", Integer.toString(yearsList.size()));
+        adapter.addAll();
         adapter.notifyDataSetChanged();
 
-        int num = yearsList.size();
-        Log.d("dit is yearslist", yearsList.get(num - 1));
+//        int num = yearsList.size();
+//        Log.d("dit is yearslist", yearsList.get(num - 1));
     }
 }

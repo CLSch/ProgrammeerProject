@@ -10,21 +10,22 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.caitlin.feedbacksave.YearsActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/schoolyears"
-        android:id="@+id/tvY" />
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/schoolyears"-->
+        <!--android:id="@+id/tvY" />-->
 
     <ListView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_weight="0.8"
         android:id="@+id/lvYear"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2"
         android:gravity="center|bottom"
         android:orientation="vertical">
 

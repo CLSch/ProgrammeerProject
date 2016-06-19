@@ -3,6 +3,7 @@ package com.example.caitlin.feedbacksave;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,8 +50,10 @@ public class CustomYearsAdapter extends ArrayAdapter<String>{
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("onclick is clicked", thisListItem);
                 Intent allSubjectsIntent = new Intent(context, AllSubjectsActivity.class);
                 // geef alle vakken mee
+                allSubjectsIntent.putExtra("year", thisListItem);
                 context.startActivity(allSubjectsIntent);
             }
         });

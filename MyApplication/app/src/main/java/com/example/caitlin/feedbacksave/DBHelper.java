@@ -16,7 +16,7 @@ import java.util.HashMap;
  * Created by Caitlin on 16-06-16.
  */
 public class DBHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "feedbackTest1.db";
+    private static final String DATABASE_NAME = "feedbackTest4.db";
     private static final int DATABASE_VERSION = 1;
     //private static final String TABLE = "Todos";
 
@@ -36,6 +36,9 @@ public class DBHelper extends SQLiteOpenHelper {
     // subjects table column names
     private static final String KEY_SUBJECT = "Subject";
 
+    // subjects table subject by year
+    private static final String KEY_SUBJECT_YEAR = "SubjectYear";
+
     // notes table column names
     private static final String KEY_NOTES = "Note";
 
@@ -47,18 +50,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // create statements for tables
     private static final String CREATE_TABLE_YEARS = "CREATE TABLE " + TABLE_YEARS
-            + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_YEARS + " TEXT" + ")";
+            + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_YEARS + " TEXT)";
 
     private static final String CREATE_TABLE_SUBJECTS = "CREATE TABLE " + TABLE_SUBJECTS
-            + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_SUBJECT + " TEXT" + ")";
+            + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_SUBJECT + " TEXT,"
+            + KEY_SUBJECT_YEAR + "TEXT)";
 
     private static final String CREATE_TABLE_NOTES = "CREATE TABLE " + TABLE_NOTES
             + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + KEY_NOTES + " TEXT," + KEY_FB_TYPE + " INTEGER" + ")";
+            + KEY_NOTES + " TEXT," + KEY_FB_TYPE + " INTEGER)";
 
     private static final String CREATE_TABLE_PHOTOS = "CREATE TABLE " + TABLE_PHOTOS
             + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_SUBJECT_FB + " TEXT,"
-            + KEY_PHOTOS + " TEXT," + KEY_FB_TYPE + " INTEGER" + ")";
+            + KEY_PHOTOS + " TEXT," + KEY_FB_TYPE + " INTEGER)";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -138,11 +142,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     ////////////////////// SUBJECTS
     // CREATE SUBJECT
-    public void createSubject(String name) {
+    public void createSubject(String name, String year) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put(KEY_SUBJECT, name);
+        values.put(KEY_SUBJECT_YEAR, year);
         db.insert(TABLE_SUBJECTS, null, values);
         db.close();
     }
@@ -151,11 +156,11 @@ public class DBHelper extends SQLiteOpenHelper {
     // is dit echt nodig???
 
     // GET ALL SUBJECTS
-    public ArrayList<Subject> readAllSubjects() {
+    public ArrayList<Subject> readAllSubjectsPerYear(String year) {
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<Subject> subjects = new ArrayList<>();
 
-        String query = "SELECT * FROM " + TABLE_SUBJECTS;
+        String query = "SELECT * FROM " + TABLE_SUBJECTS + " WHERE " + KEY_SUBJECT_YEAR + " = " + year;
 
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
@@ -172,6 +177,22 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return subjects;
+    }
+
+    public boolean columnExists(String year) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        // Query 1 row
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SUBJECTS + " LIMIT 0", null);
+
+        // getColumnIndex() gives us the index (0 to ...) of the column - otherwise we get a -1
+        if (cursor.getColumnIndex(year) != -1) {
+            cursor.close();
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     // UPDATE ALL SUBJECTS

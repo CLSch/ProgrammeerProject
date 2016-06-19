@@ -26,16 +26,21 @@ public class AllSubjectsActivity extends SuperActivity {
     CustomSubjectsAdapter adapter;
     DBHelper helper;
     String alertInput;
+    String year;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_subjects);
 
-//        Bundle extras = getIntent().getExtras();
-//        subjectName = extras.getString("subjectName");
+        helper = new DBHelper(this);
 
-        if (helper.readAllYears() != null) {
+        Bundle extras = getIntent().getExtras();
+        year = extras.getString("year");
+        assert year != null;
+        year = year.replaceAll("\\s","");
+
+        if (helper.columnExists(year) && !helper.readAllSubjectsPerYear(year).isEmpty()) {
             addSubjectsToList();
         }
 
@@ -54,40 +59,38 @@ public class AllSubjectsActivity extends SuperActivity {
     }
 
     public void addSubjectsToList() {
-        ArrayList<Subject> temp = helper.readAllSubjects();
+        ArrayList<Subject> temp = helper.readAllSubjectsPerYear(year);
         for (int i = 0; i < temp.size(); i++) {
             subjectsList.add(temp.get(i).getName());
         }
     }
 
-    public void addSubjectClick(View v){
-        Toast.makeText(this, "add a subject", Toast.LENGTH_LONG).show();
-        // laat alert dialog zien voor de naam van het subject
-
-        // TODO alertdialog
+    public void makeAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Make new suject");
+        builder.setTitle("Make new subject");
 
 // Set up the input
         final EditText input = new EditText(this);
         input.setHint("Subject name");
 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         input.setInputType(InputType.TYPE_CLASS_TEXT);
-        for (int i = 0; i < subjectsList.size(); i++) {
-            if (input.getText() == null || input.getText().toString().equals(subjectsList.get(i))) {
-                input.setHint("Write here a unique subject name");
-            }
-            else{
-                builder.setView(input);
-            }
-        }
-
+        builder.setView(input);
 
 // Set up the buttons
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 alertInput = input.getText().toString();
+                for (int i = 0; i < subjectsList.size(); i++) {
+                    if (input.getText() == null || input.getText().toString().equals(subjectsList.get(i))) {
+                        Log.d("in if click", "dialog");
+                        input.setHint("Write here a unique subject name");
+                    }
+                    else {
+                        Log.d("in else click", "dialog");
+                        createSubject();
+                    }
+                }
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -98,11 +101,19 @@ public class AllSubjectsActivity extends SuperActivity {
         });
 
         builder.show();
+    }
 
-        /////
-
-        helper.createSubject(alertInput);
+    public void createSubject() {
+        helper.createSubject(alertInput, year);
+        adapter.clear();
         addSubjectsToList();
+        Log.d("DIT IS SUBJECTSLIST", Integer.toString(subjectsList.size()));
+        adapter.addAll();
         adapter.notifyDataSetChanged();
+    }
+
+    public void addSubjectClick(View v){
+        // laat alert dialog zien voor de naam van het subject
+        makeAlertDialog();
     }
 }
