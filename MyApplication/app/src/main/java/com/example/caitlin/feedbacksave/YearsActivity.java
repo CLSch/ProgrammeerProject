@@ -25,18 +25,25 @@ public class YearsActivity extends SuperActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_years);
 
+        helper = new DBHelper(this);
+
 //        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
 //        String token = prefs.getString(ACCESS_TOKEN_NAME, null);
 
         DropBoxAPIManager.getInstance().dBApi.getSession().startOAuth2Authentication(YearsActivity.this);
 
-        ArrayList<Year> temp = helper.readAllYears();
-        if (temp == null) {
+        Log.d("voor", "de error");
+        if (helper.readAllYears().isEmpty()) {
+            Log.d("in if statement", helper.readAllYears().toString());
             helper.createYear();
         }
 
         addYearsToList();
         makeAdapter();
+
+//        int num = yearsList.size();
+//        Log.d("dit is yearslist", yearsList.get(num - 1));
+
     }
 
     protected void onResume() {
@@ -64,5 +71,8 @@ public class YearsActivity extends SuperActivity {
         helper.createYear();
         addYearsToList();
         adapter.notifyDataSetChanged();
+
+        int num = yearsList.size();
+        Log.d("dit is yearslist", yearsList.get(num - 1));
     }
 }
