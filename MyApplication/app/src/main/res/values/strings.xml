@@ -33,4 +33,8 @@
     <string name="delete">Delete</string>
     <string name="change">Change</string>
     <string name="create_new_name">Create new name</string>
+    <string name="add_photo_from_gallery">Add Photo From Gallery</string>
+    <string name="make_photo">Make Photo</string>
+    <string name="edit_feedback">Edit Feedback</string>
+    <string name="choose_change_feedback">What do you want to do with this feedback?</string>
 </resources>

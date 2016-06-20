@@ -25,25 +25,25 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="70dp"
-            android:layout_weight="0.3"
-            android:text="Add Photo"
+            android:layout_weight="0.5"
+            android:text="@string/add_photo_from_gallery"
             android:id="@+id/addPhotoBtn"
-            android:onClick="addPhotoClick"/>
+            android:onClick="addPhotoFromGalleryClick"/>
 
         <Button
             android:layout_width="0dp"
             android:layout_height="70dp"
-            android:layout_weight="0.35"
-            android:text="Make Photo"
+            android:layout_weight="0.5"
+            android:text="@string/make_photo"
             android:id="@+id/makePhotoBtn"
             android:onClick="makePhotoClick"/>
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="70dp"
-            android:layout_weight="0.3"
-            android:text="Add Note"
-            android:id="@+id/addNoteBtn"
-            android:onClick="addNoteClick"/>
+        <!--<Button-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="70dp"-->
+            <!--android:layout_weight="0.3"-->
+            <!--android:text="Add Note"-->
+            <!--android:id="@+id/addNoteBtn"-->
+            <!--android:onClick="addNoteClick"/>-->
     </LinearLayout>
 </LinearLayout>

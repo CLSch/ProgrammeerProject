@@ -46,7 +46,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String KEY_PHOTOS = "Photo";
 
     // photo table id for which subject contains this feedback
-    private static final String KEY_SUBJECT_FB = "SubjectFB";
+    private static final String KEY_PHOTO_SUBJECT = "PhotoSubject";
 
     // create statements for tables
     private static final String CREATE_TABLE_YEARS = "CREATE TABLE " + TABLE_YEARS
@@ -61,8 +61,8 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_NOTES + " TEXT," + KEY_FB_TYPE + " INTEGER)";
 
     private static final String CREATE_TABLE_PHOTOS = "CREATE TABLE " + TABLE_PHOTOS
-            + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_SUBJECT_FB + " TEXT,"
-            + KEY_PHOTOS + " TEXT," + KEY_FB_TYPE + " INTEGER)";
+            + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_PHOTOS + " TEXT,"
+            + KEY_PHOTO_SUBJECT + " TEXT," + KEY_FB_TYPE + " INTEGER)";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -134,6 +134,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 Log.d("onderaan do", "gekomen");
             } while (cursor.moveToNext());
         }
+        cursor.close();
         Log.d("bij return", "gekomen");
         return years;
     }
@@ -176,12 +177,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
             } while (cursor.moveToNext());
         }
-
+        cursor.close();
         return subjects;
     }
 
     // stackoverflow
-    public boolean itemExists(String year) {
+    public boolean yearItemExists(String year) {
         SQLiteDatabase db = getReadableDatabase();
 
         // Query 1 row
@@ -233,7 +234,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         values.put(KEY_PHOTOS, name);
-        values.put(KEY_SUBJECT_FB, subject);
+        values.put(KEY_PHOTO_SUBJECT, subject);
         values.put(KEY_FB_TYPE, 1);
         db.insert(TABLE_PHOTOS, null, values);
         db.close();
@@ -246,9 +247,9 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<Photo> photos = new ArrayList<>();
 
-        String query = "SELECT + FROM " + TABLE_PHOTOS + " WHERE " + KEY_SUBJECT_FB + " = " + subject;
+        String query = "SELECT + FROM " + TABLE_PHOTOS + " WHERE " + KEY_PHOTO_SUBJECT + " = ?";
 
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {subject});
         if (cursor.moveToFirst()) {
             do {
                 // MAAK photo OBJECT
@@ -261,8 +262,21 @@ public class DBHelper extends SQLiteOpenHelper {
 
             } while (cursor.moveToNext());
         }
-
+        cursor.close();
         return photos;
+    }
+
+    public boolean subjectItemExists(String subject) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        // Query 1 row
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_PHOTOS + " WHERE " + KEY_PHOTO_SUBJECT + " = ?", new String[] {subject});
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
     }
 
     // GET PHOTO

@@ -43,7 +43,7 @@ public class AllSubjectsActivity extends SuperActivity {
 //        assert year != null;
 //        year = year.replaceAll("\\s+","");
 
-        if (helper.itemExists(year) && !helper.readAllSubjectsPerYear(year).isEmpty()) {
+        if (helper.yearItemExists(year) && !helper.readAllSubjectsPerYear(year).isEmpty()) {
             addSubjectsToList();
         }
 
