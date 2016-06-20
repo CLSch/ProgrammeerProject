@@ -28,7 +28,7 @@
     <string name="make_subject">Make new subject</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="change_subject">Change Subject</string>
+    <string name="edit_subject">Edit Subject</string>
     <string name="choose_change_subject">What do you want to do with this subject?</string>
     <string name="delete">Delete</string>
     <string name="change">Change</string>

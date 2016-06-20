@@ -16,30 +16,19 @@ public class CurrentSubjectActivity extends SuperActivity {
     // dit wordt waarschijnlijk een arraylist van feedback objects
     ArrayList<String> feedbackList = new ArrayList<>();
     CustomFeedbackAdapter adapter;
-    //StorageReference photoRef;
-    //String photorefPath;
-    //String path;
-    DropboxAPI dbApi;
+    DBHelper helper;
+    String subject;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_subject);
 
-        //Bundle extras = getIntent().getExtras();
+        helper = new DBHelper(this);
 
-        //path = "/photos/40146";
-
-//        if (extras.getString("path") == null) {
-//            //photorefPath = "photos/40146";
-//            path = "/photos/40146";
-//        }
-//        else {
-//            //photorefPath = extras.getString("photorefPath");
-//            //photoRef = extras.getParcelable("photoRef");
-//            //uploadUri = extras.get
-//            path = extras.getString("path");
-//        }
+        Bundle extras = getIntent().getExtras();
+        subject = extras.getString("subjectName");
 
         feedbackList.add("Feedback 10-12-14"); // HARDCODED !!!!
         feedbackList.add("FB van Hannah"); // HARDCODED !!!!

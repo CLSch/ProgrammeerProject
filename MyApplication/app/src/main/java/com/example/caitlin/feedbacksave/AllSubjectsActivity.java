@@ -40,11 +40,10 @@ public class AllSubjectsActivity extends SuperActivity {
 
         Bundle extras = getIntent().getExtras();
         year = extras.getString("year");
-        assert year != null;
-        year = year.replaceAll("\\s+","");
+//        assert year != null;
+//        year = year.replaceAll("\\s+","");
 
-        if (helper.columnExists(year) && !helper.readAllSubjectsPerYear(year).isEmpty()) {
-            Log.d("ik kom hier!", "eerste id");
+        if (helper.itemExists(year) && !helper.readAllSubjectsPerYear(year).isEmpty()) {
             addSubjectsToList();
         }
 
@@ -52,38 +51,6 @@ public class AllSubjectsActivity extends SuperActivity {
 //        subjectsList.add("Heuristieken"); // HARDCODED !!!!
 
         makeAdapter(); // ook maken als er niks in staat?
-
-        lvASubjects.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int pos, long id) {
-                view.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        ArrayList<Subject> subjects = helper.readAllSubjectsPerYear(year);
-                        _id = subjects.get(pos).getId();
-                        final String thisListItem = subjectsList.get(pos);
-
-                        makeChangeSubjectAlertDialog(thisListItem);
-                        return true;
-                    }
-                });
-                return false;
-            }
-        });
-
-        lvASubjects.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
-                // WERKT DIT ALTIJD???
-                final String thisListItem = subjectsList.get(pos);
-
-                Intent currentSubjectsIntent = new Intent(AllSubjectsActivity.this, CurrentSubjectActivity.class);
-                // geef alle feedback mee
-                currentSubjectsIntent.putExtra("subjectName", thisListItem);
-                AllSubjectsActivity.this.startActivity(currentSubjectsIntent);
-
-            }
-        });
     }
 
     public void makeAdapter(){
@@ -156,38 +123,43 @@ public class AllSubjectsActivity extends SuperActivity {
         builder.show();
     }
 
-    public void makeChangeSubjectAlertDialog(final String currentName) {
+    public void makeChangeSubjectAlertDialog(final String currentName, int pos) {
         //TODO: vang SQLite injections? rare tekens af
+        ArrayList<Subject> subjects = helper.readAllSubjectsPerYear(year);
+        _id = subjects.get(pos).getId();
+        //// ^^^ dit in een aparte functie?
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.change_subject));
+        builder.setTitle(getString(R.string.edit_subject));
         builder.setMessage(getString(R.string.choose_change_subject));
 
         // Set up the buttons
-        builder.setPositiveButton(getString(R.string.delete), new DialogInterface.OnClickListener() {
+        // MOET CHANGE WORDEN
+        builder.setPositiveButton(getString(R.string.change), new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, int pos) {
+                makeNewSubjectAlertDialog(getString(R.string.create_new_name));
+            }
+        });
+        // MOET CANCEL WORDEN
+        builder.setNeutralButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int pos) {
+                dialog.cancel();
+            }
+        });
 
+        // MOET DELETE WORDEN
+        builder.setNegativeButton(R.string.delete, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int pos) {
                 //delete from database
                 helper.deleteSubject(_id);
 
                 // delete from view, is dit nodig of kun je ook de adapter updaten?
                 adapter.remove(currentName);
-                Toast.makeText(AllSubjectsActivity.this, "item is deleted" , Toast.LENGTH_LONG).show();
-
-            }
-        });
-        builder.setNeutralButton(getString(R.string.change), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                makeNewSubjectAlertDialog(getString(R.string.create_new_name));
-            }
-        });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+                Toast.makeText(AllSubjectsActivity.this, "item is deleted" , Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -215,5 +187,12 @@ public class AllSubjectsActivity extends SuperActivity {
     public void addSubjectClick(View v){
         // laat alert dialog zien voor de naam van het subject
         makeNewSubjectAlertDialog(getString(R.string.subject_name));
+    }
+
+    public void startCurrentSubActivity(String subject) {
+        Intent currentSubjectsIntent = new Intent(this, CurrentSubjectActivity.class);
+        // geef alle feedback mee
+        currentSubjectsIntent.putExtra("subjectName", subject);
+        this.startActivity(currentSubjectsIntent);
     }
 }

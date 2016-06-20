@@ -19,14 +19,13 @@ import java.util.ArrayList;
  */
 public class CustomSubjectsAdapter extends ArrayAdapter<String> {
     ArrayList<String> subjects;
-    Context context;
-    DBHelper helper;
+    AllSubjectsActivity activity;
     //DropboxAPI dropboxAPI;
 
-    public CustomSubjectsAdapter (Context context, ArrayList<String> data) {
-        super(context, 0, data);
+    public CustomSubjectsAdapter (AllSubjectsActivity act, ArrayList<String> data) {
+        super(act.getApplicationContext(), 0, data);
         this.subjects = data;
-        this.context = context;
+        this.activity = act;
         //this.dropboxAPI = dbApi;
     }
 
@@ -35,10 +34,9 @@ public class CustomSubjectsAdapter extends ArrayAdapter<String> {
     public View getView(int pos, View view, ViewGroup parent) {
         //final int thisPos = pos;
 
-        helper = new DBHelper(context);
 
         if (view == null){
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.listview_items, parent, false);
         }
 
@@ -51,34 +49,24 @@ public class CustomSubjectsAdapter extends ArrayAdapter<String> {
         tvList.setText(thisListItem);
 
         // start Currentlistactivity on click
-//        view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                Intent currentSubjectsIntent = new Intent(context, CurrentSubjectActivity.class);
-//                // geef alle feedback mee
-//                currentSubjectsIntent.putExtra("subjectName", thisListItem);
-//                context.startActivity(currentSubjectsIntent);
-//            }
-//        });
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                activity.startCurrentSubActivity(thisListItem);
+            }
+        });
 
         // delete subjects on longclick
-//        view.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View view) {
-//                int id = subjects.get(thisPos).getId();
-//
-//                Toast.makeText(context, "item is deleted" , Toast.LENGTH_LONG).show();
-//
-//                //delete from database
-//                helper.deleteSubject(id);
-//
-//                // delete from view, is dit nodig of kun je ook de adapter updaten?
-//                subjects.remove(thisPos);
-//
-//                return true;
-//            }
-//        });
+        view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Log.d("setonitemlongclick", String.valueOf(thisPos));
+
+                activity.makeChangeSubjectAlertDialog(thisListItem, thisPos);
+                return true;
+            }
+        });
 
         return view;
     }

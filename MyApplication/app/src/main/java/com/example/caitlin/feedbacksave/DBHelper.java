@@ -16,7 +16,7 @@ import java.util.HashMap;
  * Created by Caitlin on 16-06-16.
  */
 public class DBHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "feedbackTest7.db";
+    private static final String DATABASE_NAME = "feedbackTest9.db";
     private static final int DATABASE_VERSION = 1;
     //private static final String TABLE = "Todos";
 
@@ -180,20 +180,18 @@ public class DBHelper extends SQLiteOpenHelper {
         return subjects;
     }
 
-    public boolean columnExists(String year) {
+    // stackoverflow
+    public boolean itemExists(String year) {
         SQLiteDatabase db = getReadableDatabase();
 
         // Query 1 row
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SUBJECTS + " LIMIT 0", null);
-
-        // getColumnIndex() gives us the index (0 to ...) of the column - otherwise we get a -1
-        if (cursor.getColumnIndex(year) != -1) {
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SUBJECTS + " WHERE " + KEY_SUBJECT_YEAR + " = ?", new String[] {year});
+        if(cursor.getCount() <= 0){
             cursor.close();
-            return true;
-        }
-        else {
             return false;
         }
+        cursor.close();
+        return true;
     }
 
     // UPDATE ALL SUBJECTS
