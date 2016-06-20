@@ -10,6 +10,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.dropbox.client2.DropboxAPI;
+import com.dropbox.client2.exception.DropboxException;
+import com.dropbox.core.v2.DbxClientV2;
 
 import java.util.ArrayList;
 
@@ -55,7 +57,7 @@ public class CurrentSubjectActivity extends SuperActivity {
         }
     }
 
-    public void makeChangePhotoAlertDialog(final String currentName, int pos) {
+    public void deletePhotoAlertDialog(final String currentName, int pos) {
         //TODO: vang SQLite injections? rare tekens af
         ArrayList<Photo> subjects = helper.readAllPhotosPerSubject(subject);
         _id = subjects.get(pos).getId();
@@ -68,39 +70,45 @@ public class CurrentSubjectActivity extends SuperActivity {
 
         // Set up the buttons
         // MOET CHANGE WORDEN
-        builder.setPositiveButton(getString(R.string.change), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int pos) {
-                makeNewSubjectAlertDialog(getString(R.string.create_new_name));
-            }
-        });
-        // MOET CANCEL WORDEN
-        builder.setNeutralButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int pos) {
                 dialog.cancel();
+                //makeNewSubjectAlertDialog(getString(R.string.create_new_name));
             }
         });
+//        // MOET CANCEL WORDEN
+//        builder.setNeutralButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int pos) {
+//                dialog.cancel();
+//            }
+//        });
 
         // MOET DELETE WORDEN
         builder.setNegativeButton(R.string.delete, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int pos) {
                 //delete from database
-                helper.deleteSubject(_id);
-
-                // delete from view, is dit nodig of kun je ook de adapter updaten?
-                adapter.remove(currentName);
-                Toast.makeText(AllSubjectsActivity.this, "item is deleted" , Toast.LENGTH_SHORT).show();
+                deletePhoto("");
+//                helper.deleteSubject(_id);
+//
+//                // delete from view, is dit nodig of kun je ook de adapter updaten?
+//                adapter.remove(currentName);
+//                Toast.makeText(CurrentSubjectActivity.this, "item is deleted" , Toast.LENGTH_SHORT).show();
             }
         });
 
         builder.show();
     }
 
+    public void deletePhoto(String path) {
+        new DeleteFileAsyncTask(this).execute("");
+    }
+
     public void addPhotoFromGalleryClick(View v){
         //Toast.makeText(this, "Add Photo from Galery", Toast.LENGTH_SHORT).show();
-        Intent addPhotoFeedbackIntent = new Intent(this, AddPhotoFeedback.class);
+        Intent addPhotoFeedbackIntent = new Intent(this, AddPhotoFeedbackActivity.class);
         //addPhotoFeedbackIntent.putExtra("dbWrapper", wrapper);
         // geef alle feedback mee
         //allSubjectsIntent.putExtra("NameTable", tableName);
@@ -108,7 +116,7 @@ public class CurrentSubjectActivity extends SuperActivity {
     }
 
     public void makePhotoClick(View v){
-        Toast.makeText(this, "Make Photo", Toast.LENGTH_SHORT).show();
+        deletePhoto("");
     }
 
 //    public void addNoteClick(View v){

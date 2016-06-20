@@ -26,7 +26,7 @@ import java.util.ArrayList;
 
 // https://www.sitepoint.com/adding-the-dropbox-api-to-an-android-app/
 
-public class AddPhotoFeedback extends SuperActivity {
+public class AddPhotoFeedbackActivity extends SuperActivity {
     EditText etTag;
     EditText etFBName;
     TextView errorMes;
@@ -54,7 +54,7 @@ public class AddPhotoFeedback extends SuperActivity {
 
         errorMes.setTextColor(Color.RED);
 
-       checkPerm = Utility.checkPermission(AddPhotoFeedback.this);
+       checkPerm = Utility.checkPermission(AddPhotoFeedbackActivity.this);
     }
 
 //    public void createRef(String FBName) {
@@ -92,7 +92,7 @@ public class AddPhotoFeedback extends SuperActivity {
                 File file = new File(URI_to_Path.getPath(getApplication(), data.getData()));
                 if (file != null) {
                     //Initialize UploadTask
-                    new UploadPhotoAsyncTask(DropBoxClient.getClient(ACCESS_TOKEN), file, getApplicationContext()).execute();
+                    new UploadPhotoAsyncTask(DropBoxClient.getClient(ACCESS_TOKEN), file, this).execute();
                 }
             }
         }
@@ -144,7 +144,7 @@ public class AddPhotoFeedback extends SuperActivity {
 //        uploadTask.addOnFailureListener(new OnFailureListener() {
 //            @Override
 //            public void onFailure(@NonNull Exception exception) {
-//                Toast.makeText(AddPhotoFeedback.this, "Error: upload failed", Toast.LENGTH_SHORT).show();
+//
 //            }
 //        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
 //            @Override
@@ -153,15 +153,14 @@ public class AddPhotoFeedback extends SuperActivity {
 //                downloadUri = taskSnapshot.getDownloadUrl();
 //                Log.d("downloadUri is", downloadUri.toString());
 //
-//                Intent currentSubjectIntent = new Intent(AddPhotoFeedback.this, CurrentSubjectActivity.class);
-//                AddPhotoFeedback.this.startActivity(currentSubjectIntent);
+//
+//
 //                //Log.d("photoRefPath", photoRef.getPath());
 //                //currentSubjectIntent.putExtra("photorefPath", photoRef.getPath());
 //                //currentSubjectIntent.putExtra("photoRef", (Parcelable) photoRef);
 //                String path = "photos/" + uploadUri.getLastPathSegment();
 //                //currentSubjectIntent.putExtra("uploadUri", uploadUri);
 //                currentSubjectIntent.putExtra("path", path);
-//                Toast.makeText(AddPhotoFeedback.this, "Feedback is toegevoegd (of niet)", Toast.LENGTH_SHORT).show();
 //                finish();
 //            }
 //        });
@@ -215,10 +214,16 @@ public class AddPhotoFeedback extends SuperActivity {
         }
     }
 
-    private void galleryIntent()
-    {   Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");
+    private void galleryIntent() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");
         startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
         Toast.makeText(this, "in galleryIntent", Toast.LENGTH_SHORT).show();
+    }
+
+    public void currentSubjectIntent() {
+        Intent currentSubjectIntent = new Intent();
+        // extras?
+        this.startActivity(currentSubjectIntent);
     }
 
     public void addTagClick(View v){

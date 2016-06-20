@@ -16,7 +16,7 @@ import java.util.HashMap;
  * Created by Caitlin on 16-06-16.
  */
 public class DBHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "feedbackTest9.db";
+    private static final String DATABASE_NAME = "feedbackTest10.db";
     private static final int DATABASE_VERSION = 1;
     //private static final String TABLE = "Todos";
 

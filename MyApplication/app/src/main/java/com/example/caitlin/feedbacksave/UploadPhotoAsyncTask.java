@@ -21,12 +21,12 @@ public class UploadPhotoAsyncTask extends AsyncTask {
 
     private DbxClientV2 dbxClient;
     private File file;
-    private Context context;
+    private AddPhotoFeedbackActivity activity;
 
-    UploadPhotoAsyncTask(DbxClientV2 dbxClient, File file, Context context) {
+    UploadPhotoAsyncTask(DbxClientV2 dbxClient, File file, AddPhotoFeedbackActivity activity ) {
         this.dbxClient = dbxClient;
         this.file = file;
-        this.context = context;
+        this.activity = activity;
     }
 
     @Override
@@ -48,8 +48,9 @@ public class UploadPhotoAsyncTask extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
-        super.onPostExecute(o);
-        Toast.makeText(context, "Image uploaded successfully", Toast.LENGTH_SHORT).show();
+//        super.onPostExecute(o);
+        Toast.makeText(activity, "Image uploaded successfully", Toast.LENGTH_SHORT).show();
+        activity.currentSubjectIntent();
     }
 }
 
