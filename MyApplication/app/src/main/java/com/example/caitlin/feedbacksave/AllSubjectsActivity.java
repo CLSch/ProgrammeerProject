@@ -1,12 +1,14 @@
 package com.example.caitlin.feedbacksave;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -27,6 +29,7 @@ public class AllSubjectsActivity extends SuperActivity {
     DBHelper helper;
     String alertInput;
     String year;
+    int _id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +41,10 @@ public class AllSubjectsActivity extends SuperActivity {
         Bundle extras = getIntent().getExtras();
         year = extras.getString("year");
         assert year != null;
-        year = year.replaceAll("\\s","");
+        year = year.replaceAll("\\s+","");
 
         if (helper.columnExists(year) && !helper.readAllSubjectsPerYear(year).isEmpty()) {
+            Log.d("ik kom hier!", "eerste id");
             addSubjectsToList();
         }
 
@@ -48,6 +52,38 @@ public class AllSubjectsActivity extends SuperActivity {
 //        subjectsList.add("Heuristieken"); // HARDCODED !!!!
 
         makeAdapter(); // ook maken als er niks in staat?
+
+        lvASubjects.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int pos, long id) {
+                view.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        ArrayList<Subject> subjects = helper.readAllSubjectsPerYear(year);
+                        _id = subjects.get(pos).getId();
+                        final String thisListItem = subjectsList.get(pos);
+
+                        makeChangeSubjectAlertDialog(thisListItem);
+                        return true;
+                    }
+                });
+                return false;
+            }
+        });
+
+        lvASubjects.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
+                // WERKT DIT ALTIJD???
+                final String thisListItem = subjectsList.get(pos);
+
+                Intent currentSubjectsIntent = new Intent(AllSubjectsActivity.this, CurrentSubjectActivity.class);
+                // geef alle feedback mee
+                currentSubjectsIntent.putExtra("subjectName", thisListItem);
+                AllSubjectsActivity.this.startActivity(currentSubjectsIntent);
+
+            }
+        });
     }
 
     public void makeAdapter(){
@@ -65,35 +101,52 @@ public class AllSubjectsActivity extends SuperActivity {
         }
     }
 
-    public void makeAlertDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Make new subject");
+    // http://stackoverflow.com/questions/10903754/input-text-dialog-android
+    public void makeNewSubjectAlertDialog(final String hint) {
+        //TODO: vang SQLite injections? rare tekens af
 
-// Set up the input
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.make_subject));
+
+        // Set up the input
         final EditText input = new EditText(this);
-        input.setHint("Subject name");
-// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setHint(hint);
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
 
-// Set up the buttons
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        // Set up the buttons
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                if (input.getText().length() == 0) {
+                    makeNewSubjectAlertDialog(getString(R.string.empty_name_error));
+
+                    Log.d("ik zit in if", "onclick dialog");
+                    return;
+                }
                 alertInput = input.getText().toString();
+                Log.d("dit is alertinput", alertInput);
+
                 for (int i = 0; i < subjectsList.size(); i++) {
-                    if (input.getText() == null || input.getText().toString().equals(subjectsList.get(i))) {
+                    if (alertInput.equals(subjectsList.get(i))) {
                         Log.d("in if click", "dialog");
-                        input.setHint("Write here a unique subject name");
+                        makeNewSubjectAlertDialog(getString(R.string.unique_name_error));
+                        return;
+                        //input.setHint("Write here a unique subject name");
                     }
-                    else {
-                        Log.d("in else click", "dialog");
-                        createSubject();
-                    }
+                }
+
+                if(hint.equals("Create new name")) {
+                    updateSubject();
+                }
+                else {
+                    Log.d("createSubject", "ja");
+                    createSubject();
                 }
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -101,6 +154,53 @@ public class AllSubjectsActivity extends SuperActivity {
         });
 
         builder.show();
+    }
+
+    public void makeChangeSubjectAlertDialog(final String currentName) {
+        //TODO: vang SQLite injections? rare tekens af
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.change_subject));
+        builder.setMessage(getString(R.string.choose_change_subject));
+
+        // Set up the buttons
+        builder.setPositiveButton(getString(R.string.delete), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                //delete from database
+                helper.deleteSubject(_id);
+
+                // delete from view, is dit nodig of kun je ook de adapter updaten?
+                adapter.remove(currentName);
+                Toast.makeText(AllSubjectsActivity.this, "item is deleted" , Toast.LENGTH_LONG).show();
+
+            }
+        });
+        builder.setNeutralButton(getString(R.string.change), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                makeNewSubjectAlertDialog(getString(R.string.create_new_name));
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+    public void updateSubject() {
+        helper.updateSubject(alertInput, _id, year);
+        adapter.clear();
+        addSubjectsToList();
+        Log.d("DIT IS SUBJECTSLIST", Integer.toString(subjectsList.size()));
+        adapter.addAll();
+        adapter.notifyDataSetChanged();
     }
 
     public void createSubject() {
@@ -114,6 +214,6 @@ public class AllSubjectsActivity extends SuperActivity {
 
     public void addSubjectClick(View v){
         // laat alert dialog zien voor de naam van het subject
-        makeAlertDialog();
+        makeNewSubjectAlertDialog(getString(R.string.subject_name));
     }
 }

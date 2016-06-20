@@ -22,4 +22,15 @@
     <string name="passwords_match">Your passwords don\'t match</string>
     <string name="already_have_an_account">Already have an account? Click here to log in</string>
     <string name="logout">Logout</string>
+    <string name="subject_name">Subject Name</string>
+    <string name="empty_name_error">Fill in a subject name</string>
+    <string name="unique_name_error">Choose a unique subject name</string>
+    <string name="make_subject">Make new subject</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="change_subject">Change Subject</string>
+    <string name="choose_change_subject">What do you want to do with this subject?</string>
+    <string name="delete">Delete</string>
+    <string name="change">Change</string>
+    <string name="create_new_name">Create new name</string>
 </resources>

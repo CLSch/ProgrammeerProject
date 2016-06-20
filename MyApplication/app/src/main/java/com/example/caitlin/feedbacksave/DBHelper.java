@@ -16,7 +16,7 @@ import java.util.HashMap;
  * Created by Caitlin on 16-06-16.
  */
 public class DBHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "feedbackTest4.db";
+    private static final String DATABASE_NAME = "feedbackTest7.db";
     private static final int DATABASE_VERSION = 1;
     //private static final String TABLE = "Todos";
 
@@ -54,7 +54,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_SUBJECTS = "CREATE TABLE " + TABLE_SUBJECTS
             + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_SUBJECT + " TEXT,"
-            + KEY_SUBJECT_YEAR + "TEXT)";
+            + KEY_SUBJECT_YEAR + " TEXT)";
 
     private static final String CREATE_TABLE_NOTES = "CREATE TABLE " + TABLE_NOTES
             + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -143,6 +143,7 @@ public class DBHelper extends SQLiteOpenHelper {
     ////////////////////// SUBJECTS
     // CREATE SUBJECT
     public void createSubject(String name, String year) {
+        Log.d("in create year", year);
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -160,9 +161,9 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<Subject> subjects = new ArrayList<>();
 
-        String query = "SELECT * FROM " + TABLE_SUBJECTS + " WHERE " + KEY_SUBJECT_YEAR + " = " + year;
+//        String query = "SELECT * FROM " + TABLE_SUBJECTS + " WHERE " + KEY_SUBJECT_YEAR + " = ?", year;
 
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SUBJECTS + " WHERE " + KEY_SUBJECT_YEAR + " = ?", new String[] {year});
         if (cursor.moveToFirst()) {
             do {
                 // MAAK subject OBJECT
@@ -197,15 +198,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // UPDATE ALL SUBJECTS
     // je kan dit ook doen door het item te verwijderen en opnieuw aan te maken
-    public int updateSubject(Subject subject){
+    public void updateSubject(String name, int id, String year){
         SQLiteDatabase db = this.getWritableDatabase();
-
         ContentValues values = new ContentValues();
-        values.put(KEY_SUBJECT, subject.getName());
 
-        // updating row
-        return db.update(TABLE_SUBJECTS, values, KEY_ID + " = ?",
-                new String[] { String.valueOf(subject.getId()) });
+        values.put(KEY_SUBJECT, name);
+
+        db.update(TABLE_SUBJECTS, values, KEY_ID + " = ? AND " + KEY_SUBJECT_YEAR + " = ?",
+                new String[] {String.valueOf(id), year});
     }
 
     // DELETE SUBJECT
