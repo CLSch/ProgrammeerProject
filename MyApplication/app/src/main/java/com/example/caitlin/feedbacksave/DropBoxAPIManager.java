@@ -66,6 +66,7 @@ public class DropBoxAPIManager {
     }
 
     public void initialization() {
+        Log.d("in initialization", "hoi");
         AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
         session = new AndroidAuthSession(appKeys);
 
@@ -92,7 +93,9 @@ public class DropBoxAPIManager {
 //                finish();
 
                 // sla deze token op in shared preferences
-                //accessToken = dBApi.getSession().getOAuth2AccessToken();
+                token = dBApi.getSession().getOAuth2AccessToken();
+                //token = session.getOAuth2AccessToken();
+
             } catch (IllegalStateException e) {
                 Log.i("DbAuthLog", "Error authenticating", e);
                 //Toast.makeText(this, "Something went wrong while authenticating", Toast.LENGTH_SHORT).show();
@@ -103,6 +106,7 @@ public class DropBoxAPIManager {
     public String getToken() {
 //        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
 //        return prefs.getString(ACCESS_TOKEN_NAME, null);
+        Log.d("DBAPImanager token", token);
         return token;
     }
 
@@ -137,13 +141,4 @@ public class DropBoxAPIManager {
 
         //updateUI(null);
     }
-
-
-//    public void downloadFile(Context context) {
-//        new DownloadFileAsyncTask(context).execute("hoi");
-//    }
-
-//    public void metaData() {
-//
-//    }
 }

@@ -1,5 +1,6 @@
 package com.example.caitlin.feedbacksave;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,10 +24,18 @@ import java.io.FileOutputStream;
 public class DownloadFileAsyncTask extends AsyncTask<String, Void, File> {
     Context con;
     ImageView ivFB;
+    private ProgressDialog dialog;
 
     DownloadFileAsyncTask(Context context, ImageView ivFeedback) {
         this.con = context;
         this.ivFB = ivFeedback;
+        this.dialog = new ProgressDialog(context);
+    }
+
+    protected void onPreExecute() {
+        // Progress Dialog
+        dialog.setMessage("Downloading image from dropbox..");
+        dialog.show();
     }
 
 //    protected void onPostExecute(File result) {
@@ -48,14 +57,14 @@ public class DownloadFileAsyncTask extends AsyncTask<String, Void, File> {
         DropboxAPI.DropboxFileInfo info = null;
         try {
             Log.d("in doInBackground", "tweede try");
-            info = DropBoxAPIManager.getInstance().getDropBoxApi().getFile("/20160601_213528.jpg", null, outputStream, null);
+            info = DropBoxAPIManager.getInstance().getDropBoxApi().getFile("/20160603_135446.jpg", null, outputStream, null);
             Log.d("in doInBackground", "voor return");
             return file;
         } catch (DropboxException e) {
             Log.d("in doInBackground", "in 2e catch");
             e.printStackTrace();
         }
-        Log.i("DbExampleLog", "The file's rev is: " + info.getMetadata().rev);
+        //Log.i("DbExampleLog", "The file's rev is: " + info.getMetadata().rev);
         return file;
     }
 
@@ -63,6 +72,7 @@ public class DownloadFileAsyncTask extends AsyncTask<String, Void, File> {
     @Override
     protected void onPostExecute(File file) {
         super.onPostExecute(file);
+        dialog.dismiss();
 
         String filePath = file.getPath();
         Bitmap bitmap = BitmapFactory.decodeFile(filePath);

@@ -16,7 +16,7 @@ import java.util.HashMap;
  * Created by Caitlin on 16-06-16.
  */
 public class DBHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "feedbackTest10.db";
+    private static final String DATABASE_NAME = "feedbackTest16.db";
     private static final int DATABASE_VERSION = 1;
     //private static final String TABLE = "Todos";
 
@@ -45,6 +45,8 @@ public class DBHelper extends SQLiteOpenHelper {
     // photos table column names
     private static final String KEY_PHOTOS = "Photo";
 
+    private static final String KEY_PHOTOS_PATH = "PhotoPath";
+
     // photo table id for which subject contains this feedback
     private static final String KEY_PHOTO_SUBJECT = "PhotoSubject";
 
@@ -62,7 +64,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_PHOTOS = "CREATE TABLE " + TABLE_PHOTOS
             + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_PHOTOS + " TEXT,"
-            + KEY_PHOTO_SUBJECT + " TEXT," + KEY_FB_TYPE + " INTEGER)";
+            + KEY_PHOTO_SUBJECT + " TEXT," + KEY_PHOTOS_PATH + " TEXT," + KEY_FB_TYPE + " INTEGER)";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -228,12 +230,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //////////////////// PHOTOS
     // CREATE PHOTOS
-    public void createPhoto(String name, String subject) {
+    public void createPhoto(String name, String path, String subject) {
         // type is 1 voor photos
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put(KEY_PHOTOS, name);
+        values.put(KEY_PHOTOS_PATH, path);
         values.put(KEY_PHOTO_SUBJECT, subject);
         values.put(KEY_FB_TYPE, 1);
         db.insert(TABLE_PHOTOS, null, values);
@@ -247,7 +250,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<Photo> photos = new ArrayList<>();
 
-        String query = "SELECT + FROM " + TABLE_PHOTOS + " WHERE " + KEY_PHOTO_SUBJECT + " = ?";
+        String query = "SELECT * FROM " + TABLE_PHOTOS + " WHERE " + KEY_PHOTO_SUBJECT + " = ?";
 
         Cursor cursor = db.rawQuery(query, new String[] {subject});
         if (cursor.moveToFirst()) {
@@ -255,7 +258,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 // MAAK photo OBJECT
                 Photo photo = new Photo();
                 photo.setId(cursor.getInt((cursor.getColumnIndex(KEY_ID))));
-                photo.setName((cursor.getString(cursor.getColumnIndex(KEY_SUBJECT))));
+                photo.setName((cursor.getString(cursor.getColumnIndex(KEY_PHOTOS))));
+                photo.setPath((cursor.getString(cursor.getColumnIndex(KEY_PHOTOS_PATH))));
 
                 // adding to years arraylist
                 photos.add(photo);

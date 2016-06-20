@@ -1,5 +1,7 @@
 package com.example.caitlin.feedbacksave;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -18,15 +20,24 @@ import java.io.InputStream;
  * Created by Caitlin on 15-06-16.
  */
 public class UploadPhotoAsyncTask extends AsyncTask {
-
     private DbxClientV2 dbxClient;
     private File file;
     private AddPhotoFeedbackActivity activity;
+    private ProgressDialog dialog;
 
     UploadPhotoAsyncTask(DbxClientV2 dbxClient, File file, AddPhotoFeedbackActivity activity ) {
         this.dbxClient = dbxClient;
         this.file = file;
         this.activity = activity;
+        this.dialog = new ProgressDialog(activity);
+    }
+
+    protected void onPreExecute() {
+        /****** NOTE: You can call UI Element here. *****/
+
+        // Progress Dialog
+        dialog.setMessage("Uploading image to Dropbox..");
+        dialog.show();
     }
 
     @Override
@@ -49,6 +60,7 @@ public class UploadPhotoAsyncTask extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
 //        super.onPostExecute(o);
+        dialog.dismiss();
         Toast.makeText(activity, "Image uploaded successfully", Toast.LENGTH_SHORT).show();
         activity.currentSubjectIntent();
     }

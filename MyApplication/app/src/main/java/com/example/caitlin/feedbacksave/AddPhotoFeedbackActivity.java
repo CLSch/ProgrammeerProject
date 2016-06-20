@@ -32,8 +32,8 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
     TextView errorMes;
     String FBName;
     String tags;
-    Uri uploadUri;
-    Uri downloadUri;
+    DBHelper helper;
+    String subject;
     boolean checkPerm;
     private static int RESULT_LOAD_IMAGE = 1;
     private static int SELECT_FILE = 1;
@@ -44,6 +44,11 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_photo_feedback);
+
+        helper = new DBHelper(this);
+
+        Bundle extras = getIntent().getExtras();
+        subject = extras.getString("subjectName");
 
         ACCESS_TOKEN = DropBoxAPIManager.getInstance().getToken();
 
@@ -91,80 +96,15 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
                 //Image URI received
                 File file = new File(URI_to_Path.getPath(getApplication(), data.getData()));
                 if (file != null) {
+                    // ADD FILE PATH TO DB
+                    helper.createPhoto(FBName ,URI_to_Path.getPath(getApplication(), data.getData()), subject);
                     //Initialize UploadTask
+                    Log.d("Addphoto onactivity", ACCESS_TOKEN);
                     new UploadPhotoAsyncTask(DropBoxClient.getClient(ACCESS_TOKEN), file, this).execute();
                 }
             }
         }
     }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == SELECT_FILE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-//
-//            uploadUri = data.getData();
-//            // METADATA
-//            //uploadPhotoFromFile();
-//        }
-//    }
-
-//    public void uploadPhotoFromFile() {
-//        File tmpFile = new File(uploadUri, "IMG_2012-03-12_10-22-09_thumb.jpg");
-//
-//        FileInputStream fis = new FileInputStream(tmpFile);
-//
-//        try {
-//            DropboxAPI.Entry newEntry = dBApi.putFileOverwrite("IMG_2012-03-12_10-22-09_thumb.jpg", fis, tmpFile.length(), null);
-//        } catch (DropboxUnlinkedException e) {
-//            Log.e("DbExampleLog", "User has unlinked.");
-//        } catch (DropboxException e) {
-//            Log.e("DbExampleLog", "Something went wrong while uploading.");
-//        }
-//    }
-
-
-//    public void uploadPhotoFromFile() {
-//
-//
-////        Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
-////        StorageReference riversRef = storageRootRef.child("images/"+file.getLastPathSegment());
-//
-//        final StorageReference photoRef = storageRootRef.child("photos").child(uploadUri.getLastPathSegment());
-//
-//        String finalTags = tags.substring(0, tags.lastIndexOf(","));
-//
-//        StorageMetadata metadata = new StorageMetadata.Builder().setCustomMetadata("name", FBName).setCustomMetadata("tags", finalTags)
-//                .build();
-//
-//        uploadTask = photoRef.putFile(uploadUri, metadata);
-//
-//// Register observers to listen for when the download is done or if it fails
-//        uploadTask.addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception exception) {
-//
-//            }
-//        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//            @Override
-//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-//                downloadUri = taskSnapshot.getDownloadUrl();
-//                Log.d("downloadUri is", downloadUri.toString());
-//
-//
-//
-//                //Log.d("photoRefPath", photoRef.getPath());
-//                //currentSubjectIntent.putExtra("photorefPath", photoRef.getPath());
-//                //currentSubjectIntent.putExtra("photoRef", (Parcelable) photoRef);
-//                String path = "photos/" + uploadUri.getLastPathSegment();
-//                //currentSubjectIntent.putExtra("uploadUri", uploadUri);
-//                currentSubjectIntent.putExtra("path", path);
-//                finish();
-//            }
-//        });
-//    }
 
     public boolean formValidation(String name) {
         // als alle ingevulde velden gecheckt zijn return true
@@ -221,8 +161,9 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
     }
 
     public void currentSubjectIntent() {
-        Intent currentSubjectIntent = new Intent();
+        Intent currentSubjectIntent = new Intent(this, CurrentSubjectActivity.class);
         // extras?
+        currentSubjectIntent.putExtra("subjectName", subject);
         this.startActivity(currentSubjectIntent);
     }
 
