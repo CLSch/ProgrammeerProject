@@ -1,11 +1,20 @@
 package com.example.caitlin.feedbacksave;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+
+import java.lang.ref.WeakReference;
 
 public class PhotoFeedback extends SuperActivity {
     String filePath;
+    String subject;
+    Bitmap bitmap;
+    ImageView ivFeedback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -13,12 +22,45 @@ public class PhotoFeedback extends SuperActivity {
         setContentView(R.layout.activity_photo_feedback);
 
         Bundle extras = getIntent().getExtras();
+        subject = extras.getString("subjectName");
         filePath = extras.getString("filePath");
+        ivFeedback = (ImageView) findViewById(R.id.ivFB);
 
+//        if (savedInstanceState != null) {
+//            bitmap = (Bitmap) savedInstanceState.getParcelable("bitmap");
+//            ivFeedback.setImageBitmap(bitmap);
+//        }
+//        else {
+        System.gc();
         downloadFile();
+//        }
+    }
+
+    public void getBitmap(Bitmap bitmap){
+        this.bitmap = bitmap;
+        setImageView(ivFeedback);
+    }
+
+    public void setImageView(ImageView ivFeedback) {
+        ivFeedback.setImageBitmap(bitmap);
     }
 
     public void downloadFile(){
         new DownloadFileAsyncTask(this, (ImageView) findViewById(R.id.ivFB)).execute(filePath);
     }
+
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putParcelable("bitmap", bitmap);
+//    }
+
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        ivFeedback.setImageBitmap(null);
+//        bitmap.recycle();
+//        System.gc();
+//        Runtime.getRuntime().gc();
+//    }
 }

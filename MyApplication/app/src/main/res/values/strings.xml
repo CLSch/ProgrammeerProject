@@ -37,4 +37,5 @@
     <string name="make_photo">Make Photo</string>
     <string name="edit_feedback">Edit Feedback</string>
     <string name="choose_change_feedback">What do you want to do with this feedback?</string>
+    <string name="back">Back</string>
 </resources>

@@ -29,6 +29,6 @@ public class DeleteFileAsyncTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String s) {
 //        super.onPostExecute(s);
-        Toast.makeText(context, "File deleted", Toast.LENGTH_SHORT ).show();
+        Toast.makeText(context, "File successfully deleted", Toast.LENGTH_SHORT ).show();
     }
 }

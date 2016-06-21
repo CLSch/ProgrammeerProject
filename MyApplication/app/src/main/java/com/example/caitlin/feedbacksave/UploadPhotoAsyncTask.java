@@ -3,6 +3,8 @@ package com.example.caitlin.feedbacksave;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -11,24 +13,34 @@ import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.WriteMode;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 /**
  * Created by Caitlin on 15-06-16.
  */
-public class UploadPhotoAsyncTask extends AsyncTask {
+public class UploadPhotoAsyncTask extends AsyncTask<Object, Void, String> {
     private DbxClientV2 dbxClient;
     private File file;
-    private AddPhotoFeedbackActivity activity;
+    private AddPhotoFeedbackActivity addPhotoActivity;
+    private CurrentSubjectActivity curSubActivity;
     private ProgressDialog dialog;
 
     UploadPhotoAsyncTask(DbxClientV2 dbxClient, File file, AddPhotoFeedbackActivity activity ) {
         this.dbxClient = dbxClient;
         this.file = file;
-        this.activity = activity;
+        this.addPhotoActivity = activity;
+        this.dialog = new ProgressDialog(activity);
+    }
+
+    UploadPhotoAsyncTask(DbxClientV2 dbxClient, File file, CurrentSubjectActivity activity ) {
+        this.dbxClient = dbxClient;
+        this.file = file;
+        this.curSubActivity = activity;
         this.dialog = new ProgressDialog(activity);
     }
 
@@ -38,10 +50,13 @@ public class UploadPhotoAsyncTask extends AsyncTask {
     }
 
     @Override
-    protected Object doInBackground(Object[] params) {
+    protected String doInBackground(Object[] params) {
         try {
+//            BitmapFactory.Options option = new BitmapFactory.Options();
+//            option.inSampleSize = 2;
             // Upload to Dropbox
             InputStream inputStream = new FileInputStream(file);
+
             dbxClient.files().uploadBuilder("/" + file.getName()) //Path in the user's Dropbox to save the file.
                     .withMode(WriteMode.OVERWRITE) //always overwrite existing file
                     .uploadAndFinish(inputStream);
@@ -51,14 +66,18 @@ public class UploadPhotoAsyncTask extends AsyncTask {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return file.getName();
     }
 
     @Override
-    protected void onPostExecute(Object o) {
-//        super.onPostExecute(o);
+    protected void onPostExecute(String filePath) {
+//        super.onPostExecute(filePath);
         dialog.dismiss();
-        activity.currentSubjectIntent();
+        if (addPhotoActivity != null) {
+            addPhotoActivity.savePathToDB(filePath);
+        } else {
+            curSubActivity.savePathToDB(filePath);
+        }
     }
 }
 

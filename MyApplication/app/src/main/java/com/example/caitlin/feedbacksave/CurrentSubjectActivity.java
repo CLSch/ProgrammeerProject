@@ -2,10 +2,17 @@ package com.example.caitlin.feedbacksave;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -13,6 +20,7 @@ import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.core.v2.DbxClientV2;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class CurrentSubjectActivity extends SuperActivity {
@@ -22,6 +30,10 @@ public class CurrentSubjectActivity extends SuperActivity {
     CustomFeedbackAdapter adapter;
     DBHelper helper;
     String subject;
+    Uri imageUri;
+    String token;
+    String FBName;
+    private static int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +41,7 @@ public class CurrentSubjectActivity extends SuperActivity {
         setContentView(R.layout.activity_current_subject);
 
         helper = new DBHelper(this);
+        token = DropBoxAPIManager.getInstance().getToken();
 
         Bundle extras = getIntent().getExtras();
         subject = extras.getString("subjectName");
@@ -38,6 +51,32 @@ public class CurrentSubjectActivity extends SuperActivity {
         }
 
         makeAdapter();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("in onactivityresult", "cursubact");
+        if (resultCode == RESULT_OK && data != null) {
+            if (requestCode == REQUEST_IMAGE_CAPTURE) {
+
+                //use imageUri here to access the image
+
+                //Bundle extras = data.getExtras();
+
+                Log.d("URI",imageUri.toString());
+
+                File file = new File(String.valueOf(imageUri));
+                Log.d("dit is file", file.toString());
+                if (file != null) {
+                    new UploadPhotoAsyncTask(DropBoxClient.getClient(token), file, this).execute();
+                }
+
+                //Bitmap bitmap = (Bitmap) extras.get("data");
+
+                // here you will get the image as bitmap
+            }
+        }
     }
 
     public void makeAdapter(){
@@ -82,11 +121,73 @@ public class CurrentSubjectActivity extends SuperActivity {
         builder.show();
     }
 
+    public void makePhotoAlertDialog() {
+        //TODO: vang SQLite injections? rare tekens af
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.make_photo);
+
+        final EditText input = new EditText(this);
+        input.setHint(R.string.feedback_name);
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int pos) {
+                dialog.cancel();
+            }
+        });
+
+        builder.setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int pos) {
+                if (input.getText().length() == 0) {
+                    makePhotoAlertDialog();
+
+                    Log.d("ik zit in if", "onclick dialog");
+                    return;
+                }
+
+                // TODO CHECK OP DUBBELE NAMEN
+                FBName = input.getText().toString();
+            }
+        });
+
+        builder.show();
+    }
+
+    public void savePathToDB(String path) {
+        helper.createPhoto(FBName ,path, subject);
+        currentSubjectIntent();
+    }
+
+    /** Is being called from the Asynctask to go back to this activity. */
+    public void currentSubjectIntent() {
+        Intent currentSubjectIntent = new Intent(this, CurrentSubjectActivity.class);
+        // extras?
+        currentSubjectIntent.putExtra("subjectName", subject);
+        this.startActivity(currentSubjectIntent);
+        finish();
+    }
+
     public void deletePhoto(String path, int id) {
         helper.deletePhoto(id);
         addPhotosToList();
         adapter.notifyDataSetChanged();
         new DeleteFileAsyncTask(this).execute(path);
+    }
+
+    public void makePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),"fname_" +
+                String.valueOf(System.currentTimeMillis()) + ".jpg"));
+        takePictureIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
 
     public void addPhotoFromGalleryClick(View v){
@@ -95,8 +196,10 @@ public class CurrentSubjectActivity extends SuperActivity {
         this.startActivity(addPhotoFeedbackIntent);
     }
 
+    // http://stackoverflow.com/questions/14154104/how-to-take-a-photo-save-it-and-get-the-photo-in-android
     public void makePhotoClick(View v){
-        //deletePhoto("");
+        makePhotoAlertDialog();
+        makePictureIntent();
     }
 
 //    public void addNoteClick(View v){

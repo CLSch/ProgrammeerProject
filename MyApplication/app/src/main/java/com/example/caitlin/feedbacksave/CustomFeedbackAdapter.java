@@ -3,6 +3,7 @@ package com.example.caitlin.feedbacksave;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,7 @@ public class CustomFeedbackAdapter extends ArrayAdapter<String> {
 
 
                 Intent photoFeedbackIntent = new Intent(activity, PhotoFeedback.class);
+                photoFeedbackIntent.putExtra("subjectName", subject);
                 photoFeedbackIntent.putExtra("filePath", path);
                 activity.startActivity(photoFeedbackIntent);
             }
@@ -76,6 +78,7 @@ public class CustomFeedbackAdapter extends ArrayAdapter<String> {
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
+                Log.d("ik ben in onlongclick", "customfeedback");
                 activity.deletePhotoAlertDialog(path, id);
                 return true;
             }

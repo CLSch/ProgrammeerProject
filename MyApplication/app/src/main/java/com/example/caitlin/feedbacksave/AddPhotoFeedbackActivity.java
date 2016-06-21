@@ -2,6 +2,8 @@ package com.example.caitlin.feedbacksave;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Parcelable;
@@ -71,24 +73,17 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("tot hier gekomen", "1");
         if (resultCode != RESULT_OK || data == null) return;
-        Log.d("tot hier gekomen", "2");
         // Check which request we're responding to
         if (requestCode == IMAGE_REQUEST_CODE) {
-            Log.d("tot hier gekomen", "3");
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                Log.d("tot hier gekomen", "4");
                 //Image URI received
                 File file = new File(URI_to_Path.getPath(getApplication(), data.getData()));
                 if (file != null) {
-                    Log.d("tot hier gekomen", "5");
-                    // ADD FILE PATH TO DB
-                    helper.createPhoto(FBName ,URI_to_Path.getPath(getApplication(), data.getData()), subject);
-                    //Initialize UploadTask
-                    Log.d("tot hier gekomen", "rare crash");
-                    Log.d("Addphoto onactivity", token);
+//                    BitmapFactory.Options options = new BitmapFactory.Options();
+//                    options.inSampleSize = 2;
+//                    Bitmap bitmap = BitmapFactory.decodeFile(URI_to_Path.getPath(getApplication(), data.getData()), options);
                     new UploadPhotoAsyncTask(DropBoxClient.getClient(token), file, this).execute();
                 }
             }
@@ -156,12 +151,18 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
 //        startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
     }
 
+    public void savePathToDB(String path) {
+        helper.createPhoto(FBName ,path, subject);
+        currentSubjectIntent();
+    }
+
     /** Is being called from the Asynctask to go back to this activity. */
     public void currentSubjectIntent() {
         Intent currentSubjectIntent = new Intent(this, CurrentSubjectActivity.class);
         // extras?
         currentSubjectIntent.putExtra("subjectName", subject);
         this.startActivity(currentSubjectIntent);
+        finish();
     }
 
     public void addTagClick(View v){

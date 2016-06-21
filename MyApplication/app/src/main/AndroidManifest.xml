@@ -13,6 +13,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:largeHeap="true"
         android:theme="@style/AppTheme">
 
         <activity android:name=".YearsActivity">
@@ -27,7 +28,7 @@
             android:name="com.dropbox.client2.android.AuthActivity"
             android:launchMode="singleTask"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:configChanges="orientation|keyboard">
+            android:configChanges="orientation|screenSize|keyboard">
             <intent-filter>
                 <!-- Change this to be db- followed by your app key -->
                 <data android:scheme="db-8iyoeiil5cpfeay" />

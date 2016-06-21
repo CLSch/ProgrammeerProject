@@ -21,7 +21,7 @@ import java.util.HashMap;
  * In deze class staan alle functies voor de SQLite Database.
  */
 public class DBHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "feedbackTest17.db";
+    private static final String DATABASE_NAME = "feedbackTest19.db";
     private static final int DATABASE_VERSION = 1;
     //private static final String TABLE = "Todos";
 

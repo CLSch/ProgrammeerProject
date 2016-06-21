@@ -22,14 +22,14 @@ import java.io.FileOutputStream;
  * Created by Caitlin on 16-06-16.
  */
 public class DownloadFileAsyncTask extends AsyncTask<String, Void, File> {
-    Context con;
+    PhotoFeedback activity;
     ImageView ivFB;
     private ProgressDialog dialog;
 
-    DownloadFileAsyncTask(Context context, ImageView ivFeedback) {
-        this.con = context;
+    DownloadFileAsyncTask(PhotoFeedback activity, ImageView ivFeedback) {
+        this.activity = activity;
         this.ivFB = ivFeedback;
-        this.dialog = new ProgressDialog(context);
+        this.dialog = new ProgressDialog(activity);
     }
 
     protected void onPreExecute() {
@@ -43,8 +43,9 @@ public class DownloadFileAsyncTask extends AsyncTask<String, Void, File> {
 //    }
 
     protected File doInBackground(String... params) {
-        String filename = params[0];
-        File file = new File(this.con.getFilesDir() ,filename);
+        String filePath = params[0];
+        Log.d("dit is filePath", filePath);
+        File file = new File(activity.getFilesDir(), filePath);
         Log.d("dit is file", file.toString());
         FileOutputStream outputStream = null;
         try {
@@ -57,7 +58,7 @@ public class DownloadFileAsyncTask extends AsyncTask<String, Void, File> {
         DropboxAPI.DropboxFileInfo info = null;
         try {
             Log.d("in doInBackground", "tweede try");
-            info = DropBoxAPIManager.getInstance().getDropBoxApi().getFile("/20160603_135446.jpg", null, outputStream, null);
+            info = DropBoxAPIManager.getInstance().getDropBoxApi().getFile(filePath, null, outputStream, null);
             Log.d("in doInBackground", "voor return");
             return file;
         } catch (DropboxException e) {
@@ -73,9 +74,8 @@ public class DownloadFileAsyncTask extends AsyncTask<String, Void, File> {
     protected void onPostExecute(File file) {
         super.onPostExecute(file);
         dialog.dismiss();
-
         String filePath = file.getPath();
         Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-        ivFB.setImageBitmap(bitmap);
+        activity.getBitmap(bitmap);
     }
 }
