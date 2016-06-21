@@ -59,6 +59,10 @@ public class CurrentSubjectActivity extends SuperActivity {
         Log.d("in onactivityresult", "cursubact");
         if (resultCode == RESULT_OK && data != null) {
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
+                Log.d("in if requestcode", "onact");
+
+                imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),"filename_" +
+                String.valueOf(System.currentTimeMillis()) + ".jpg"));
 
                 //use imageUri here to access the image
 
@@ -182,9 +186,10 @@ public class CurrentSubjectActivity extends SuperActivity {
 
     public void makePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),"fname_" +
-                String.valueOf(System.currentTimeMillis()) + ".jpg"));
-        takePictureIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
+//        imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),"filename_" +
+//                String.valueOf(System.currentTimeMillis()) + ".jpg"));
+//        Log.d("dit is imageUri", imageUri.toString());
+//        takePictureIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
