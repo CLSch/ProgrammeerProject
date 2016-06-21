@@ -34,7 +34,7 @@ public class DownloadFileAsyncTask extends AsyncTask<String, Void, File> {
 
     protected void onPreExecute() {
         // Progress Dialog
-        dialog.setMessage("Downloading image from dropbox..");
+        dialog.setMessage("Downloading image from Dropbox..");
         dialog.show();
     }
 
@@ -44,7 +44,7 @@ public class DownloadFileAsyncTask extends AsyncTask<String, Void, File> {
 
     protected File doInBackground(String... params) {
         String filename = params[0];
-        File file = new File(this.con.getFilesDir() ,"20160601_213528.jpg");
+        File file = new File(this.con.getFilesDir() ,filename);
         Log.d("dit is file", file.toString());
         FileOutputStream outputStream = null;
         try {
@@ -77,6 +77,5 @@ public class DownloadFileAsyncTask extends AsyncTask<String, Void, File> {
         String filePath = file.getPath();
         Bitmap bitmap = BitmapFactory.decodeFile(filePath);
         ivFB.setImageBitmap(bitmap);
-        Toast.makeText(con, "Image downloaded successfully", Toast.LENGTH_SHORT).show();
     }
 }

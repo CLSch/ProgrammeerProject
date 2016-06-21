@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 
 public class PhotoFeedback extends SuperActivity {
-    String fileName;
+    String filePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -13,12 +13,12 @@ public class PhotoFeedback extends SuperActivity {
         setContentView(R.layout.activity_photo_feedback);
 
         Bundle extras = getIntent().getExtras();
-        fileName = extras.getString("Filename");
+        filePath = extras.getString("filePath");
 
         downloadFile();
     }
 
     public void downloadFile(){
-        new DownloadFileAsyncTask(this, (ImageView) findViewById(R.id.ivFB)).execute("");
+        new DownloadFileAsyncTask(this, (ImageView) findViewById(R.id.ivFB)).execute(filePath);
     }
 }

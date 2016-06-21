@@ -22,8 +22,6 @@ public class CurrentSubjectActivity extends SuperActivity {
     CustomFeedbackAdapter adapter;
     DBHelper helper;
     String subject;
-    int _id;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +41,7 @@ public class CurrentSubjectActivity extends SuperActivity {
     }
 
     public void makeAdapter(){
-        adapter = new CustomFeedbackAdapter(this, photoList);
+        adapter = new CustomFeedbackAdapter(this, photoList, subject);
         lvSubject = (ListView) findViewById(R.id.lvFeedback);
         //listviewToDo.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         assert lvSubject != null;
@@ -51,59 +49,44 @@ public class CurrentSubjectActivity extends SuperActivity {
     }
 
     public void addPhotosToList() {
+        photoList.clear();
         ArrayList<Photo> temp = helper.readAllPhotosPerSubject(subject);
         for (int i = 0; i < temp.size(); i++) {
             photoList.add(temp.get(i).getName());
         }
     }
 
-    public void deletePhotoAlertDialog(final String currentName, int pos) {
+    /** Alert gets fired on long click and makes it possible to delete files. */
+    public void deletePhotoAlertDialog(final String path, final int id) {
         //TODO: vang SQLite injections? rare tekens af
-        ArrayList<Photo> subjects = helper.readAllPhotosPerSubject(subject);
-        _id = subjects.get(pos).getId();
-        //// ^^^ dit in een aparte functie?
-
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.edit_feedback));
         builder.setMessage(getString(R.string.choose_change_feedback));
 
         // Set up the buttons
-        // MOET CHANGE WORDEN
         builder.setPositiveButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int pos) {
                 dialog.cancel();
-                //makeNewSubjectAlertDialog(getString(R.string.create_new_name));
             }
         });
-//        // MOET CANCEL WORDEN
-//        builder.setNeutralButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int pos) {
-//                dialog.cancel();
-//            }
-//        });
 
-        // MOET DELETE WORDEN
         builder.setNegativeButton(R.string.delete, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int pos) {
-                //delete from database
-                deletePhoto("");
-//                helper.deleteSubject(_id);
-//
-//                // delete from view, is dit nodig of kun je ook de adapter updaten?
-//                adapter.remove(currentName);
-//                Toast.makeText(CurrentSubjectActivity.this, "item is deleted" , Toast.LENGTH_SHORT).show();
+                deletePhoto(path, id);
             }
         });
 
         builder.show();
     }
 
-    public void deletePhoto(String path) {
-        new DeleteFileAsyncTask(this).execute("");
+    public void deletePhoto(String path, int id) {
+        helper.deletePhoto(id);
+        addPhotosToList();
+        adapter.notifyDataSetChanged();
+        new DeleteFileAsyncTask(this).execute(path);
     }
 
     public void addPhotoFromGalleryClick(View v){

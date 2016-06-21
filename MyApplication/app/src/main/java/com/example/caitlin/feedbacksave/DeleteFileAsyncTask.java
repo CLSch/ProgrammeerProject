@@ -19,7 +19,7 @@ public class DeleteFileAsyncTask extends AsyncTask<String, Void, String> {
     protected String doInBackground(String...params) {
         String path = params[0];
         try {
-            DropBoxAPIManager.getInstance().getDropBoxApi().delete("/20160601_213528.jpg"); //"/20160601_213528.jpg"
+            DropBoxAPIManager.getInstance().getDropBoxApi().delete(path); //"/20160601_213528.jpg"
         } catch (DropboxException e) {
             e.printStackTrace();
         }

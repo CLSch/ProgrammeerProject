@@ -51,6 +51,9 @@ public class AllSubjectsActivity extends SuperActivity {
 //        subjectsList.add("Heuristieken"); // HARDCODED !!!!
 
         makeAdapter(); // ook maken als er niks in staat?
+
+        String token = DropBoxAPIManager.getInstance().getToken();
+        Log.d("token in allsub act", token);
     }
 
     public void makeAdapter(){
@@ -62,6 +65,7 @@ public class AllSubjectsActivity extends SuperActivity {
     }
 
     public void addSubjectsToList() {
+        subjectsList.clear(); // no errors?
         ArrayList<Subject> temp = helper.readAllSubjectsPerYear(year);
         for (int i = 0; i < temp.size(); i++) {
             subjectsList.add(temp.get(i).getName());

@@ -33,9 +33,6 @@ public class UploadPhotoAsyncTask extends AsyncTask {
     }
 
     protected void onPreExecute() {
-        /****** NOTE: You can call UI Element here. *****/
-
-        // Progress Dialog
         dialog.setMessage("Uploading image to Dropbox..");
         dialog.show();
     }
@@ -61,7 +58,6 @@ public class UploadPhotoAsyncTask extends AsyncTask {
     protected void onPostExecute(Object o) {
 //        super.onPostExecute(o);
         dialog.dismiss();
-        Toast.makeText(activity, "Image uploaded successfully", Toast.LENGTH_SHORT).show();
         activity.currentSubjectIntent();
     }
 }

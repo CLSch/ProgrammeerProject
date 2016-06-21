@@ -46,6 +46,7 @@ public class DropBoxAPIManager {
         //Log.d("dit is token 1", token);
 
         if (token != null) {
+            Log.d("dit is token in if", token);
             Log.d("waarom werk je niet", "token");
 //            // initialize key en secret
             //AccessTokenPair accessToken = new AccessTokenPair(key, secret);
@@ -115,8 +116,9 @@ public class DropBoxAPIManager {
 
     public String getToken() {
         SharedPreferences prefs = context.getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
-        //Log.d("DBAPImanager token", token);
-        return prefs.getString(ACCESS_TOKEN_NAME, null);
+        String token = prefs.getString(ACCESS_TOKEN_NAME, null);
+        Log.d("token in gettoken", token);
+        return token;
     }
 
 //    public void setToken(String token) {

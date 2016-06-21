@@ -57,13 +57,12 @@ public class SuperActivity extends AppCompatActivity {
 
         DropBoxAPIManager.getInstance().logOut();
 
-        //updateUI(null);
         Intent yearsActivityIntent = new Intent(this, YearsActivity.class);
+        yearsActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        yearsActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(yearsActivityIntent);
-        yearsActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                Intent.FLAG_ACTIVITY_NEW_TASK);
         finish();
+
         // close all activities
     }
 

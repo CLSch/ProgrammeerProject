@@ -22,7 +22,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.prefs.Preferences;
 
 // https://www.sitepoint.com/adding-the-dropbox-api-to-an-android-app/
 
@@ -38,7 +40,7 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
     private static int RESULT_LOAD_IMAGE = 1;
     private static int SELECT_FILE = 1;
     private static int IMAGE_REQUEST_CODE = 1;
-    private String ACCESS_TOKEN;
+    String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,57 +52,44 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
         Bundle extras = getIntent().getExtras();
         subject = extras.getString("subjectName");
 
-        ACCESS_TOKEN = DropBoxAPIManager.getInstance().getToken();
+        Log.d("onCreate", DropBoxAPIManager.getInstance().toString());
+        Log.d("onCreate", DropBoxAPIManager.getInstance().getToken().toString());
+        token = DropBoxAPIManager.getInstance().getToken();
 
         etTag = (EditText) findViewById(R.id.etTagsPhoto);
         etFBName = (EditText) findViewById(R.id.etFBName);
 
         errorMes = (TextView) findViewById(R.id.tvErrorPFB);
 
+        assert errorMes != null;
         errorMes.setTextColor(Color.RED);
 
        checkPerm = Utility.checkPermission(AddPhotoFeedbackActivity.this);
     }
 
-//    public void createRef(String FBName) {
-//        // Create a reference to "mountains.jpg"
-//        // filename als het jpg is?? hoe kijken voor png/jpg? wat als een naam al een extentie heeft???
-//        String childName = FBName + ".jpg";
-//        photoRef = storageRootRef.child(childName);
-//
-//        // Create a reference to 'images/mountains.jpg'
-//        String imagesName = "images/" + childName;
-//        imagesRef = storageRootRef.child(imagesName);
-//
-//    }
-
-    private void upload() {
-        if (ACCESS_TOKEN == null)return;
-        //Select image to upload
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-        startActivityForResult(Intent.createChooser(intent,
-                "Upload to Dropbox"), IMAGE_REQUEST_CODE);
-    }
-
+    /** When the user chooses a picture from the gallery this method gets called. */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("tot hier gekomen", "1");
         if (resultCode != RESULT_OK || data == null) return;
+        Log.d("tot hier gekomen", "2");
         // Check which request we're responding to
         if (requestCode == IMAGE_REQUEST_CODE) {
+            Log.d("tot hier gekomen", "3");
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
+                Log.d("tot hier gekomen", "4");
                 //Image URI received
                 File file = new File(URI_to_Path.getPath(getApplication(), data.getData()));
                 if (file != null) {
+                    Log.d("tot hier gekomen", "5");
                     // ADD FILE PATH TO DB
                     helper.createPhoto(FBName ,URI_to_Path.getPath(getApplication(), data.getData()), subject);
                     //Initialize UploadTask
-                    Log.d("Addphoto onactivity", ACCESS_TOKEN);
-                    new UploadPhotoAsyncTask(DropBoxClient.getClient(ACCESS_TOKEN), file, this).execute();
+                    Log.d("tot hier gekomen", "rare crash");
+                    Log.d("Addphoto onactivity", token);
+                    new UploadPhotoAsyncTask(DropBoxClient.getClient(token), file, this).execute();
                 }
             }
         }
@@ -115,15 +104,23 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
             return false;
         }
 
-        // check password en username met de database???
-//        if (!passWord.equals(passWordControl)) {
-//            errorMes.setText(R.string.passwords_match);
-//            return false;
-//        }
+        ArrayList<Photo> temp = helper.readAllPhotosPerSubject(subject);
+        for (int i = 0; i < temp.size(); i++) {
+            if (name.equals(temp.get(i).getName())) {
+                Log.d("in if click", "dialog");
+                errorMes.setText(R.string.unique_name_error);
+                return false;
+                //input.setHint("Write here a unique subject name");
+            }
+        }
         return true;
     }
 
     public void addFeedbackClick (View v){
+
+        if (!formValidation(etFBName.getText().toString())) {
+            return;
+        }
 
         FBName = etFBName.getText().toString();
 
@@ -132,13 +129,6 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
         }
         // check of type field en name field niet leeg zijn!!!
         // als er eentje leeg is geef daar een melding van
-
-        //als beiden zijn ingevuld
-//        Intent currentSubjectIntent = new Intent(this, CurrentSubjectActivity.class);
-//        this.startActivity(currentSubjectIntent);
-//        Toast.makeText(this, "Feedback is toegevoegd (of niet)", Toast.LENGTH_SHORT).show();
-//        finish();
-
     }
 
     @Override
@@ -154,12 +144,14 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
         }
     }
 
+    /** Gets called to start your gallery app on your phone with. */
     private void galleryIntent() {
+        Log.d("AddPhotoFeedback", token.toString());
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");
         startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
-        Toast.makeText(this, "in galleryIntent", Toast.LENGTH_SHORT).show();
     }
 
+    /** Is being called from the Asynctask to go back to this activity. */
     public void currentSubjectIntent() {
         Intent currentSubjectIntent = new Intent(this, CurrentSubjectActivity.class);
         // extras?

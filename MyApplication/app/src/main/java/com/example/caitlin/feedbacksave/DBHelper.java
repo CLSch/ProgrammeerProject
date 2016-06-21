@@ -21,7 +21,7 @@ import java.util.HashMap;
  * In deze class staan alle functies voor de SQLite Database.
  */
 public class DBHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "feedbackTest16.db";
+    private static final String DATABASE_NAME = "feedbackTest17.db";
     private static final int DATABASE_VERSION = 1;
     //private static final String TABLE = "Todos";
 
@@ -119,30 +119,22 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // GET ALL YEARS
     public ArrayList<Year> readAllYears() {
-        Log.d("Helemaal bovenaan", "gekomen");
         SQLiteDatabase db = getReadableDatabase();
-        Log.d("Na db", "gekomen");
         ArrayList<Year> years = new ArrayList<>();
         //String query = "SELECT " + KEY_ID + ", " + KEY_YEARS + " FROM " + TABLE_YEARS;
         String query = "SELECT * FROM " + TABLE_YEARS;
-        Log.d("voor cursor", "gekomen");
         Cursor cursor = db.rawQuery(query, null);
-        Log.d("Hier ben ik", "gekomen");
         if (cursor.moveToFirst()) {
             do {
-                // MAAK YEAR OBJECT
-                Log.d("bovenaan do", "gekomen");
                 Year year = new Year();
                 year.setId(cursor.getInt((cursor.getColumnIndex(KEY_ID))));
                 year.setName((cursor.getString(cursor.getColumnIndex(KEY_YEARS))));
 
                 // adding to years arraylist
                 years.add(year);
-                Log.d("onderaan do", "gekomen");
             } while (cursor.moveToNext());
         }
         cursor.close();
-        Log.d("bij return", "gekomen");
         return years;
     }
 

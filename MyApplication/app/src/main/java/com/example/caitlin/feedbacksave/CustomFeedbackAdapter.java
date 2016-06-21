@@ -19,16 +19,18 @@ import java.util.ArrayList;
 public class CustomFeedbackAdapter extends ArrayAdapter<String> {
     // wordt later waarschijnlijk arraylist met Feedback Objects
     ArrayList<String> feedback;
-    Context context;
-    String fileName;
+    CurrentSubjectActivity activity;
+    String subject;
+    //DBHelper helper;
     //StorageReference photoRef;
     //String photoRefPath;
     //DropboxAPI dropboxAPI;
 
-    public CustomFeedbackAdapter (Context context, ArrayList<String> data) {
-        super(context, 0, data);
+    public CustomFeedbackAdapter (CurrentSubjectActivity activity, ArrayList<String> data, String subject) {
+        super(activity, 0, data);
         this.feedback = data;
-        this.context = context;
+        this.activity = activity;
+        this.subject = subject;
         //this.photoRefPath = ref;
         //this.dropboxAPI = dbApi;
     }
@@ -38,12 +40,18 @@ public class CustomFeedbackAdapter extends ArrayAdapter<String> {
     public View getView(int pos, View view, ViewGroup parent) {
         //final int thisPos = pos;
 
+        DBHelper helper = new DBHelper(activity);
+
         if (view == null){
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.listview_items, parent, false);
         }
 
         final String thisListItem = feedback.get(pos);
+        ArrayList<Photo> temp = helper.readAllPhotosPerSubject(subject);
+        final int id = temp.get(pos).getId();
+
+        final String path = helper.getPhotoPath(id);
 //
 //        // put Todolist names in textview for listview
         TextView tvList = (TextView) view.findViewById(R.id.tvInListView);
@@ -58,13 +66,9 @@ public class CustomFeedbackAdapter extends ArrayAdapter<String> {
                 // CHECK OF FB EEN FOTO IS OF EEN MEMO EN OPEN DE JUISTE INTENT!!!
 
 
-                Intent photoFeedbackIntent = new Intent(context, PhotoFeedback.class);
-                // geef feedback mee
-                //photoFeedbackIntent.putExtra("dbWrapper", dbWrapper);
-                //photoFeedbackIntent.putExtra("photoRef", (Parcelable) photoRef);
-                //photoFeedbackIntent.putExtra("photoRefPath", photoRefPath);
-                photoFeedbackIntent.putExtra("Filename", thisListItem);
-                context.startActivity(photoFeedbackIntent);
+                Intent photoFeedbackIntent = new Intent(activity, PhotoFeedback.class);
+                photoFeedbackIntent.putExtra("filePath", path);
+                activity.startActivity(photoFeedbackIntent);
             }
         });
 
@@ -72,15 +76,7 @@ public class CustomFeedbackAdapter extends ArrayAdapter<String> {
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                // MAAK EEN ALERT DIALOG
-
-//                Toast.makeText(context, "item is deleted" , Toast.LENGTH_LONG).show();
-//
-//                // delete from map
-//                map.remove(thisPos);
-//
-//                // delete from Singleton
-//                TodoManagerSingleton.getInstance().deleteList(tableName);
+                activity.deletePhotoAlertDialog(path, id);
                 return true;
             }
         });
