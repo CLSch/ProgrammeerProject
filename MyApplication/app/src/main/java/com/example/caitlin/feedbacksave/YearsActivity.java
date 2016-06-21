@@ -25,12 +25,19 @@ public class YearsActivity extends SuperActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_years);
 
+        DropBoxAPIManager.getInstance(this);
+
         helper = new DBHelper(this);
 
 //        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
 //        String token = prefs.getString(ACCESS_TOKEN_NAME, null);
 
-        DropBoxAPIManager.getInstance().dBApi.getSession().startOAuth2Authentication(YearsActivity.this);
+        String token = DropBoxAPIManager.getInstance().getToken();
+        if (token == null) {
+            DropBoxAPIManager.getInstance().dBApi.getSession().startOAuth2Authentication(YearsActivity.this);
+        } else {
+            DropBoxAPIManager.getInstance().dBApi.getSession().setOAuth2AccessToken(token);
+        }
 
         Log.d("voor", "de error");
         if (helper.readAllYears().isEmpty()) {

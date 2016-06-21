@@ -107,16 +107,13 @@ public class CurrentSubjectActivity extends SuperActivity {
     }
 
     public void addPhotoFromGalleryClick(View v){
-        //Toast.makeText(this, "Add Photo from Galery", Toast.LENGTH_SHORT).show();
         Intent addPhotoFeedbackIntent = new Intent(this, AddPhotoFeedbackActivity.class);
         addPhotoFeedbackIntent.putExtra("subjectName", subject);
-        // geef alle feedback mee
-        //allSubjectsIntent.putExtra("NameTable", tableName);
         this.startActivity(addPhotoFeedbackIntent);
     }
 
     public void makePhotoClick(View v){
-        deletePhoto("");
+        //deletePhoto("");
     }
 
 //    public void addNoteClick(View v){

@@ -1,3 +1,8 @@
+/**
+ * DBHelper.java
+ * Caitlin Schäffers
+ * 10580441
+ */
 package com.example.caitlin.feedbacksave;
 
 import android.content.ContentValues;
@@ -13,7 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by Caitlin on 16-06-16.
+ * In deze class staan alle functies voor de SQLite Database.
  */
 public class DBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "feedbackTest16.db";
@@ -284,6 +289,22 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     // GET PHOTO
+
+    // GET PHOTO PATH
+    public String getPhotoPath(int id) {
+        SQLiteDatabase db = getReadableDatabase();
+        String path = null;
+
+        String query = "SELECT " + KEY_PHOTOS_PATH + " FROM " + TABLE_PHOTOS + " WHERE " + KEY_ID + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[] {String.valueOf(id)});
+        if (cursor.moveToFirst()) {
+            do {
+                path = cursor.getString(cursor.getColumnIndex(KEY_PHOTOS_PATH));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return path;
+    }
 
     // DELETE PHOTO
     public void deletePhoto(int id){

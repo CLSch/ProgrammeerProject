@@ -17,16 +17,18 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.logging.Handler;
+import java.util.prefs.Preferences;
 
 /**
  * Created by Caitlin on 16-06-16.
  */
 public class DropBoxAPIManager {
-    private static DropBoxAPIManager ourInstance = new DropBoxAPIManager();
-
+    // TODO UITLOG NIET MEER TERUG NAAR OUDE ACTIVITEITEN
+    private static DropBoxAPIManager ourInstance;
     //fields
     DropboxAPI<AndroidAuthSession> dBApi;
     AndroidAuthSession session;
+    Context context;
 
     final static private String APP_KEY = "8iyoeiil5cpfeay";
     final static private String APP_SECRET = "ke82ftjb4b07ivk";
@@ -35,12 +37,16 @@ public class DropBoxAPIManager {
     static String ACCESS_TOKEN_NAME = "ACCESS_TOKEN";
 
     /** constructor */
-    private DropBoxAPIManager() {
+    private DropBoxAPIManager(Context context) {
 
-//        SharedPreferences prefs = getPreferences(ACCOUNT_PREFS_NAME, 0);
-//        String token = prefs.getString(ACCESS_TOKEN_NAME, null);
+        this.context = context;
+
+        SharedPreferences prefs = context.getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+        String token = prefs.getString(ACCESS_TOKEN_NAME, null);
+        //Log.d("dit is token 1", token);
 
         if (token != null) {
+            Log.d("waarom werk je niet", "token");
 //            // initialize key en secret
             //AccessTokenPair accessToken = new AccessTokenPair(key, secret);
             AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
@@ -53,10 +59,7 @@ public class DropBoxAPIManager {
         else {
             initialization();
         }
-
-
         dBApi = new DropboxAPI<AndroidAuthSession>(session);
-
     }
 
 
@@ -65,11 +68,16 @@ public class DropBoxAPIManager {
         return ourInstance;
     }
 
+    public static DropBoxAPIManager getInstance(Context context) { //empty???
+        ourInstance = new DropBoxAPIManager(context);
+        //this.context = context;
+        return ourInstance;
+    }
+
     public void initialization() {
         Log.d("in initialization", "hoi");
         AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
         session = new AndroidAuthSession(appKeys);
-
     }
 
     public DropboxAPI getDropBoxApi() {
@@ -94,6 +102,8 @@ public class DropBoxAPIManager {
 
                 // sla deze token op in shared preferences
                 token = dBApi.getSession().getOAuth2AccessToken();
+                storeToken(token);
+                Log.d("dit is token 2", token);
                 //token = session.getOAuth2AccessToken();
 
             } catch (IllegalStateException e) {
@@ -104,14 +114,20 @@ public class DropBoxAPIManager {
     }
 
     public String getToken() {
-//        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
-//        return prefs.getString(ACCESS_TOKEN_NAME, null);
-        Log.d("DBAPImanager token", token);
-        return token;
+        SharedPreferences prefs = context.getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+        //Log.d("DBAPImanager token", token);
+        return prefs.getString(ACCESS_TOKEN_NAME, null);
     }
 
-    public void setToken(String token) {
-        ACCESS_TOKEN_NAME = token;
+//    public void setToken(String token) {
+//        ACCESS_TOKEN_NAME = token;
+//    }
+
+    public void storeToken(String token) {
+        SharedPreferences prefs = context.getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putString(ACCESS_TOKEN_NAME, token);
+        edit.commit();
     }
 
 //    public void storeKeys(String accessToken) {
@@ -124,15 +140,16 @@ public class DropBoxAPIManager {
 //        edit.commit();
 //    }
 //
-//    private void clearKeys() {
-//        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
-//        SharedPreferences.Editor edit = prefs.edit();
-//        edit.clear();
-//        edit.commit();
-//    }
+    private void clearKeys() {
+        SharedPreferences prefs = context.getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.clear();
+        edit.commit();
+    }
 
     public void logOut() {
         dBApi.getSession().unlink();
+        clearKeys();
 //
 //        // Clear our stored keys
 //        clearKeys();
