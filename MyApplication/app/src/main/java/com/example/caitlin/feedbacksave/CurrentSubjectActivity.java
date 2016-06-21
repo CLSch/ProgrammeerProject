@@ -70,7 +70,7 @@ public class CurrentSubjectActivity extends SuperActivity {
 
                 Log.d("URI",imageUri.toString());
 
-                File file = new File(String.valueOf(imageUri));
+                File file = new File(URI_to_Path.getPath(getApplication(), data.getData()));
                 Log.d("dit is file", file.toString());
                 if (file != null) {
                     new UploadPhotoAsyncTask(DropBoxClient.getClient(token), file, this).execute();
@@ -157,6 +157,7 @@ public class CurrentSubjectActivity extends SuperActivity {
 
                 // TODO CHECK OP DUBBELE NAMEN
                 FBName = input.getText().toString();
+                makePictureIntent();
             }
         });
 
@@ -204,7 +205,6 @@ public class CurrentSubjectActivity extends SuperActivity {
     // http://stackoverflow.com/questions/14154104/how-to-take-a-photo-save-it-and-get-the-photo-in-android
     public void makePhotoClick(View v){
         makePhotoAlertDialog();
-        makePictureIntent();
     }
 
 //    public void addNoteClick(View v){
