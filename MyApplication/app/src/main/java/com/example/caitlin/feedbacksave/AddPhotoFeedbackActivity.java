@@ -37,7 +37,7 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
     DBHelper helper;
     String subject;
     boolean checkPerm;
-    private static int RESULT_LOAD_IMAGE = 1;
+    private static int RESULT_GALLERY = 1;
     private static int SELECT_FILE = 1;
     private static int IMAGE_REQUEST_CODE = 1;
     String token;
@@ -147,8 +147,13 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
     /** Gets called to start your gallery app on your phone with. */
     private void galleryIntent() {
         Log.d("AddPhotoFeedback", token.toString());
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");
-        startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
+
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent , RESULT_GALLERY);
+
+//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");
+//        startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
     }
 
     /** Is being called from the Asynctask to go back to this activity. */
