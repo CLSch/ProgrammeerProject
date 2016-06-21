@@ -155,7 +155,7 @@ public class CurrentSubjectActivity extends SuperActivity {
                     return;
                 }
 
-                // TODO CHECK OP DUBBELE NAMEN
+                // TODO CHECK OP DUBBELE NAMEN, FBNAME in onsaveinstance opslaan? voor orientation changes
                 FBName = input.getText().toString();
                 makePictureIntent();
             }
