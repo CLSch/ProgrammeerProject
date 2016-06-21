@@ -54,6 +54,8 @@ public class DownloadFileAsyncTask extends AsyncTask<String, Void, File> {
         } catch (FileNotFoundException e) {
             Log.d("in doInBackground", "in 1e catch");
             e.printStackTrace();
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
         }
         DropboxAPI.DropboxFileInfo info = null;
         try {
