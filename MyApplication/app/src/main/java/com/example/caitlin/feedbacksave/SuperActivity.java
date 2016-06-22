@@ -21,6 +21,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 
+import java.io.File;
+
 public class SuperActivity extends AppCompatActivity {
 //    DropboxAPI<AndroidAuthSession> dBApi;
 //    final static private String APP_KEY = "8iyoeiil5cpfeay";
@@ -67,8 +69,13 @@ public class SuperActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
+        // maak DB file
+        DBHelper helper = new DBHelper(this);
+        File file = helper.getDatabaseFile();
+
+        new UploadFileAsyncTask(this, file).execute();
 
         // sla nieuwste versie van DB op
     }

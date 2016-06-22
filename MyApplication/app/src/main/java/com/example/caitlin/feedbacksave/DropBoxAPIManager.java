@@ -28,7 +28,8 @@ public class DropBoxAPIManager {
     //fields
     DropboxAPI<AndroidAuthSession> dBApi;
     AndroidAuthSession session;
-    Context context;
+    //Context context;
+    YearsActivity activity;
 
     final static private String APP_KEY = "8iyoeiil5cpfeay";
     final static private String APP_SECRET = "ke82ftjb4b07ivk";
@@ -37,11 +38,12 @@ public class DropBoxAPIManager {
     static String ACCESS_TOKEN_NAME = "ACCESS_TOKEN";
 
     /** constructor */
-    private DropBoxAPIManager(Context context) {
+    private DropBoxAPIManager(YearsActivity activity) {
 
-        this.context = context;
+        this.activity = activity;
+        //this.context = context;
 
-        SharedPreferences prefs = context.getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+        SharedPreferences prefs = this.activity.getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
         String token = prefs.getString(ACCESS_TOKEN_NAME, null);
         //Log.d("dit is token 1", token);
 
@@ -69,8 +71,9 @@ public class DropBoxAPIManager {
         return ourInstance;
     }
 
-    public static DropBoxAPIManager getInstance(Context context) { //empty???
-        ourInstance = new DropBoxAPIManager(context);
+    public static DropBoxAPIManager getInstance(YearsActivity activity) { //empty???
+        //ourInstance = new DropBoxAPIManager(context);
+        ourInstance = new DropBoxAPIManager(activity);
         //this.context = context;
         return ourInstance;
     }
@@ -106,6 +109,7 @@ public class DropBoxAPIManager {
                 storeToken(token);
                 Log.d("dit is token 2", token);
                 //token = session.getOAuth2AccessToken();
+                activity.naAuthenticatie();
 
             } catch (IllegalStateException e) {
                 Log.i("DbAuthLog", "Error authenticating", e);
@@ -115,18 +119,16 @@ public class DropBoxAPIManager {
     }
 
     public String getToken() {
-        SharedPreferences prefs = context.getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+        //SharedPreferences prefs = context.getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+        SharedPreferences prefs = activity.getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
         String token = prefs.getString(ACCESS_TOKEN_NAME, null);
-        Log.d("token in gettoken", token);
+        //Log.d("token in gettoken", token.toString());
         return token;
     }
 
-//    public void setToken(String token) {
-//        ACCESS_TOKEN_NAME = token;
-//    }
-
     public void storeToken(String token) {
-        SharedPreferences prefs = context.getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+        //SharedPreferences prefs = context.getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+        SharedPreferences prefs = activity.getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
         SharedPreferences.Editor edit = prefs.edit();
         edit.putString(ACCESS_TOKEN_NAME, token);
         edit.commit();
@@ -143,7 +145,8 @@ public class DropBoxAPIManager {
 //    }
 //
     private void clearKeys() {
-        SharedPreferences prefs = context.getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+        //SharedPreferences prefs = context.getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+        SharedPreferences prefs = activity.getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
         SharedPreferences.Editor edit = prefs.edit();
         edit.clear();
         edit.commit();

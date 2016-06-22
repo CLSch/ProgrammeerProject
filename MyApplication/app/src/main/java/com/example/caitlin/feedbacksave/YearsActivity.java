@@ -1,6 +1,7 @@
 package com.example.caitlin.feedbacksave;
 
 import android.content.SharedPreferences;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.AppKeyPair;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class YearsActivity extends SuperActivity {
@@ -25,9 +27,8 @@ public class YearsActivity extends SuperActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_years);
 
-        DropBoxAPIManager.getInstance(this);
 
-        helper = new DBHelper(this);
+        DropBoxAPIManager.getInstance(this);
 
 //        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
 //        String token = prefs.getString(ACCESS_TOKEN_NAME, null);
@@ -39,14 +40,18 @@ public class YearsActivity extends SuperActivity {
             DropBoxAPIManager.getInstance().dBApi.getSession().setOAuth2AccessToken(token);
         }
 
-        Log.d("voor", "de error");
-        if (helper.readAllYears().isEmpty()) {
-            Log.d("in if statement", helper.readAllYears().toString());
-            helper.createYear();
-        }
+        helper = new DBHelper(this);
 
-        addYearsToList();
-        makeAdapter();
+//        checkDB();
+
+//        Log.d("voor", "de errorrr");
+//        if (helper.readAllYears().isEmpty()) {
+//            Log.d("in if statement", helper.readAllYears().toString());
+//            helper.createYear();
+//        }
+//
+//        addYearsToList();
+//        makeAdapter();
 
 //        int num = yearsList.size();
 //        Log.d("dit is yearslist", yearsList.get(num - 1));
@@ -64,6 +69,32 @@ public class YearsActivity extends SuperActivity {
         lvYears = (ListView) findViewById(R.id.lvYear);
         assert lvYears != null;
         lvYears.setAdapter(adapter);
+    }
+
+    public void checkDB() {
+        new MetadataAsyncTask(this).execute("/feedbackTest19.db");
+    }
+
+    public void naAuthenticatie() {
+        checkDB();
+
+        Log.d("voor", "de errorrr");
+        if (helper.readAllYears().isEmpty()) {
+            Log.d("in if statement", helper.readAllYears().toString());
+            helper.createYear();
+        }
+
+        addYearsToList();
+        makeAdapter();
+    }
+
+    public void metadataExists() {
+        new DownloadFileAsyncTask(this);
+    }
+
+    public void getDBFile(File file) {
+        String path = file.getPath();
+        helper.importDatabase(path);
     }
 
     public void addYearsToList() {

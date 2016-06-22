@@ -46,7 +46,7 @@ public class PhotoFeedback extends SuperActivity {
     }
 
     public void downloadFile(){
-        new DownloadFileAsyncTask(this, (ImageView) findViewById(R.id.ivFB)).execute(filePath);
+        new DownloadFileAsyncTask(this).execute(filePath);
     }
 
 //    @Override

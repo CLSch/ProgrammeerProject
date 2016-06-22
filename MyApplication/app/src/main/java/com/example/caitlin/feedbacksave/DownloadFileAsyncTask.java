@@ -22,19 +22,27 @@ import java.io.FileOutputStream;
  * Created by Caitlin on 16-06-16.
  */
 public class DownloadFileAsyncTask extends AsyncTask<String, Void, File> {
-    PhotoFeedback activity;
-    ImageView ivFB;
+    PhotoFeedback photoActivity;
+    YearsActivity yearsActivity;
     private ProgressDialog dialog;
 
-    DownloadFileAsyncTask(PhotoFeedback activity, ImageView ivFeedback) {
-        this.activity = activity;
-        this.ivFB = ivFeedback;
+    DownloadFileAsyncTask(PhotoFeedback activity) {
+        this.photoActivity = activity;
+        this.dialog = new ProgressDialog(activity);
+    }
+
+    DownloadFileAsyncTask(YearsActivity activity) {
+        this.yearsActivity = activity;
         this.dialog = new ProgressDialog(activity);
     }
 
     protected void onPreExecute() {
         // Progress Dialog
-        dialog.setMessage("Downloading image from Dropbox..");
+        if (photoActivity != null) {
+            dialog.setMessage("Downloading image from Dropbox..");
+        } else {
+            dialog.setMessage("Setting up account..");
+        }
         dialog.show();
     }
 
@@ -45,7 +53,14 @@ public class DownloadFileAsyncTask extends AsyncTask<String, Void, File> {
     protected File doInBackground(String... params) {
         String filePath = params[0];
         Log.d("dit is filePath", filePath);
-        File file = new File(activity.getFilesDir(), filePath);
+        File file;
+
+        if (photoActivity != null) {
+            file = new File(photoActivity.getFilesDir(), filePath);
+        } else {
+            file = new File(yearsActivity.getFilesDir(), filePath);
+        }
+        //File file = new File(activity.getFilesDir(), filePath);
         Log.d("dit is file", file.toString());
         FileOutputStream outputStream = null;
         try {
@@ -76,8 +91,13 @@ public class DownloadFileAsyncTask extends AsyncTask<String, Void, File> {
     protected void onPostExecute(File file) {
         super.onPostExecute(file);
         dialog.dismiss();
-        String filePath = file.getPath();
-        Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-        activity.getBitmap(bitmap);
+
+        if (photoActivity != null) {
+            String filePath = file.getPath();
+            Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+            photoActivity.getBitmap(bitmap);
+        } else {
+            yearsActivity.getDBFile(file);
+        }
     }
 }

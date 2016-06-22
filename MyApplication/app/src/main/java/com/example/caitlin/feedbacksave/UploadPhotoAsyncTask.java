@@ -28,6 +28,7 @@ public class UploadPhotoAsyncTask extends AsyncTask<Object, Void, String> {
     private File file;
     private AddPhotoFeedbackActivity addPhotoActivity;
     private CurrentSubjectActivity curSubActivity;
+    private SuperActivity superActivity;
     private ProgressDialog dialog;
 
     UploadPhotoAsyncTask(DbxClientV2 dbxClient, File file, AddPhotoFeedbackActivity activity ) {
@@ -44,8 +45,19 @@ public class UploadPhotoAsyncTask extends AsyncTask<Object, Void, String> {
         this.dialog = new ProgressDialog(activity);
     }
 
+    UploadPhotoAsyncTask(DbxClientV2 dbxClient, File file, SuperActivity activity ) {
+        this.dbxClient = dbxClient;
+        this.file = file;
+        this.superActivity = activity;
+        this.dialog = new ProgressDialog(activity);
+    }
+
     protected void onPreExecute() {
-        dialog.setMessage("Uploading image to Dropbox..");
+        if (superActivity != null) {
+            dialog.setMessage("Saving changes..");
+        } else {
+            dialog.setMessage("Uploading image to Dropbox..");
+        }
         dialog.show();
     }
 
@@ -75,7 +87,7 @@ public class UploadPhotoAsyncTask extends AsyncTask<Object, Void, String> {
         dialog.dismiss();
         if (addPhotoActivity != null) {
             addPhotoActivity.savePathToDB(filePath);
-        } else {
+        } else if (curSubActivity != null){
             curSubActivity.savePathToDB(filePath);
         }
     }

@@ -11,9 +11,14 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -23,6 +28,7 @@ import java.util.HashMap;
 public class DBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "feedbackTest19.db";
     private static final int DATABASE_VERSION = 1;
+
     //private static final String TABLE = "Todos";
 
     // table names
@@ -73,6 +79,40 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    // http://stackoverflow.com/questions/10254872/download-sqlite-database-from-internet-and-load-into-android-application
+    /** FIND THE FOLDER */
+    public static String getDatabase() {
+        return Environment.getExternalStorageDirectory().getAbsolutePath()+"/Android/data/com.example.caitlin.feedbacksave/databases/"+DATABASE_NAME;
+    }
+
+    public static String DB_FILEPATH = "/data/data/com.example.caitlin.feedbacksave/databases/"+DATABASE_NAME;
+
+    public File getDatabaseFile() {
+        return new File(DB_FILEPATH);
+    }
+
+    // http://stackoverflow.com/questions/6540906/simple-export-and-import-of-a-sqlite-database-on-android
+    public boolean importDatabase(String dbPath) {
+
+        // Close the SQLiteOpenHelper so it will commit the created empty
+        // database to internal storage.
+        close();
+        File newDb = new File(dbPath);
+        File oldDb = getDatabaseFile();
+        if (newDb.exists()) {
+            try {
+                FileUtils.copyFile(new FileInputStream(newDb), new FileOutputStream(oldDb));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            // Access the copied database so SQLiteHelper will cache it and mark
+            // it as created.
+            getWritableDatabase().close();
+            return true;
+        }
+        return false;
     }
 
     /** Create database when helper object is made and there isn't one already */
