@@ -1,3 +1,9 @@
+/**
+ * DownloadFileAsyncTask.java
+ * Caitlin Schäffers
+ * 10580441
+ */
+
 package com.example.caitlin.feedbacksave;
 
 import android.app.ProgressDialog;
@@ -75,7 +81,10 @@ public class DownloadFileAsyncTask extends AsyncTask<String, Void, File> {
     @Override
     protected void onPostExecute(File file) {
         super.onPostExecute(file);
-        dialog.dismiss();
+        if (!activity.isDestroyed()) {
+            dialog.dismiss();
+        }
+
         String filePath = file.getPath();
         Bitmap bitmap = BitmapFactory.decodeFile(filePath);
         activity.getBitmap(bitmap);

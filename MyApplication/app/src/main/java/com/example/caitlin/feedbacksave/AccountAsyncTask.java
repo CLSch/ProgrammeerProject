@@ -1,21 +1,19 @@
+/**
+ * AccountAsyncTask.java
+ * Caitlin Schäffers
+ * 10580441
+ */
+
 package com.example.caitlin.feedbacksave;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.os.DropBoxManager;
-import android.util.Log;
-
-import com.dropbox.client2.DropboxAPI;
-import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.users.FullAccount;
 
-import java.util.Map;
-
 /**
- * Created by Caitlin on 22-06-16.
+ * This AsyncTask gets the Dropbox-accountID from the logged in Dropbox-user.
  */
 public class AccountAsyncTask extends AsyncTask<Object, Void, String> {
     private DbxClientV2 dbxClient;
@@ -31,25 +29,24 @@ public class AccountAsyncTask extends AsyncTask<Object, Void, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+
+        // set up the progressdialog
         dialog.setMessage(activity.getString(R.string.loading_account));
         dialog.show();
     }
 
     @Override
     protected String doInBackground(Object[] objects) {
-        Log.d("in doinbackground", "accountasynctask");
         FullAccount account;
         String userId = "";
+
         try {
+            // get the Dropbox user-id
             account = dbxClient.users().getCurrentAccount();
-            Log.d("dit is account", account.toString());
             userId = account.getAccountId();
-            Log.d("dit is userid", userId);
         } catch (DbxException e) {
-            Log.d("in catch", "accountasync");
             e.printStackTrace();
         }
-
 
         return userId;
     }
@@ -57,9 +54,15 @@ public class AccountAsyncTask extends AsyncTask<Object, Void, String> {
     @Override
     protected void onPostExecute(String userId) {
         super.onPostExecute(userId);
-        dialog.dismiss();
+        try {
+            dialog.dismiss();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+
+        // set the UserId with the current dropbox user-id
         UserId.getInstance().setUserId(userId);
-        Log.d("userid in account async", UserId.getInstance().getUserId());
+
         activity.afterAccountAsyncTask();
     }
 }

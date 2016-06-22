@@ -1,35 +1,28 @@
+/**
+ * AddPhotoFeedbackActivity.java
+ * Caitlin Schäffers
+ * 10580441
+ */
+
 package com.example.caitlin.feedbacksave;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
-import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.dropbox.client2.DropboxAPI;
-import com.dropbox.client2.exception.DropboxException;
-import com.dropbox.client2.exception.DropboxUnlinkedException;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.prefs.Preferences;
 
 // https://www.sitepoint.com/adding-the-dropbox-api-to-an-android-app/
 
+/**
+ * This activity gets called when a user chooses a picture from the gallery.
+ */
 public class AddPhotoFeedbackActivity extends SuperActivity {
     EditText etTag;
     EditText etFBName;

@@ -1,22 +1,19 @@
+/**
+ * UploadPhotoAsyncTask.java
+ * Caitlin Schäffers
+ * 10580441
+ */
+
 package com.example.caitlin.feedbacksave;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
-
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.WriteMode;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -72,7 +69,11 @@ public class UploadPhotoAsyncTask extends AsyncTask<Object, Void, String> {
     @Override
     protected void onPostExecute(String filePath) {
 //        super.onPostExecute(filePath);
-        dialog.dismiss();
+        try {
+            dialog.dismiss();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
         if (addPhotoActivity != null) {
             addPhotoActivity.savePathToDB(filePath);
         } else {

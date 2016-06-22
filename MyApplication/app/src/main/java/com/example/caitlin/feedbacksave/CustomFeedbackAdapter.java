@@ -1,3 +1,9 @@
+/**
+ * CustomFeedbackAdapter.java
+ * Caitlin Schäffers
+ * 10580441
+ */
+
 package com.example.caitlin.feedbacksave;
 
 import android.content.Context;
@@ -18,7 +24,6 @@ import java.util.ArrayList;
  * Created by Caitlin on 02-06-16.
  */
 public class CustomFeedbackAdapter extends ArrayAdapter<String> {
-    // wordt later waarschijnlijk arraylist met Feedback Objects
     ArrayList<String> feedback;
     CurrentSubjectActivity activity;
     String subject;

@@ -3,6 +3,7 @@
  * Caitlin Schäffers
  * 10580441
  */
+
 package com.example.caitlin.feedbacksave;
 
 import android.content.ContentValues;
@@ -12,10 +13,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * In deze class staan alle functies voor de SQLite Database.
@@ -142,6 +140,21 @@ public class DBHelper extends SQLiteOpenHelper {
         return years;
     }
 
+    // stackoverflow
+    public boolean subjectYearItemExists(String year, String userId) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        String query = "SELECT * FROM " + TABLE_SUBJECTS + " WHERE " + KEY_SUBJECT_YEAR
+                + " = ? AND " + KEY_USER_ID + " = ?";
+        Cursor cursor = db.rawQuery(query , new String[] {year, userId});
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
+
     // niet maar eentje toch?
 
     ////////////////////// SUBJECTS
@@ -184,21 +197,6 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return subjects;
-    }
-
-    // stackoverflow
-    public boolean yearItemExists(String year, String userId) {
-        SQLiteDatabase db = getReadableDatabase();
-
-        String query = "SELECT * FROM " + TABLE_SUBJECTS + " WHERE " + KEY_SUBJECT_YEAR
-                + " = ? AND " + KEY_USER_ID + " = ?";
-        Cursor cursor = db.rawQuery(query , new String[] {year, userId});
-        if(cursor.getCount() <= 0){
-            cursor.close();
-            return false;
-        }
-        cursor.close();
-        return true;
     }
 
     // UPDATE ALL SUBJECTS

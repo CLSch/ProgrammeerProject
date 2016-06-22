@@ -1,17 +1,19 @@
+/**
+ * CustomYearsAdapter.java
+ * Caitlin Schäffers
+ * 10580441
+ */
+
 package com.example.caitlin.feedbacksave;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
-import com.dropbox.client2.DropboxAPI;
-
 import java.util.ArrayList;
 
 /**

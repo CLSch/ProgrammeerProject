@@ -1,3 +1,9 @@
+/**
+ * PhotoFeedbackActivity.java
+ * Caitlin Schäffers
+ * 10580441
+ */
+
 package com.example.caitlin.feedbacksave;
 
 import android.content.Intent;
@@ -48,19 +54,4 @@ public class PhotoFeedbackActivity extends SuperActivity {
     public void downloadFile(){
         new DownloadFileAsyncTask(this, (ImageView) findViewById(R.id.ivFB)).execute(filePath);
     }
-
-//    @Override
-//    protected void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        outState.putParcelable("bitmap", bitmap);
-//    }
-
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        ivFeedback.setImageBitmap(null);
-//        bitmap.recycle();
-//        System.gc();
-//        Runtime.getRuntime().gc();
-//    }
 }

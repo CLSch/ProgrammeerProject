@@ -1,25 +1,16 @@
+/**
+ * SuperActivity.java
+ * Caitlin Schäffers
+ * 10580441
+ */
+
 package com.example.caitlin.feedbacksave;
 
-import android.app.ActionBar;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
-
-import com.dropbox.client2.DropboxAPI;
-import com.dropbox.client2.android.AndroidAuthSession;
-import com.dropbox.client2.session.AccessTokenPair;
-import com.dropbox.client2.session.AppKeyPair;
-import com.dropbox.client2.session.TokenPair;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 
 public class SuperActivity extends AppCompatActivity {
 //    DropboxAPI<AndroidAuthSession> dBApi;

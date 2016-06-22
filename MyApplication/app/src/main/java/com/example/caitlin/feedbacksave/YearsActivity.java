@@ -1,17 +1,17 @@
+/**
+ * YearsActivity.java
+ * Caitlin Schäffers
+ * 10580441
+ */
+
 package com.example.caitlin.feedbacksave;
 
+import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import com.dropbox.client2.DropboxAPI;
-import com.dropbox.client2.android.AndroidAuthSession;
-import com.dropbox.client2.session.AppKeyPair;
-import com.dropbox.core.v2.DbxClientV2;
 
 import java.util.ArrayList;
 
@@ -20,8 +20,6 @@ public class YearsActivity extends SuperActivity {
     CustomYearsAdapter adapter;
     ListView lvYears;
     DBHelper helper;
-    String userId;
-    private DbxClientV2 dbxClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +28,7 @@ public class YearsActivity extends SuperActivity {
 
         DropBoxAPIManager.getInstance(this);
 
-//        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
-//        String token = prefs.getString(ACCESS_TOKEN_NAME, null);
-
+        //SharedPreferences doei = this.getSharedPreferences(prefs, Context.MODE_PRIVATE);
         String token = DropBoxAPIManager.getInstance().getToken();
         if (token == null) {
             DropBoxAPIManager.getInstance().dBApi.getSession().startOAuth2Authentication(YearsActivity.this);
@@ -40,10 +36,6 @@ public class YearsActivity extends SuperActivity {
             DropBoxAPIManager.getInstance().dBApi.getSession().setOAuth2AccessToken(token);
             new AccountAsyncTask(DropBoxClient.getClient(token), this).execute();
         }
-
-//        int num = yearsList.size();
-//        Log.d("dit is yearslist", yearsList.get(num - 1));
-
     }
 
     protected void onResume() {
