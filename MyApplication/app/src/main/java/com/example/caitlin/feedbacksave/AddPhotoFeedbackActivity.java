@@ -99,7 +99,7 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
             return false;
         }
 
-        ArrayList<Photo> temp = helper.readAllPhotosPerSubject(subject);
+        ArrayList<Photo> temp = helper.readAllPhotosPerSubject(subject, UserId.getInstance().getUserId());
         for (int i = 0; i < temp.size(); i++) {
             if (name.equals(temp.get(i).getName())) {
                 Log.d("in if click", "dialog");
@@ -152,7 +152,7 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
     }
 
     public void savePathToDB(String path) {
-        helper.createPhoto(FBName ,path, subject);
+        helper.createPhoto(FBName, path, subject, UserId.getInstance().getUserId());
         currentSubjectIntent();
     }
 

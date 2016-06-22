@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import java.lang.ref.WeakReference;
 
-public class PhotoFeedback extends SuperActivity {
+public class PhotoFeedbackActivity extends SuperActivity {
     String filePath;
     String subject;
     Bitmap bitmap;

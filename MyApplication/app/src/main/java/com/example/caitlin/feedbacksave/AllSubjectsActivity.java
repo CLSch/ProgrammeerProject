@@ -43,7 +43,8 @@ public class AllSubjectsActivity extends SuperActivity {
 //        assert year != null;
 //        year = year.replaceAll("\\s+","");
 
-        if (helper.yearItemExists(year) && !helper.readAllSubjectsPerYear(year).isEmpty()) {
+        if (helper.yearItemExists(year, UserId.getInstance().getUserId()) &&
+                !helper.readAllSubjectsPerYear(year, UserId.getInstance().getUserId()).isEmpty()) {
             addSubjectsToList();
         }
 
@@ -66,7 +67,7 @@ public class AllSubjectsActivity extends SuperActivity {
 
     public void addSubjectsToList() {
         subjectsList.clear(); // no errors?
-        ArrayList<Subject> temp = helper.readAllSubjectsPerYear(year);
+        ArrayList<Subject> temp = helper.readAllSubjectsPerYear(year, UserId.getInstance().getUserId());
         for (int i = 0; i < temp.size(); i++) {
             subjectsList.add(temp.get(i).getName());
         }
@@ -129,7 +130,7 @@ public class AllSubjectsActivity extends SuperActivity {
 
     public void makeChangeSubjectAlertDialog(final String currentName, int pos) {
         //TODO: vang SQLite injections? rare tekens af
-        ArrayList<Subject> subjects = helper.readAllSubjectsPerYear(year);
+        ArrayList<Subject> subjects = helper.readAllSubjectsPerYear(year, UserId.getInstance().getUserId());
         _id = subjects.get(pos).getId();
         //// ^^^ dit in een aparte functie?
 
@@ -159,7 +160,7 @@ public class AllSubjectsActivity extends SuperActivity {
             @Override
             public void onClick(DialogInterface dialog, int pos) {
                 //delete from database
-                helper.deleteSubject(_id);
+                helper.deleteSubject(_id, UserId.getInstance().getUserId());
 
                 // delete from view, is dit nodig of kun je ook de adapter updaten?
                 adapter.remove(currentName);
@@ -171,7 +172,7 @@ public class AllSubjectsActivity extends SuperActivity {
     }
 
     public void updateSubject() {
-        helper.updateSubject(alertInput, _id, year);
+        helper.updateSubject(alertInput, _id, year, UserId.getInstance().getUserId());
         adapter.clear();
         addSubjectsToList();
         Log.d("DIT IS SUBJECTSLIST", Integer.toString(subjectsList.size()));
@@ -180,7 +181,7 @@ public class AllSubjectsActivity extends SuperActivity {
     }
 
     public void createSubject() {
-        helper.createSubject(alertInput, year);
+        helper.createSubject(alertInput, year, UserId.getInstance().getUserId());
         adapter.clear();
         addSubjectsToList();
         Log.d("DIT IS SUBJECTSLIST", Integer.toString(subjectsList.size()));

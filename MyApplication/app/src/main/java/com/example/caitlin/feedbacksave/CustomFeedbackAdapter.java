@@ -49,10 +49,10 @@ public class CustomFeedbackAdapter extends ArrayAdapter<String> {
         }
 
         final String thisListItem = feedback.get(pos);
-        ArrayList<Photo> temp = helper.readAllPhotosPerSubject(subject);
+        ArrayList<Photo> temp = helper.readAllPhotosPerSubject(subject, UserId.getInstance().getUserId());
         final int id = temp.get(pos).getId();
 
-        final String path = helper.getPhotoPath(id);
+        final String path = helper.getPhotoPath(id, UserId.getInstance().getUserId());
 //
 //        // put Todolist names in textview for listview
         TextView tvList = (TextView) view.findViewById(R.id.tvInListView);
@@ -67,7 +67,7 @@ public class CustomFeedbackAdapter extends ArrayAdapter<String> {
                 // CHECK OF FB EEN FOTO IS OF EEN MEMO EN OPEN DE JUISTE INTENT!!!
 
 
-                Intent photoFeedbackIntent = new Intent(activity, PhotoFeedback.class);
+                Intent photoFeedbackIntent = new Intent(activity, PhotoFeedbackActivity.class);
                 photoFeedbackIntent.putExtra("subjectName", subject);
                 photoFeedbackIntent.putExtra("filePath", path);
                 activity.startActivity(photoFeedbackIntent);

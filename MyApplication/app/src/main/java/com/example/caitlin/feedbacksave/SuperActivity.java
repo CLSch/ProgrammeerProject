@@ -31,6 +31,7 @@ public class SuperActivity extends AppCompatActivity {
 //    final static String ACCOUNT_PREFS_NAME = "prefs";
 //    static String ACCESS_TOKEN_NAME = "ACCESS_TOKEN";
 //    AndroidAuthSession session;
+    static String userId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

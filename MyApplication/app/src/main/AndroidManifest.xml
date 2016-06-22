@@ -41,7 +41,7 @@
 
         <activity android:name=".AllSubjectsActivity" />
         <activity android:name=".CurrentSubjectActivity" />
-        <activity android:name=".PhotoFeedback" />
+        <activity android:name=".PhotoFeedbackActivity" />
         <activity android:name=".AddPhotoFeedbackActivity" />
         <activity android:name=".AddNote" />
         <activity android:name=".SuperActivity"></activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for

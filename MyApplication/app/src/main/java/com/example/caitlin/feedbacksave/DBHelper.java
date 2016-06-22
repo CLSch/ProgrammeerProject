@@ -21,7 +21,8 @@ import java.util.HashMap;
  * In deze class staan alle functies voor de SQLite Database.
  */
 public class DBHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "feedbackTest19.db";
+
+    private static final String databaseName = "Feedback.db";
     private static final int DATABASE_VERSION = 1;
     //private static final String TABLE = "Todos";
 
@@ -34,6 +35,7 @@ public class DBHelper extends SQLiteOpenHelper {
     // general key names
     public static final String KEY_ID = "_id"; // public of private?
     private static final String KEY_FB_TYPE = "Type";
+    private static final String KEY_USER_ID = "UserID";
 
     // years table column names
     private static final String KEY_YEARS = "Year";
@@ -57,22 +59,23 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // create statements for tables
     private static final String CREATE_TABLE_YEARS = "CREATE TABLE " + TABLE_YEARS
-            + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_YEARS + " TEXT)";
+            + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_USER_ID + " TEXT," + KEY_YEARS + " TEXT)";
 
     private static final String CREATE_TABLE_SUBJECTS = "CREATE TABLE " + TABLE_SUBJECTS
-            + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_SUBJECT + " TEXT,"
+            + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_USER_ID + " TEXT," + KEY_SUBJECT + " TEXT,"
             + KEY_SUBJECT_YEAR + " TEXT)";
 
     private static final String CREATE_TABLE_NOTES = "CREATE TABLE " + TABLE_NOTES
-            + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_USER_ID + " TEXT,"
             + KEY_NOTES + " TEXT," + KEY_FB_TYPE + " INTEGER)";
 
     private static final String CREATE_TABLE_PHOTOS = "CREATE TABLE " + TABLE_PHOTOS
-            + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_PHOTOS + " TEXT,"
-            + KEY_PHOTO_SUBJECT + " TEXT," + KEY_PHOTOS_PATH + " TEXT," + KEY_FB_TYPE + " INTEGER)";
+            + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_USER_ID + " TEXT,"
+            + KEY_PHOTOS + " TEXT," + KEY_PHOTO_SUBJECT + " TEXT," + KEY_PHOTOS_PATH + " TEXT,"
+            + KEY_FB_TYPE + " INTEGER)";
 
     public DBHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, databaseName, null, DATABASE_VERSION);
     }
 
     /** Create database when helper object is made and there isn't one already */
@@ -99,7 +102,7 @@ public class DBHelper extends SQLiteOpenHelper {
     // ////////////////// YEAR
     // CREATE YEAR
     /** create years for in the database */
-    public void createYear() {
+    public void createYear(String userId) {
         SQLiteDatabase db = getWritableDatabase();
         Long numRows;
         try {
@@ -113,17 +116,18 @@ public class DBHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_YEARS, name);
+        values.put(KEY_USER_ID, userId);
         db.insert(TABLE_YEARS, null, values);
         db.close();
     }
 
     // GET ALL YEARS
-    public ArrayList<Year> readAllYears() {
+    public ArrayList<Year> readAllYears(String userId) {
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<Year> years = new ArrayList<>();
         //String query = "SELECT " + KEY_ID + ", " + KEY_YEARS + " FROM " + TABLE_YEARS;
-        String query = "SELECT * FROM " + TABLE_YEARS;
-        Cursor cursor = db.rawQuery(query, null);
+        String query = "SELECT * FROM " + TABLE_YEARS + " WHERE " + KEY_USER_ID + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[] {userId});
         if (cursor.moveToFirst()) {
             do {
                 Year year = new Year();
@@ -142,13 +146,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     ////////////////////// SUBJECTS
     // CREATE SUBJECT
-    public void createSubject(String name, String year) {
+    public void createSubject(String name, String year, String userId) {
         Log.d("in create year", year);
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put(KEY_SUBJECT, name);
         values.put(KEY_SUBJECT_YEAR, year);
+        values.put(KEY_USER_ID, userId);
         db.insert(TABLE_SUBJECTS, null, values);
         db.close();
     }
@@ -157,13 +162,14 @@ public class DBHelper extends SQLiteOpenHelper {
     // is dit echt nodig???
 
     // GET ALL SUBJECTS
-    public ArrayList<Subject> readAllSubjectsPerYear(String year) {
+    public ArrayList<Subject> readAllSubjectsPerYear(String year, String userId) {
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<Subject> subjects = new ArrayList<>();
 
 //        String query = "SELECT * FROM " + TABLE_SUBJECTS + " WHERE " + KEY_SUBJECT_YEAR + " = ?", year;
-
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SUBJECTS + " WHERE " + KEY_SUBJECT_YEAR + " = ?", new String[] {year});
+        String query = "SELECT * FROM " + TABLE_SUBJECTS + " WHERE " + KEY_SUBJECT_YEAR
+                + " = ? AND " + KEY_USER_ID + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[] {year, userId});
         if (cursor.moveToFirst()) {
             do {
                 // MAAK subject OBJECT
@@ -181,11 +187,12 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     // stackoverflow
-    public boolean yearItemExists(String year) {
+    public boolean yearItemExists(String year, String userId) {
         SQLiteDatabase db = getReadableDatabase();
 
-        // Query 1 row
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SUBJECTS + " WHERE " + KEY_SUBJECT_YEAR + " = ?", new String[] {year});
+        String query = "SELECT * FROM " + TABLE_SUBJECTS + " WHERE " + KEY_SUBJECT_YEAR
+                + " = ? AND " + KEY_USER_ID + " = ?";
+        Cursor cursor = db.rawQuery(query , new String[] {year, userId});
         if(cursor.getCount() <= 0){
             cursor.close();
             return false;
@@ -196,21 +203,23 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // UPDATE ALL SUBJECTS
     // je kan dit ook doen door het item te verwijderen en opnieuw aan te maken
-    public void updateSubject(String name, int id, String year){
+    public void updateSubject(String name, int id, String year, String userId){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put(KEY_SUBJECT, name);
 
-        db.update(TABLE_SUBJECTS, values, KEY_ID + " = ? AND " + KEY_SUBJECT_YEAR + " = ?",
-                new String[] {String.valueOf(id), year});
+        db.update(TABLE_SUBJECTS, values, KEY_ID + " = ? AND " + KEY_SUBJECT_YEAR + " = ? AND "
+                + KEY_USER_ID + " = ?", new String[] {String.valueOf(id), year, userId});
     }
 
+    // TODO delete alle feedback die bij de subject hoort
     // DELETE SUBJECT
     // kan ook met de naam gedaan worden als dat handiger is
-    public void deleteSubject(int id){
+    public void deleteSubject(int id, String userId){
         SQLiteDatabase db = getWritableDatabase();
-        db.delete(TABLE_SUBJECTS, " " + KEY_ID + " = ? ", new String[] {String.valueOf(id)});
+        db.delete(TABLE_SUBJECTS, " " + KEY_ID + " = ? AND " + KEY_USER_ID + " = ?",
+                new String[] {String.valueOf(id), userId});
         db.close();
     }
 
@@ -227,7 +236,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //////////////////// PHOTOS
     // CREATE PHOTOS
-    public void createPhoto(String name, String path, String subject) {
+    public void createPhoto(String name, String path, String subject, String userId) {
         // type is 1 voor photos
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -236,6 +245,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(KEY_PHOTOS_PATH, path);
         values.put(KEY_PHOTO_SUBJECT, subject);
         values.put(KEY_FB_TYPE, 1);
+        values.put(KEY_USER_ID, userId);
         db.insert(TABLE_PHOTOS, null, values);
         db.close();
     }
@@ -243,13 +253,13 @@ public class DBHelper extends SQLiteOpenHelper {
     // GET ALL PHOTOS
     // get all feedback niet alleen photos
 
-    public ArrayList<Photo> readAllPhotosPerSubject(String subject){
+    public ArrayList<Photo> readAllPhotosPerSubject(String subject, String userId){
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<Photo> photos = new ArrayList<>();
 
-        String query = "SELECT * FROM " + TABLE_PHOTOS + " WHERE " + KEY_PHOTO_SUBJECT + " = ?";
+        String query = "SELECT * FROM " + TABLE_PHOTOS + " WHERE " + KEY_PHOTO_SUBJECT + " = ? AND " + KEY_USER_ID + " = ?";
 
-        Cursor cursor = db.rawQuery(query, new String[] {subject});
+        Cursor cursor = db.rawQuery(query, new String[] {subject, userId});
         if (cursor.moveToFirst()) {
             do {
                 // MAAK photo OBJECT
@@ -267,11 +277,11 @@ public class DBHelper extends SQLiteOpenHelper {
         return photos;
     }
 
-    public boolean subjectItemExists(String subject) {
+    public boolean subjectItemExists(String subject, String userId) {
         SQLiteDatabase db = getReadableDatabase();
 
-        // Query 1 row
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_PHOTOS + " WHERE " + KEY_PHOTO_SUBJECT + " = ?", new String[] {subject});
+        String query = "SELECT * FROM " + TABLE_PHOTOS + " WHERE " + KEY_PHOTO_SUBJECT + " = ? AND " + KEY_USER_ID + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[] {subject, userId});
         if(cursor.getCount() <= 0){
             cursor.close();
             return false;
@@ -283,12 +293,13 @@ public class DBHelper extends SQLiteOpenHelper {
     // GET PHOTO
 
     // GET PHOTO PATH
-    public String getPhotoPath(int id) {
+    public String getPhotoPath(int id, String userId) {
         SQLiteDatabase db = getReadableDatabase();
         String path = null;
 
-        String query = "SELECT " + KEY_PHOTOS_PATH + " FROM " + TABLE_PHOTOS + " WHERE " + KEY_ID + " = ?";
-        Cursor cursor = db.rawQuery(query, new String[] {String.valueOf(id)});
+        String query = "SELECT " + KEY_PHOTOS_PATH + " FROM " + TABLE_PHOTOS + " WHERE " +
+                KEY_ID + " = ? AND " + KEY_USER_ID + " = ?" ;
+        Cursor cursor = db.rawQuery(query, new String[] {String.valueOf(id), userId});
         if (cursor.moveToFirst()) {
             do {
                 path = cursor.getString(cursor.getColumnIndex(KEY_PHOTOS_PATH));
@@ -299,71 +310,10 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     // DELETE PHOTO
-    public void deletePhoto(int id){
+    public void deletePhoto(int id, String userId){
         SQLiteDatabase db = getWritableDatabase();
-        db.delete(TABLE_PHOTOS, " " + KEY_ID + " = ? ", new String[] {String.valueOf(id)}); // moet die komma in een string?
+        db.delete(TABLE_PHOTOS, " " + KEY_ID + " = ? AND " + KEY_USER_ID + " = ?",
+                new String[] {String.valueOf(id), userId}); // moet die komma in een string?
         db.close();
-    }
-
-//    // GET ALL FEEDBACK PER SUBJECT
-//    public ArrayList<Feedback> readAllFeedback(String subject){
-//        SQLiteDatabase db = getReadableDatabase();
-//        ArrayList<Feedback> feedback = new ArrayList<>();
-//
-//        String query = "SELECT * FROM " + TABLE_PHOTOS+ ", " + TABLE_NOTES + " WHERE " + KEY_SUBJECT_FB + " = " + subject;
-//
-//        Cursor cursor = db.rawQuery(query, null);
-//        if (cursor.moveToFirst()) {
-//            do {
-//                // MAAK feedback OBJECT
-//                Subject subject = new Subject();
-//                subject.setId(cursor.getInt((cursor.getColumnIndex(KEY_ID))));
-//                subject.setName((cursor.getString(cursor.getColumnIndex(KEY_SUBJECT))));
-//
-//                // adding to years arraylist
-//                feedback.add(subject);
-//
-//            } while (cursor.moveToNext());
-//        }
-//
-//        return feedback;
-//    }
-
-
-
-
-
-    /** return a Arraylist Hashmap with all items in database */
-    public ArrayList<HashMap<String, String>> read() {
-        SQLiteDatabase db = getReadableDatabase();
-
-        ArrayList<HashMap<String, String>> todoList = new ArrayList();
-
-        //String query = "SELECT " + KEY_ID + ", " + KEY_TODO + " FROM " + TABLE;
-        //Cursor cursor = db.rawQuery(query, null);
-
-        // set cursor to the beginning of the database
-//        if (cursor.moveToFirst()){
-//            do {
-//                // add id and to-do from current row to hashmap
-//                HashMap<String, String> todoI = new HashMap<>();
-//                todoI.put("id", cursor.getString(cursor.getColumnIndex(KEY_ID)));
-//                todoI.put("todo", cursor.getString(cursor.getColumnIndex(KEY_TODO)));
-//
-//                todoList.add(todoI);
-//            }
-//            while (cursor.moveToNext());
-//        }
-//        cursor.close();
-//        db.close();
-//        return todoList;
-//    }
-//
-//    /** delete to-do's from database */
-//    public void delete(int id) {
-//        SQLiteDatabase db = getWritableDatabase();
-//        db.delete(TABLE, " " + KEY_ID + " = ? ", new String[] {String.valueOf(id)});
-//        db.close();
-        return null;
     }
 }

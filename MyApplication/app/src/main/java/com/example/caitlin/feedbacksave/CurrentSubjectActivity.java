@@ -46,7 +46,8 @@ public class CurrentSubjectActivity extends SuperActivity {
         Bundle extras = getIntent().getExtras();
         subject = extras.getString("subjectName");
 
-        if (helper.subjectItemExists(subject) && !helper.readAllPhotosPerSubject(subject).isEmpty()) {
+        if (helper.subjectItemExists(subject, UserId.getInstance().getUserId())
+                && !helper.readAllPhotosPerSubject(subject, UserId.getInstance().getUserId()).isEmpty()) {
             addPhotosToList();
         }
 
@@ -93,7 +94,7 @@ public class CurrentSubjectActivity extends SuperActivity {
 
     public void addPhotosToList() {
         photoList.clear();
-        ArrayList<Photo> temp = helper.readAllPhotosPerSubject(subject);
+        ArrayList<Photo> temp = helper.readAllPhotosPerSubject(subject, UserId.getInstance().getUserId());
         for (int i = 0; i < temp.size(); i++) {
             photoList.add(temp.get(i).getName());
         }
@@ -165,7 +166,7 @@ public class CurrentSubjectActivity extends SuperActivity {
     }
 
     public void savePathToDB(String path) {
-        helper.createPhoto(FBName ,path, subject);
+        helper.createPhoto(FBName ,path, subject, UserId.getInstance().getUserId());
         currentSubjectIntent();
     }
 
@@ -179,7 +180,7 @@ public class CurrentSubjectActivity extends SuperActivity {
     }
 
     public void deletePhoto(String path, int id) {
-        helper.deletePhoto(id);
+        helper.deletePhoto(id, UserId.getInstance().getUserId());
         addPhotosToList();
         adapter.notifyDataSetChanged();
         new DeleteFileAsyncTask(this).execute(path);
