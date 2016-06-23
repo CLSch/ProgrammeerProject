@@ -44,6 +44,7 @@ public class YearsActivity extends SuperActivity {
         }
     }
 
+    /* Call the resume function in the DropBoxAPIManager. */
     protected void onResume() {
         super.onResume();
 
@@ -51,13 +52,13 @@ public class YearsActivity extends SuperActivity {
     }
 
     /** This function gets called after the AccountAsyncTask is done so the database can be initialised
-     *  with the dropbox user-id */
+     *  with the dropbox user-id. */
     public void afterAccountAsyncTask() {
         helper = new DBHelper(this);
 
         // create the first year if there's not a year in the database yet
-        if (helper.readAllYears(UserId.getInstance().getUserId()).isEmpty()) {
-            helper.createYear(UserId.getInstance().getUserId());
+        if (helper.readAllYears(UserIdSingleton.getInstance().getUserId()).isEmpty()) {
+            helper.createYear(UserIdSingleton.getInstance().getUserId());
         }
 
         addYearsToList();
@@ -75,7 +76,7 @@ public class YearsActivity extends SuperActivity {
     /* Fill the yearsList with the names of the yearitems in the Database. */
     public void addYearsToList() {
         yearsList.clear();
-        ArrayList<Year> temp = helper.readAllYears(UserId.getInstance().getUserId());
+        ArrayList<Year> temp = helper.readAllYears(UserIdSingleton.getInstance().getUserId());
         for (int i = 0; i < temp.size(); i++) {
             yearsList.add(temp.get(i).getName());
         }
@@ -84,7 +85,7 @@ public class YearsActivity extends SuperActivity {
     /* Show an alertdialog on long click to delete years. */
     public void deleteYearsAlertDialog(final String currentName, int pos) {
         // get the id of the clicked year
-        ArrayList<Year> years = helper.readAllYears(UserId.getInstance().getUserId());
+        ArrayList<Year> years = helper.readAllYears(UserIdSingleton.getInstance().getUserId());
         id = years.get(pos).getId();
 
         // set up the alertdialog
@@ -103,7 +104,7 @@ public class YearsActivity extends SuperActivity {
             @Override
             public void onClick(DialogInterface dialog, int pos) {
                 //delete from database
-                helper.deleteYear(id, UserId.getInstance().getUserId());
+                helper.deleteYear(id, UserIdSingleton.getInstance().getUserId());
 
                 // delete from view
                 adapter.remove(currentName);
@@ -115,7 +116,7 @@ public class YearsActivity extends SuperActivity {
 
     /* Add a year to the database and view after clicking the add button. */
     public void addYearClick(View v) {
-        helper.createYear(UserId.getInstance().getUserId());
+        helper.createYear(UserIdSingleton.getInstance().getUserId());
         adapter.clear();
         addYearsToList();
         adapter.addAll();

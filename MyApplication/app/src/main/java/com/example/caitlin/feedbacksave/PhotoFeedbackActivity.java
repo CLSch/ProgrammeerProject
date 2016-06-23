@@ -6,18 +6,13 @@
 
 package com.example.caitlin.feedbacksave;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 
-import java.lang.ref.WeakReference;
-
 /**
- *
+ * This activity shows the downloaded file from dropbox. The file gets returned to this activity as
+ * as bitmap and binded to the imageview.
  */
 public class PhotoFeedbackActivity extends SuperActivity {
     String filePath;
@@ -33,25 +28,24 @@ public class PhotoFeedbackActivity extends SuperActivity {
         filePath = extras.getString("filePath");
         ivFeedback = (ImageView) findViewById(R.id.ivFB);
 
-//        if (savedInstanceState != null) {
-//            bitmap = (Bitmap) savedInstanceState.getParcelable("bitmap");
-//            ivFeedback.setImageBitmap(bitmap);
-//        }
-//        else {
+        // make sure the bitmap gets removed by the garbage collector after an orientation change
         System.gc();
+
         downloadFile();
-//        }
     }
 
+    /* Gets the bitmap from the DownloadFileAsyncTask. */
     public void getBitmap(Bitmap bitmap){
         this.bitmap = bitmap;
         setImageView(ivFeedback);
     }
 
+    /* Binds bitmap to the ImageView. */
     public void setImageView(ImageView ivFeedback) {
         ivFeedback.setImageBitmap(bitmap);
     }
 
+    /* Downloads a dropbox file via the DownloadFileAsyncTask. */
     public void downloadFile(){
         new DownloadFileAsyncTask(this).execute(filePath);
     }

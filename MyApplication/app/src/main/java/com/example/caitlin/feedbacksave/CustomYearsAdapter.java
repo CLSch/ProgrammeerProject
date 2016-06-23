@@ -17,25 +17,21 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by Caitlin on 02-06-16.
+ * Adapter for putting years in the listview in the YearsActivity.
  */
 public class CustomYearsAdapter extends ArrayAdapter<String>{
-    // of StringArrayList?
     ArrayList<String> years;
     YearsActivity activity;
-    //DropboxAPI dbApi;
 
     public CustomYearsAdapter (YearsActivity activity, ArrayList<String> data) {
         super(activity, 0, data);
-        //this.dbApi = dBApi;
         this.years = data;
         this.activity = activity;
     }
 
-    /** get the view and return it*/
+    /* Get the view and return it. */
     @Override
     public View getView(int pos, View view, ViewGroup parent) {
-        //final int thisPos = pos;
 
         if (view == null){
             LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -44,24 +40,22 @@ public class CustomYearsAdapter extends ArrayAdapter<String>{
 
         final int thisPos = pos;
         final String thisListItem = years.get(pos);
-//
-//        // put Todolist names in textview for listview
+
+        // put year names in textview for listview
         TextView tvList = (TextView) view.findViewById(R.id.tvInListView);
         tvList.setText(thisListItem);
 
-        // start Currentlistactivity on click
+        // start AllSubjectsActivity on click
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("onclick is clicked", thisListItem);
                 Intent allSubjectsIntent = new Intent(activity, AllSubjectsActivity.class);
-                // geef alle vakken mee
                 allSubjectsIntent.putExtra("year", thisListItem);
                 activity.startActivity(allSubjectsIntent);
             }
         });
 
-        // delete todolists on longclick
+        // delete years on longclick
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {

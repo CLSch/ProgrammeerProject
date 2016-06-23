@@ -9,15 +9,11 @@ package com.example.caitlin.feedbacksave;
 import java.io.Serializable;
 
 /**
- * Created by Caitlin on 18-06-16.
+ * Class for Subject object. The Subject object contains an id and name.
  */
 public class Subject implements Serializable {
     int id;
     String name;
-
-    public Subject(){
-
-    }
 
     public String getName() {
         return name;

@@ -61,7 +61,7 @@ public class AccountAsyncTask extends AsyncTask<Object, Void, String> {
         }
 
         // set the UserId with the current dropbox user-id
-        UserId.getInstance().setUserId(userId);
+        UserIdSingleton.getInstance().setUserId(userId);
 
         activity.afterAccountAsyncTask();
     }

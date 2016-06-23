@@ -8,43 +8,31 @@ package com.example.caitlin.feedbacksave;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
-import com.dropbox.client2.DropboxAPI;
-
 import java.util.ArrayList;
 
 /**
- * Created by Caitlin on 02-06-16.
+ * Adapter for putting photo feedback in the listview in the CurrentSubjectActivity.
  */
 public class CustomFeedbackAdapter extends ArrayAdapter<String> {
     ArrayList<String> feedback;
     CurrentSubjectActivity activity;
     String subject;
-    //DBHelper helper;
-    //StorageReference photoRef;
-    //String photoRefPath;
-    //DropboxAPI dropboxAPI;
 
     public CustomFeedbackAdapter (CurrentSubjectActivity activity, ArrayList<String> data, String subject) {
         super(activity, 0, data);
         this.feedback = data;
         this.activity = activity;
         this.subject = subject;
-        //this.photoRefPath = ref;
-        //this.dropboxAPI = dbApi;
     }
 
-    /** get the view and return it*/
+    /* Get the view and return it. */
     @Override
     public View getView(int pos, View view, ViewGroup parent) {
-        //final int thisPos = pos;
 
         DBHelper helper = new DBHelper(activity);
 
@@ -53,36 +41,34 @@ public class CustomFeedbackAdapter extends ArrayAdapter<String> {
             view = inflater.inflate(R.layout.listview_items, parent, false);
         }
 
+        // get the name from the photo feedback items
         final String thisListItem = feedback.get(pos);
-        ArrayList<Photo> temp = helper.readAllPhotosPerSubject(subject, UserId.getInstance().getUserId());
+
+        // get the id fron the photo feedback items
+        ArrayList<Photo> temp = helper.readAllPhotosPerSubject(subject, UserIdSingleton.getInstance().getUserId());
         final int id = temp.get(pos).getId();
 
-        final String path = helper.getPhotoPath(id, UserId.getInstance().getUserId());
-//
-//        // put Todolist names in textview for listview
+        // get the path from the photo feedback items
+        final String path = helper.getPhotoPath(id, UserIdSingleton.getInstance().getUserId());
+
+        // put feedback names in textview for listview
         TextView tvList = (TextView) view.findViewById(R.id.tvInListView);
         tvList.setText(thisListItem);
 
-        // start Currentlistactivity on click
+        // start PhotoFeedbackActivity on click
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // OPEN DE FEEDBACK, HEB JE API VOOR NODIG?
-
-                // CHECK OF FB EEN FOTO IS OF EEN MEMO EN OPEN DE JUISTE INTENT!!!
-
-
                 Intent photoFeedbackIntent = new Intent(activity, PhotoFeedbackActivity.class);
                 photoFeedbackIntent.putExtra("filePath", path);
                 activity.startActivity(photoFeedbackIntent);
             }
         });
 
-        // delete todolists on longclick
+        // prompt an alert dialog for deleting feedback on longclick
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                Log.d("ik ben in onlongclick", "customfeedback");
                 activity.deletePhotoAlertDialog(path, id);
                 return true;
             }

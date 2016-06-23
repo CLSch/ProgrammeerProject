@@ -16,8 +16,10 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
 /**
- * Created by Caitlin on 15-06-16.
+ * Class to get the absolute path from a URI of a picture saved in the users phone.
  *
+ * Made after the example of the following tutorial:
+ * Adding Dropbox to an Android App - Valdio Veliu, 19 april 2016
  * https://www.sitepoint.com/adding-the-dropbox-api-to-an-android-app/
  */
 public class URI_to_Path {
@@ -25,7 +27,8 @@ public class URI_to_Path {
 
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 
-        // DocumentProvider
+        // ignore the isDocumentUri and getDocumentId warnings since this code only runs if android
+        // phone is API 19+
         if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
             // ExternalStorageProvider
             if (isExternalStorageDocument(uri)) {
@@ -36,8 +39,6 @@ public class URI_to_Path {
                 if ("primary".equalsIgnoreCase(type)) {
                     return Environment.getExternalStorageDirectory() + "/" + split[1];
                 }
-
-                // TODO handle non-primary volumes
             }
             // DownloadsProvider
             else if (isDownloadsDocument(uri)) {
@@ -54,6 +55,7 @@ public class URI_to_Path {
                 final String[] split = docId.split(":");
                 final String type = split[0];
 
+                // choose uri based on file type
                 Uri contentUri = null;
                 if ("image".equals(type)) {
                     contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
@@ -80,7 +82,7 @@ public class URI_to_Path {
 
             return getDataColumn(context, uri, null, null);
         }
-        // File
+        // return the path if its a file uri
         else if ("file".equalsIgnoreCase(uri.getScheme())) {
             return uri.getPath();
         }
@@ -91,12 +93,6 @@ public class URI_to_Path {
     /**
      * Get the value of the data column for this Uri. This is useful for
      * MediaStore Uris, and other file-based ContentProviders.
-     *
-     * @param context       The context.
-     * @param uri           The Uri to query.
-     * @param selection     (Optional) Filter used in the query.
-     * @param selectionArgs (Optional) Selection arguments used in the query.
-     * @return The value of the _data column, which is typically a file path.
      */
     public static String getDataColumn(Context context, Uri uri, String selection,
                                        String[] selectionArgs) {
@@ -121,34 +117,22 @@ public class URI_to_Path {
     }
 
 
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is ExternalStorageProvider.
-     */
+    /* Check if Uri authority is ExternalStorageProvider. */
     public static boolean isExternalStorageDocument(Uri uri) {
         return "com.android.externalstorage.documents".equals(uri.getAuthority());
     }
 
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is DownloadsProvider.
-     */
+    /* Check if Uri authority is DownloadsProvider */
     public static boolean isDownloadsDocument(Uri uri) {
         return "com.android.providers.downloads.documents".equals(uri.getAuthority());
     }
 
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is MediaProvider.
-     */
+    /* Check if Uri authority is MediaProvider. */
     public static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is Google Photos.
-     */
+    /* Check if Uri authority is Google Photos. */
     public static boolean isGooglePhotosUri(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }

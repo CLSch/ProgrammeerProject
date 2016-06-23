@@ -1,5 +1,5 @@
 /**
- * UserId.java
+ * UserIdSingleton.java
  * Caitlin Schäffers
  * 10580441
  */
@@ -7,13 +7,13 @@
 package com.example.caitlin.feedbacksave;
 
 /**
- * Class for the UserId Singleton. This singleton contain the dropbox user-id.
+ * Class for the UserId Singleton. This singleton contains the dropbox user-id.
  */
-public class UserId {
-    private static UserId ourInstance = new UserId();
+public class UserIdSingleton {
+    private static UserIdSingleton ourInstance = new UserIdSingleton();
     private String userId;
 
-    public static UserId getInstance() { //empty???
+    public static UserIdSingleton getInstance() { //empty???
         return ourInstance;
     }
 

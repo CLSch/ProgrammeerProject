@@ -29,7 +29,7 @@ public class AllSubjectsActivity extends SuperActivity {
     DBHelper helper;
     String alertInput;
     String year;
-    int _id;
+    int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +43,8 @@ public class AllSubjectsActivity extends SuperActivity {
         year = extras.getString("year");
 
         // check first if subject-year items exist, so searching subjects in database doesn't fail
-        if (helper.subjectYearItemExists(year, UserId.getInstance().getUserId()) &&
-                !helper.readAllSubjectsPerYear(year, UserId.getInstance().getUserId()).isEmpty()) {
+        if (helper.subjectYearItemExists(year, UserIdSingleton.getInstance().getUserId()) &&
+                !helper.readAllSubjectsPerYear(year, UserIdSingleton.getInstance().getUserId()).isEmpty()) {
             // add subjects to list if there are subjects in the database for this user and year
             addSubjectsToList();
         }
@@ -63,7 +63,7 @@ public class AllSubjectsActivity extends SuperActivity {
     /* Fill subjectsList with subjects from the database. */
     public void addSubjectsToList() {
         subjectsList.clear();
-        ArrayList<Subject> temp = helper.readAllSubjectsPerYear(year, UserId.getInstance().getUserId());
+        ArrayList<Subject> temp = helper.readAllSubjectsPerYear(year, UserIdSingleton.getInstance().getUserId());
         for (int i = 0; i < temp.size(); i++) {
             subjectsList.add(temp.get(i).getName());
         }
@@ -71,8 +71,7 @@ public class AllSubjectsActivity extends SuperActivity {
 
     /* Alert dialog for creating subjects and changing the name of existing subjects. */
     public void makeNewSubjectAlertDialog(final String hint) {
-        //TODO: vang SQLite injections? rare tekens af
-
+        // set up alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.make_subject));
 
@@ -93,11 +92,10 @@ public class AllSubjectsActivity extends SuperActivity {
                 }
                 alertInput = input.getText().toString();
 
-                if(hint.equals("Create new name")) {
+                if(hint.equals(getString(R.string.create_new_name))) {
                     updateSubject();
                 }
                 else {
-                    Log.d("createSubject", "ja");
                     createSubject();
                 }
             }
@@ -112,13 +110,12 @@ public class AllSubjectsActivity extends SuperActivity {
         builder.show();
     }
 
+    /* Alert dialog to delete subjects or change name of subjects on longclick. */
     public void makeChangeSubjectAlertDialog(final String currentName, int pos) {
-        //TODO: vang SQLite injections? rare tekens af
-        ArrayList<Subject> subjects = helper.readAllSubjectsPerYear(year, UserId.getInstance().getUserId());
-        _id = subjects.get(pos).getId();
-        //// ^^^ dit in een aparte functie?
+        ArrayList<Subject> subjects = helper.readAllSubjectsPerYear(year, UserIdSingleton.getInstance().getUserId());
+        id = subjects.get(pos).getId();
 
-
+        // set up alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.edit_subject));
         builder.setMessage(getString(R.string.choose_change_subject));
@@ -140,43 +137,42 @@ public class AllSubjectsActivity extends SuperActivity {
             @Override
             public void onClick(DialogInterface dialog, int pos) {
                 //delete from database
-                helper.deleteSubject(_id, UserId.getInstance().getUserId());
+                helper.deleteSubject(id, UserIdSingleton.getInstance().getUserId());
 
                 // delete from view, is dit nodig of kun je ook de adapter updaten?
                 adapter.remove(currentName);
                 Toast.makeText(AllSubjectsActivity.this, R.string.item_is_deleted , Toast.LENGTH_SHORT).show();
             }
         });
-
         builder.show();
     }
 
+    /* Update subject name in database and view. */
     public void updateSubject() {
-        helper.updateSubject(alertInput, _id, year, UserId.getInstance().getUserId());
+        helper.updateSubject(alertInput, id, year, UserIdSingleton.getInstance().getUserId());
         adapter.clear();
         addSubjectsToList();
-        Log.d("DIT IS SUBJECTSLIST", Integer.toString(subjectsList.size()));
         adapter.addAll();
         adapter.notifyDataSetChanged();
     }
 
+    /* Create subject in database and change view. */
     public void createSubject() {
-        helper.createSubject(alertInput, year, UserId.getInstance().getUserId());
+        helper.createSubject(alertInput, year, UserIdSingleton.getInstance().getUserId());
         adapter.clear();
         addSubjectsToList();
-        Log.d("DIT IS SUBJECTSLIST", Integer.toString(subjectsList.size()));
         adapter.addAll();
         adapter.notifyDataSetChanged();
     }
 
+    /* Make an alert dialog when add button gets clicked. */
     public void addSubjectClick(View v){
-        // laat alert dialog zien voor de naam van het subject
         makeNewSubjectAlertDialog(getString(R.string.subject_name));
     }
 
+    /* Go to CurrentSubjectActivity when clicking on a subject. */
     public void startCurrentSubActivity(String subject) {
         Intent currentSubjectsIntent = new Intent(this, CurrentSubjectActivity.class);
-        // geef alle feedback mee
         currentSubjectsIntent.putExtra("subjectName", subject);
         this.startActivity(currentSubjectsIntent);
     }

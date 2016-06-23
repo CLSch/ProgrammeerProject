@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.dropbox.client2.exception.DropboxException;
 
 /**
- * Created by Caitlin on 20-06-16.
+ * Asynctask for deleting files from Dropbox.
  */
 public class DeleteFileAsyncTask extends AsyncTask<String, Void, String> {
     Context context;
@@ -25,7 +25,7 @@ public class DeleteFileAsyncTask extends AsyncTask<String, Void, String> {
     protected String doInBackground(String...params) {
         String path = params[0];
         try {
-            DropBoxAPIManager.getInstance().getDropBoxApi().delete(path); //"/20160601_213528.jpg"
+            DropBoxAPIManager.getInstance().getDropBoxApi().delete(path);
         } catch (DropboxException e) {
             e.printStackTrace();
         }
@@ -34,7 +34,7 @@ public class DeleteFileAsyncTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String s) {
-//        super.onPostExecute(s);
+        super.onPostExecute(s);
         Toast.makeText(context, "File successfully deleted", Toast.LENGTH_SHORT ).show();
     }
 }

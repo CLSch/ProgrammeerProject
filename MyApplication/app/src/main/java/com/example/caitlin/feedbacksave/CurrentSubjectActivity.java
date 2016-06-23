@@ -8,39 +8,29 @@ package com.example.caitlin.feedbacksave;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Environment;
-import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import com.dropbox.client2.DropboxAPI;
-import com.dropbox.client2.exception.DropboxException;
-import com.dropbox.core.v2.DbxClientV2;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Activity that shows all feedback belonging to a subject. Handles making a picture and adding
+ * a picture from the gallery to add it as feedback to Dropbox.
+ */
 public class CurrentSubjectActivity extends SuperActivity {
     ListView lvSubject;
     ArrayList<String> photoList = new ArrayList<>();
     CustomFeedbackAdapter adapter;
     DBHelper helper;
     String subject;
-    Uri imageUri;
     String token;
     String FBName;
-    File photoFile;
     private static int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
@@ -54,11 +44,13 @@ public class CurrentSubjectActivity extends SuperActivity {
         Bundle extras = getIntent().getExtras();
         subject = extras.getString("subjectName");
 
-        if (helper.subjectItemExists(subject, UserId.getInstance().getUserId())
-                && !helper.readAllPhotosPerSubject(subject, UserId.getInstance().getUserId()).isEmpty()) {
+        // get photo feedback from database if there are photo items in the database
+        if (helper.subjectItemExists(subject, UserIdSingleton.getInstance().getUserId())
+                && !helper.readAllPhotosPerSubject(subject, UserIdSingleton.getInstance().getUserId()).isEmpty()) {
             addPhotosToList();
         }
 
+        // remember feedback name given by user on orientation change
         if (savedInstanceState != null) {
             FBName = savedInstanceState.getString("FBName");
         }
@@ -69,54 +61,37 @@ public class CurrentSubjectActivity extends SuperActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("in onactivityresult", "cursubact");
         if (resultCode == RESULT_OK && data != null) {
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
-                Log.d("in if requestcode", "onact");
-
-                imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),"filename_" +
-                String.valueOf(System.currentTimeMillis()) + ".jpg"));
-
-                //use imageUri here to access the image
-
-                //Bundle extras = data.getExtras();
-
-                Log.d("URI",imageUri.toString());
-                Log.d("data is:", data.getData().toString());
-
+                // make file with the URI returned in data
                 File file = new File(URI_to_Path.getPath(getApplication(), data.getData()));
-                Log.d("dit is file", file.toString());
                 if (file != null) {
                     new UploadPhotoAsyncTask(DropBoxClient.getClient(token), file, this).execute();
                 }
-
-                //Bitmap bitmap = (Bitmap) extras.get("data");
-
-                // here you will get the image as bitmap
             }
         }
     }
 
+    /* Set up the CustomFeedbackAdapter. */
     public void makeAdapter(){
         adapter = new CustomFeedbackAdapter(this, photoList, subject);
         lvSubject = (ListView) findViewById(R.id.lvFeedback);
-        //listviewToDo.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         assert lvSubject != null;
         lvSubject.setAdapter(adapter);
     }
 
+    /* Get photo items from the database and put them in photoList. */
     public void addPhotosToList() {
         photoList.clear();
-        ArrayList<Photo> temp = helper.readAllPhotosPerSubject(subject, UserId.getInstance().getUserId());
+        ArrayList<Photo> temp = helper.readAllPhotosPerSubject(subject, UserIdSingleton.getInstance().getUserId());
         for (int i = 0; i < temp.size(); i++) {
             photoList.add(temp.get(i).getName());
         }
     }
 
-    /** Alert gets fired on long click and makes it possible to delete files. */
+    /* Alert dialog gets fired on longclick and makes it possible to delete files. */
     public void deletePhotoAlertDialog(final String path, final int id) {
-        //TODO: vang SQLite injections? rare tekens af
-
+        // set up alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.edit_feedback));
         builder.setMessage(getString(R.string.choose_change_feedback));
@@ -128,7 +103,6 @@ public class CurrentSubjectActivity extends SuperActivity {
                 dialog.cancel();
             }
         });
-
         builder.setNegativeButton(R.string.delete, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int pos) {
@@ -140,87 +114,83 @@ public class CurrentSubjectActivity extends SuperActivity {
     }
 
     public void makePhotoAlertDialog(String hint) {
-        //TODO: vang SQLite injections? rare tekens af
-
+        // set up alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.make_photo);
 
+        // set up inputfield for dialog
         final EditText input = new EditText(this);
         input.setHint(hint);
-        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
 
         // Set up the buttons
-        builder.setPositiveButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int pos) {
+                // force user to add a name
+                if (input.getText().length() == 0) {
+                    makePhotoAlertDialog(getString(R.string.empty_name_error));
+                    return;
+                }
+
+                FBName = input.getText().toString();
+                makePictureIntent();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int pos) {
                 dialog.cancel();
             }
         });
 
-        builder.setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int pos) {
-                if (input.getText().length() == 0) {
-                    makePhotoAlertDialog(getString(R.string.empty_name_error));
-
-                    return;
-                }
-
-                // TODO CHECK OP DUBBELE NAMEN, FBNAME in onsaveinstance opslaan? voor orientation changes
-                FBName = input.getText().toString();
-                //makePictureIntent();
-                makePictureIntent();
-            }
-        });
-
         builder.show();
     }
 
+    /* Save the dropbox path of the uploaded photo to database. */
     public void savePathToDB(String path) {
-        helper.createPhoto(FBName ,path, subject, UserId.getInstance().getUserId());
+        helper.createPhoto(FBName ,path, subject, UserIdSingleton.getInstance().getUserId());
         currentSubjectIntent();
     }
 
-    /** Is being called from the Asynctask to go back to this activity. */
+    /* Gets called from the Asynctask to go back to this activity. */
     public void currentSubjectIntent() {
         Intent currentSubjectIntent = new Intent(this, CurrentSubjectActivity.class);
-        // extras?
         currentSubjectIntent.putExtra("subjectName", subject);
         this.startActivity(currentSubjectIntent);
         finish();
     }
 
+    /* Delete photo feedback from the database and view. */
     public void deletePhoto(String path, int id) {
-        helper.deletePhoto(id, UserId.getInstance().getUserId());
+        helper.deletePhoto(id, UserIdSingleton.getInstance().getUserId());
         addPhotosToList();
         adapter.notifyDataSetChanged();
         new DeleteFileAsyncTask(this).execute(path);
     }
 
+    /* Start the camera app on the phone. */
     public void makePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),"filename_" +
-//                String.valueOf(System.currentTimeMillis()) + ".jpg"));
-////        Log.d("dit is imageUri", imageUri.toString());
-//        takePictureIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
 
+    /* Go to AddPhotoFeedbackActivity to create a name for the photo. */
     public void addPhotoFromGalleryClick(View v){
         Intent addPhotoFeedbackIntent = new Intent(this, AddPhotoFeedbackActivity.class);
         addPhotoFeedbackIntent.putExtra("subjectName", subject);
         this.startActivity(addPhotoFeedbackIntent);
     }
 
-    // http://stackoverflow.com/questions/14154104/how-to-take-a-photo-save-it-and-get-the-photo-in-android
+    /* Make an alert dialog when the user wants to take a picture to get a name for it. */
     public void makePhotoClick(View v){
         makePhotoAlertDialog(getString(R.string.feedback_name));
     }
 
+    /* Save the name the user gave for the picture for when the orientation changes. */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

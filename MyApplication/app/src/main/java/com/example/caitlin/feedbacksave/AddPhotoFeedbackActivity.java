@@ -7,21 +7,18 @@
 package com.example.caitlin.feedbacksave;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 import java.io.File;
-import java.util.ArrayList;
-
-// https://www.sitepoint.com/adding-the-dropbox-api-to-an-android-app/
 
 /**
  * This activity gets called when a user chooses a picture from the gallery.
+ * galleryintent() and onActivityResult() contain parts of the following tutorial:
+ * Adding Dropbox to an Android App - Valdio Veliu, 19 april 2016
+ * https://www.sitepoint.com/adding-the-dropbox-api-to-an-android-app/
  */
 public class AddPhotoFeedbackActivity extends SuperActivity {
     EditText etFBName;
@@ -52,7 +49,6 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
         assert errorMes != null;
         errorMes.setTextColor(Color.RED);
 
-//       checkPerm = Utility.checkPermission(AddPhotoFeedbackActivity.this);
     }
 
     /** When the user chooses a picture from the gallery this method gets called. */
@@ -92,26 +88,11 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
         if (!formValidation(etFBName.getText().toString())) {
             return;
         }
-
         FBName = etFBName.getText().toString();
 
-        //if (checkPerm) {
-            galleryIntent();
-        //}
+        galleryIntent();
     }
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-//        switch (requestCode) {
-//            case Utility.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
-//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    galleryIntent();
-//                } else {
-//                    Toast.makeText(this ,"Without permission no feedback can be uploaded", Toast.LENGTH_SHORT).show();
-//                }
-//                break;
-//        }
-//    }
 
     /** Gets called to start your gallery app on your phone with. */
     private void galleryIntent() {
@@ -122,7 +103,7 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
 
     /* saves dropbox path to database and calls currentSubjectIntent() */
     public void savePathToDB(String path) {
-        helper.createPhoto(FBName, path, subject, UserId.getInstance().getUserId());
+        helper.createPhoto(FBName, path, subject, UserIdSingleton.getInstance().getUserId());
         currentSubjectIntent();
     }
 

@@ -9,17 +9,12 @@ package com.example.caitlin.feedbacksave;
 import java.io.Serializable;
 
 /**
- * Created by Caitlin on 18-06-16.
+ * Class for Photo Object. Photo object contains an id, name and path where it's saved on dropbox.
  */
 public class Photo implements Serializable {
-    int id; // waarom doet deze alsof hij al geinitialiseerd is???
+    int id;
     String name;
-    int fbType = 1;
     String path;
-
-    Photo() {
-
-    }
 
     public int getId(){
         return this.id;
@@ -27,10 +22,6 @@ public class Photo implements Serializable {
 
     public String getName(){
         return this.name;
-    }
-
-    public String getPath() {
-        return this.path;
     }
 
     public void setId(int id) {
