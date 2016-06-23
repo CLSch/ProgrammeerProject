@@ -20,7 +20,16 @@ Sitepoint.com makes clear that all content of the website belongs to them and is
 
 Users need a dropbox account to use this app. 
 
-![Log in screen](doc/log_in_first_screen.jpg)
+![Log in screen](doc/authentication.png)
+
+The first screen they'll see is the YearsActivity in which they can add and delete years. Upon clicking on a year they go to the AllSubjectActivity where all the subjects they've added to that year are visible. These subjects can be added, deleted and changed by name. Upon clicking on a subject the user goes to the CurrentSubjectActivity where all the feedback added to that subject is listed. Feedback can be added, deleted and changed by name. In this activity the user can choose to upload feedback by choosing a picture from the gallery of their phone or by making a picture. In both cases the picture that's being taken gets uploaded to dropbox. When the user clicks on the feedback the PhotoFeedbackActivity will open and download the feedback image from dropbox and show the image in the imageview. The user is able to logout from every activity in the app.
+
+Example of the app:
+![CurrentSubjectActivity](doc/CurrentSubjectActivity.png)
+
+
+Downloaded feedback (in landscape mode):
+![Feedback](doc/PhotoFeedbackActivity.png)
 
 
 
