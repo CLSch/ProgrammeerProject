@@ -22,14 +22,14 @@ import java.util.ArrayList;
 public class CustomYearsAdapter extends ArrayAdapter<String>{
     // of StringArrayList?
     ArrayList<String> years;
-    Context context;
+    YearsActivity activity;
     //DropboxAPI dbApi;
 
-    public CustomYearsAdapter (Context context, ArrayList<String> data) {
-        super(context, 0, data);
+    public CustomYearsAdapter (YearsActivity activity, ArrayList<String> data) {
+        super(activity, 0, data);
         //this.dbApi = dBApi;
         this.years = data;
-        this.context = context;
+        this.activity = activity;
     }
 
     /** get the view and return it*/
@@ -38,10 +38,11 @@ public class CustomYearsAdapter extends ArrayAdapter<String>{
         //final int thisPos = pos;
 
         if (view == null){
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.listview_items, parent, false);
         }
 
+        final int thisPos = pos;
         final String thisListItem = years.get(pos);
 //
 //        // put Todolist names in textview for listview
@@ -53,10 +54,10 @@ public class CustomYearsAdapter extends ArrayAdapter<String>{
             @Override
             public void onClick(View view) {
                 Log.d("onclick is clicked", thisListItem);
-                Intent allSubjectsIntent = new Intent(context, AllSubjectsActivity.class);
+                Intent allSubjectsIntent = new Intent(activity, AllSubjectsActivity.class);
                 // geef alle vakken mee
                 allSubjectsIntent.putExtra("year", thisListItem);
-                context.startActivity(allSubjectsIntent);
+                activity.startActivity(allSubjectsIntent);
             }
         });
 
@@ -64,16 +65,7 @@ public class CustomYearsAdapter extends ArrayAdapter<String>{
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                // EVENTUEEL EEN JAAR VERWIJDEREN??? DOE MAAR WEL???
-                // DOE WEL EEN ALERT DIALOG MET "R U SURE?"
-
-//                Toast.makeText(context, "item is deleted" , Toast.LENGTH_LONG).show();
-//
-//                // delete from map
-//                map.remove(thisPos);
-//
-//                // delete from Singleton
-//                TodoManagerSingleton.getInstance().deleteList(tableName);
+                activity.deleteYearsAlertDialog(thisListItem, thisPos);
                 return true;
             }
         });

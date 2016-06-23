@@ -7,11 +7,14 @@
 package com.example.caitlin.feedbacksave;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -20,6 +23,7 @@ public class YearsActivity extends SuperActivity {
     CustomYearsAdapter adapter;
     ListView lvYears;
     DBHelper helper;
+    int _id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +74,39 @@ public class YearsActivity extends SuperActivity {
         for (int i = 0; i < temp.size(); i++) {
             yearsList.add(temp.get(i).getName());
         }
+    }
+
+    public void deleteYearsAlertDialog(final String currentName, int pos) {
+        //TODO: vang SQLite injections? rare tekens af
+        ArrayList<Year> years = helper.readAllYears(UserId.getInstance().getUserId());
+        _id = years.get(pos).getId();
+        //// ^^^ dit in een aparte functie?
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.delete_year));
+        builder.setMessage(getString(R.string.delete_warning));
+
+        // Set up the buttons
+        builder.setPositiveButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int pos) {
+                dialog.cancel();
+            }
+        });
+        // MOET DELETE WORDEN
+        builder.setNegativeButton(R.string.delete, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int pos) {
+                //delete from database
+                helper.deleteYear(_id, UserId.getInstance().getUserId());
+
+                // delete from view, is dit nodig of kun je ook de adapter updaten?
+                adapter.remove(currentName);
+            }
+        });
+
+        builder.show();
     }
 
     public void addYearClick(View v) {

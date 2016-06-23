@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String databaseName = "Feedback.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     //private static final String TABLE = "Todos";
 
     // table names
@@ -140,6 +140,13 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return years;
+    }
+
+    public void deleteYear(int id, String userId){
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_YEARS, " " + KEY_ID + " = ? AND " + KEY_USER_ID + " = ?",
+                new String[] {String.valueOf(id), userId});
+        db.close();
     }
 
     // stackoverflow
