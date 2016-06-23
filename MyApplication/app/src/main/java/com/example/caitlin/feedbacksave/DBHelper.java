@@ -21,7 +21,7 @@ import java.util.ArrayList;
  */
 public class DBHelper extends SQLiteOpenHelper {
     private static final String databaseName = "Feedback.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     // table names
     private static final String TABLE_YEARS = "Years";
@@ -80,7 +80,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void createYear(String userId) {
         SQLiteDatabase db = getWritableDatabase();
 
-        // Add year number for the amount of items in the database
+        // add year number for the amount of items in the database
         Long numRows;
         try {
             numRows = DatabaseUtils.queryNumEntries(db, TABLE_YEARS, " " + KEY_USER_ID + " = ?",

@@ -12,8 +12,8 @@ import java.io.Serializable;
  * Class for Subject object. The Subject object contains an id and name.
  */
 public class Subject implements Serializable {
-    int id;
-    String name;
+    private int id;
+    private String name;
 
     public String getName() {
         return name;

@@ -30,7 +30,7 @@ public class URI_to_Path {
         // ignore the isDocumentUri and getDocumentId warnings since this code only runs if android
         // phone is API 19+
         if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
-            // ExternalStorageProvider
+            // externalStorageProvider
             if (isExternalStorageDocument(uri)) {
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
@@ -40,7 +40,7 @@ public class URI_to_Path {
                     return Environment.getExternalStorageDirectory() + "/" + split[1];
                 }
             }
-            // DownloadsProvider
+            // downloadsProvider
             else if (isDownloadsDocument(uri)) {
 
                 final String id = DocumentsContract.getDocumentId(uri);
@@ -49,7 +49,7 @@ public class URI_to_Path {
 
                 return getDataColumn(context, contentUri, null, null);
             }
-            // MediaProvider
+            // mediaProvider
             else if (isMediaDocument(uri)) {
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
@@ -73,10 +73,10 @@ public class URI_to_Path {
                 return getDataColumn(context, contentUri, selection, selectionArgs);
             }
         }
-        // MediaStore (and general)
+        // mediaStore (and general)
         else if ("content".equalsIgnoreCase(uri.getScheme())) {
 
-            // Return the remote address
+            // return the remote address
             if (isGooglePhotosUri(uri))
                 return uri.getLastPathSegment();
 

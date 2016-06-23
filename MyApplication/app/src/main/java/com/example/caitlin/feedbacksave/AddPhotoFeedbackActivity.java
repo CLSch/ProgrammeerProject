@@ -26,7 +26,6 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
     String FBName;
     DBHelper helper;
     String subject;
-    //boolean checkPerm;
     private static int RESULT_GALLERY = 1;
     private static int IMAGE_REQUEST_CODE = 1;
     String token;
@@ -51,7 +50,7 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
 
     }
 
-    /** When the user chooses a picture from the gallery this method gets called. */
+    /* When the user chooses a picture from the gallery this method gets called. */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -63,9 +62,6 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
                 //Image URI received
                 File file = new File(URI_to_Path.getPath(getApplication(), data.getData()));
                 if (file != null) {
-//                    BitmapFactory.Options options = new BitmapFactory.Options();
-//                    options.inSampleSize = 2;
-//                    Bitmap bitmap = BitmapFactory.decodeFile(URI_to_Path.getPath(getApplication(), data.getData()), options);
                     new UploadPhotoAsyncTask(DropBoxClient.getClient(token), file, this).execute();
                 }
             }
@@ -101,7 +97,7 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
         startActivityForResult(galleryIntent , RESULT_GALLERY);
     }
 
-    /* saves dropbox path to database and calls currentSubjectIntent() */
+    /* Saves dropbox path to database and calls currentSubjectIntent() */
     public void savePathToDB(String path) {
         helper.createPhoto(FBName, path, subject, UserIdSingleton.getInstance().getUserId());
         currentSubjectIntent();

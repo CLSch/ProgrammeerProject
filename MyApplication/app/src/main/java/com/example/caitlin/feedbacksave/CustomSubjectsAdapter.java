@@ -31,7 +31,7 @@ public class CustomSubjectsAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(int pos, View view, ViewGroup parent) {
 
-        if (view == null){
+        if (view == null) {
             LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.listview_items, parent, false);
         }

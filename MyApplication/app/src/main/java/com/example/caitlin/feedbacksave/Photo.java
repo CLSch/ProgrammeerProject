@@ -12,9 +12,9 @@ import java.io.Serializable;
  * Class for Photo Object. Photo object contains an id, name and path where it's saved on dropbox.
  */
 public class Photo implements Serializable {
-    int id;
-    String name;
-    String path;
+    private int id;
+    private String name;
+    private String path;
 
     public int getId(){
         return this.id;

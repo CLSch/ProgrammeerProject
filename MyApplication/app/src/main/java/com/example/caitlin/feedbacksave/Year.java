@@ -12,8 +12,8 @@ import java.io.Serializable;
  * Class for a Year object. a Year contains a name and id.
  */
 public class Year implements Serializable {
-    int id;
-    String name;
+    private int id;
+    private String name;
 
     public String getName() {
         return name;

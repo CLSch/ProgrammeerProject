@@ -96,7 +96,7 @@ public class CurrentSubjectActivity extends SuperActivity {
         builder.setTitle(getString(R.string.edit_feedback));
         builder.setMessage(getString(R.string.choose_change_feedback));
 
-        // Set up the buttons
+        // set up the buttons
         builder.setPositiveButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int pos) {
@@ -124,7 +124,7 @@ public class CurrentSubjectActivity extends SuperActivity {
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
 
-        // Set up the buttons
+        // set up the buttons
         builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int pos) {

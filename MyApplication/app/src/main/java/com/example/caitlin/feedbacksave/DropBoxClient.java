@@ -17,7 +17,7 @@ import com.dropbox.core.v2.DbxClientV2;
  */
 public class DropBoxClient {
     public static DbxClientV2 getClient(String ACCESS_TOKEN) {
-        // Create Dropbox client
+        // create Dropbox client
         DbxRequestConfig config = new DbxRequestConfig("dropbox/sample-app", "en_US");
         return new DbxClientV2(config, ACCESS_TOKEN);
     }

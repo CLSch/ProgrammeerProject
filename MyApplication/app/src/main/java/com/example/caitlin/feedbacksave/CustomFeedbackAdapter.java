@@ -36,7 +36,7 @@ public class CustomFeedbackAdapter extends ArrayAdapter<String> {
 
         DBHelper helper = new DBHelper(activity);
 
-        if (view == null){
+        if (view == null) {
             LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.listview_items, parent, false);
         }

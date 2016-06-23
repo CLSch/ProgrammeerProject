@@ -75,13 +75,13 @@ public class AllSubjectsActivity extends SuperActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.make_subject));
 
-        // Set up the inputfield
+        // set up the inputfield
         final EditText input = new EditText(this);
         input.setHint(hint);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
 
-        // Set up the buttons for the dialog
+        // set up the buttons for the dialog
         builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -92,7 +92,7 @@ public class AllSubjectsActivity extends SuperActivity {
                 }
                 alertInput = input.getText().toString();
 
-                if(hint.equals(getString(R.string.create_new_name))) {
+                if (hint.equals(getString(R.string.create_new_name))) {
                     updateSubject();
                 }
                 else {
@@ -120,7 +120,7 @@ public class AllSubjectsActivity extends SuperActivity {
         builder.setTitle(getString(R.string.edit_subject));
         builder.setMessage(getString(R.string.choose_change_subject));
 
-        // Set up the buttons
+        // set up the buttons
         builder.setPositiveButton(getString(R.string.change), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int pos) {

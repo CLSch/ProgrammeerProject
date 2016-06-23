@@ -31,7 +31,7 @@ public class SuperActivity extends AppCompatActivity {
         return true;
     }
 
-    /* resets the token and redirects user to the YearsActivity. */
+    /* Resets the token and redirects user to the YearsActivity. */
     public void logOutClick(MenuItem item) {
         DropBoxAPIManager.getInstance().logOut();
 
