@@ -16,6 +16,9 @@ import android.widget.ImageView;
 
 import java.lang.ref.WeakReference;
 
+/**
+ *
+ */
 public class PhotoFeedbackActivity extends SuperActivity {
     String filePath;
     Bitmap bitmap;

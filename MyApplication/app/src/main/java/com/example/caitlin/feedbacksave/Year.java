@@ -9,16 +9,11 @@ package com.example.caitlin.feedbacksave;
 import java.io.Serializable;
 
 /**
- * Created by Caitlin on 16-06-16.
+ * Class for a Year object. a Year contains a name and id.
  */
 public class Year implements Serializable {
-
     int id;
     String name;
-
-    public Year(){
-
-    }
 
     public String getName() {
         return name;

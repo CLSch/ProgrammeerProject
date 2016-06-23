@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by Caitlin on 15-06-16.
+ * Asynctask the uploads pictures with to dropbox.
  */
 public class UploadPhotoAsyncTask extends AsyncTask<Object, Void, String> {
     private DbxClientV2 dbxClient;

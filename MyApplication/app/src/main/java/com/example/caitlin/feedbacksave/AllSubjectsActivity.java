@@ -124,22 +124,18 @@ public class AllSubjectsActivity extends SuperActivity {
         builder.setMessage(getString(R.string.choose_change_subject));
 
         // Set up the buttons
-        // MOET CHANGE WORDEN
         builder.setPositiveButton(getString(R.string.change), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int pos) {
                 makeNewSubjectAlertDialog(getString(R.string.create_new_name));
             }
         });
-        // MOET CANCEL WORDEN
         builder.setNeutralButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int pos) {
                 dialog.cancel();
             }
         });
-
-        // MOET DELETE WORDEN
         builder.setNegativeButton(R.string.delete, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int pos) {
@@ -148,7 +144,7 @@ public class AllSubjectsActivity extends SuperActivity {
 
                 // delete from view, is dit nodig of kun je ook de adapter updaten?
                 adapter.remove(currentName);
-                Toast.makeText(AllSubjectsActivity.this, "item is deleted" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(AllSubjectsActivity.this, R.string.item_is_deleted , Toast.LENGTH_SHORT).show();
             }
         });
 
