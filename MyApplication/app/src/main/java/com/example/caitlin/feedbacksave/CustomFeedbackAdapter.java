@@ -73,7 +73,6 @@ public class CustomFeedbackAdapter extends ArrayAdapter<String> {
 
 
                 Intent photoFeedbackIntent = new Intent(activity, PhotoFeedbackActivity.class);
-                photoFeedbackIntent.putExtra("subjectName", subject);
                 photoFeedbackIntent.putExtra("filePath", path);
                 activity.startActivity(photoFeedbackIntent);
             }

@@ -29,12 +29,10 @@ import java.io.FileOutputStream;
  */
 public class DownloadFileAsyncTask extends AsyncTask<String, Void, File> {
     PhotoFeedbackActivity activity;
-    ImageView ivFB;
     private ProgressDialog dialog;
 
-    DownloadFileAsyncTask(PhotoFeedbackActivity activity, ImageView ivFeedback) {
+    DownloadFileAsyncTask(PhotoFeedbackActivity activity) {
         this.activity = activity;
-        this.ivFB = ivFeedback;
         this.dialog = new ProgressDialog(activity);
     }
 

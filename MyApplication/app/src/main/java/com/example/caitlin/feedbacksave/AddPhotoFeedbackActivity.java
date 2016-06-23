@@ -28,7 +28,6 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
     EditText etFBName;
     TextView errorMes;
     String FBName;
-    String tags;
     DBHelper helper;
     String subject;
     boolean checkPerm;
@@ -51,7 +50,6 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
         Log.d("onCreate", DropBoxAPIManager.getInstance().getToken().toString());
         token = DropBoxAPIManager.getInstance().getToken();
 
-        etTag = (EditText) findViewById(R.id.etTagsPhoto);
         etFBName = (EditText) findViewById(R.id.etFBName);
 
         errorMes = (TextView) findViewById(R.id.tvErrorPFB);
@@ -156,11 +154,5 @@ public class AddPhotoFeedbackActivity extends SuperActivity {
         currentSubjectIntent.putExtra("subjectName", subject);
         this.startActivity(currentSubjectIntent);
         finish();
-    }
-
-    public void addTagClick(View v){
-        tags += etTag.getText().toString() + ", ";
-        Toast.makeText(this, "Tag is toegevoegd", Toast.LENGTH_SHORT).show();
-        etTag.setText("");
     }
 }

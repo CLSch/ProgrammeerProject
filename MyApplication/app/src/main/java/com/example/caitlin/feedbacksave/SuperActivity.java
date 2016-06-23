@@ -57,11 +57,4 @@ public class SuperActivity extends AppCompatActivity {
 
         // close all activities
     }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        // sla nieuwste versie van DB op
-    }
 }

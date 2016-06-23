@@ -18,7 +18,6 @@ import java.lang.ref.WeakReference;
 
 public class PhotoFeedbackActivity extends SuperActivity {
     String filePath;
-    String subject;
     Bitmap bitmap;
     ImageView ivFeedback;
 
@@ -28,7 +27,6 @@ public class PhotoFeedbackActivity extends SuperActivity {
         setContentView(R.layout.activity_photo_feedback);
 
         Bundle extras = getIntent().getExtras();
-        subject = extras.getString("subjectName");
         filePath = extras.getString("filePath");
         ivFeedback = (ImageView) findViewById(R.id.ivFB);
 
@@ -52,6 +50,6 @@ public class PhotoFeedbackActivity extends SuperActivity {
     }
 
     public void downloadFile(){
-        new DownloadFileAsyncTask(this, (ImageView) findViewById(R.id.ivFB)).execute(filePath);
+        new DownloadFileAsyncTask(this).execute(filePath);
     }
 }

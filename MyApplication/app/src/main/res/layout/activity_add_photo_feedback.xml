@@ -8,65 +8,12 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.caitlin.feedbacksave.LoginActivity">
-
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="@string/feedback_type" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/constructive"
-            android:id="@+id/rbConstructive" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/compliment"
-            android:id="@+id/rbCompliment" />
-
-    </RadioGroup>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="60dp"
-        android:layout_marginBottom="60dp">
-
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.8"
-            android:hint="@string/add_tags"
-            android:id="@+id/etTagsPhoto"
-            android:layout_gravity="center_horizontal"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:imeOptions="actionDone"
-            android:singleLine="true"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            android:text="@string/add"
-            android:id="@+id/addTagPhotoBtn"
-            android:onClick="addTagClick"/>
-
-    </LinearLayout>
+    tools:context="com.example.caitlin.feedbacksave.YearsActivity">
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
         android:hint="@string/feedback_name"
         android:id="@+id/etFBName"
         android:layout_gravity="center_horizontal"

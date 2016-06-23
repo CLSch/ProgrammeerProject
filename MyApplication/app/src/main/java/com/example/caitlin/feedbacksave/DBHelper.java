@@ -104,7 +104,9 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         Long numRows;
         try {
-            numRows = DatabaseUtils.queryNumEntries(db, TABLE_YEARS);
+            numRows = DatabaseUtils.queryNumEntries(db, TABLE_YEARS, " " + KEY_USER_ID + " = ?",
+                    new String[] {userId});
+
         } catch (Exception e) {
             Log.d("shit was", "empty");
             numRows = 0L;

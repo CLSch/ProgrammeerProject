@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,7 @@ import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.core.v2.DbxClientV2;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class CurrentSubjectActivity extends SuperActivity {
@@ -39,6 +41,7 @@ public class CurrentSubjectActivity extends SuperActivity {
     Uri imageUri;
     String token;
     String FBName;
+    File photoFile;
     private static int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
@@ -55,6 +58,10 @@ public class CurrentSubjectActivity extends SuperActivity {
         if (helper.subjectItemExists(subject, UserId.getInstance().getUserId())
                 && !helper.readAllPhotosPerSubject(subject, UserId.getInstance().getUserId()).isEmpty()) {
             addPhotosToList();
+        }
+
+        if (savedInstanceState != null) {
+            FBName = savedInstanceState.getString("FBName");
         }
 
         makeAdapter();
@@ -76,6 +83,7 @@ public class CurrentSubjectActivity extends SuperActivity {
                 //Bundle extras = data.getExtras();
 
                 Log.d("URI",imageUri.toString());
+                Log.d("data is:", data.getData().toString());
 
                 File file = new File(URI_to_Path.getPath(getApplication(), data.getData()));
                 Log.d("dit is file", file.toString());
@@ -164,6 +172,7 @@ public class CurrentSubjectActivity extends SuperActivity {
 
                 // TODO CHECK OP DUBBELE NAMEN, FBNAME in onsaveinstance opslaan? voor orientation changes
                 FBName = input.getText().toString();
+                //makePictureIntent();
                 makePictureIntent();
             }
         });
@@ -196,7 +205,7 @@ public class CurrentSubjectActivity extends SuperActivity {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 //        imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),"filename_" +
 //                String.valueOf(System.currentTimeMillis()) + ".jpg"));
-//        Log.d("dit is imageUri", imageUri.toString());
+////        Log.d("dit is imageUri", imageUri.toString());
 //        takePictureIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
@@ -214,10 +223,9 @@ public class CurrentSubjectActivity extends SuperActivity {
         makePhotoAlertDialog();
     }
 
-//    public void addNoteClick(View v){
-//        Intent addNoteIntent = new Intent(this, AddNote.class);
-//        // geef alle feedback mee
-//        //addNoteIntent.putExtra("dbWrapper", wrapper);
-//        this.startActivity(addNoteIntent);
-//    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("FBName", FBName);
+    }
 }
