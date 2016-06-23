@@ -33,7 +33,6 @@ import java.util.ArrayList;
 
 public class CurrentSubjectActivity extends SuperActivity {
     ListView lvSubject;
-    // dit wordt waarschijnlijk een arraylist van feedback objects
     ArrayList<String> photoList = new ArrayList<>();
     CustomFeedbackAdapter adapter;
     DBHelper helper;
