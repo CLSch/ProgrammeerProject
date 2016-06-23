@@ -1,5 +1,3 @@
-Report.md
-
 This application saves feedback that users got on schoolwork over the years. For this app a dropbox account is necessary. The user can add schoolyears in which they can save subjects. In the subjects they can add feedback. The feedback will be saved in the form of an image. The user can save it by uploading an image from their gallery or by making a picture on the spot. Whenever an image gets saved, the image is uploaded to dropbox. When the user clicks on the feedback the image gets downloaded from dropbox.
 
 ##Technical Design
@@ -31,8 +29,6 @@ This singleton contains an instance of the DropBoxAPI with which function calls 
 ######UserIdSingleton
 The UserIdSingleton contains the user-id linked to the signed in dropbox account which is linked to the database. With the user-id the right fields can be retrieved from the database for the current user.
 
-
-
 ##Challenges
 
 I had a lot of challenges while making this app. 
@@ -43,7 +39,7 @@ In the second week I started working with the Firebase API but I coulnd't get it
 #####Dropbox
 On Tuesday I was able to log in via dropbox and create a session. On wednesday I was able to upload pictures to dropbox after finding a very useful tutorial. On thursday however I spend the entire day trying to find a way to download the pictures from dropbox. None of the TA's were able to help me either. On friday I decided to dicuss my current state of the app with the coordinator as I was nowhere near of having a beta version. Together we were able to make the downloading of images possible. During the weekend I realized I had an other problem. I stored the years - subjects and feedback items from the user - in a SQLite database. However the minute a different user logged into my app, the old database would still be there. Upon clicking on the feedbackitems that were stored in the database, my app would try to download pictures from the current users's dropbox and crash because the files weren't there. 
 
-The last week I spend building my database and creating my apps functionality on wednesday I was able to pair my database with a unique user-id I could retrieve from the logged in dropbox accounts to have a personal SQLite database per user. In the evening I however found that my app still crashed on a view points. My app was prone to crashing while downloading the image because my app would be out of memory and upon changing the orientation repeatedly the window from my alert dialog would lose it's link and crash. I was able to repair those bugs. I also had trouble with my own mobile phone. When signing up with a different account the user gets send to a login page in a browser. My phone crashed about half of those times, because it's old and it is on the brinck of death. My phone is prone to crashing with different apps too as apps are getting bigger and bigger and my phone is three years old. If the internet app wasn't crashing my phone also didn't redirect the user back after logging in via the browser. 
+The last week I spend building my database and creating my apps functionality. On wednesday I was able to pair my database with a unique user-id that I could retrieve from the logged in dropbox accounts. This way I have a personal SQLite database per user. In the evening I however found that my app still crashed on a few points. My app was prone to crashing while downloading the image because my app would be out of memory and upon changing the orientation repeatedly the window from my alert dialog would lose it's link and crash. I was able to repair those bugs. I also had trouble with my own mobile phone. When signing up with a different account the user gets send to a login page in a browser. My phone crashed about half of those times, because it's old and it is on the brink of death. My phone is prone to crashing with different apps too as apps are getting bigger and bigger and my phone is three years old. If the internet app wasn't crashing my phone also didn't redirect the user back after logging in via the browser. 
 
 On Thursday I decided to test my app on a phone from the minor and the redirecting to the internet browser and back to the app seemed to work fine. However after testing my app on that phone I found out there was a bug for opening the camera app on newer devices than my own phone. After taking a picture the camera intent is supposed to send back 'data' to the onactivityresult function. In the data should be the URI of the path of the picture saved but my app could not find this URI and crashed. On the internet I read that this is a common bug in android phones. However none of the solutions I found seemed to work on the new device so the bug is still in there. 
 
