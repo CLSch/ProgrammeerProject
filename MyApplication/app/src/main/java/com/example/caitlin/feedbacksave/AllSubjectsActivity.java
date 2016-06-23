@@ -93,14 +93,6 @@ public class AllSubjectsActivity extends SuperActivity {
                 }
                 alertInput = input.getText().toString();
 
-                for (int i = 0; i < subjectsList.size(); i++) {
-                    // don't continue if the subject name already exists
-                    if (alertInput.equals(subjectsList.get(i))) {
-                        makeNewSubjectAlertDialog(getString(R.string.unique_name_error));
-                        return;
-                    }
-                }
-
                 if(hint.equals("Create new name")) {
                     updateSubject();
                 }

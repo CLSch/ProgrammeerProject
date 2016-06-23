@@ -140,14 +140,14 @@ public class CurrentSubjectActivity extends SuperActivity {
         builder.show();
     }
 
-    public void makePhotoAlertDialog() {
+    public void makePhotoAlertDialog(String hint) {
         //TODO: vang SQLite injections? rare tekens af
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.make_photo);
 
         final EditText input = new EditText(this);
-        input.setHint(R.string.feedback_name);
+        input.setHint(hint);
         // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
@@ -164,9 +164,8 @@ public class CurrentSubjectActivity extends SuperActivity {
             @Override
             public void onClick(DialogInterface dialog, int pos) {
                 if (input.getText().length() == 0) {
-                    makePhotoAlertDialog();
+                    makePhotoAlertDialog(getString(R.string.empty_name_error));
 
-                    Log.d("ik zit in if", "onclick dialog");
                     return;
                 }
 
@@ -220,7 +219,7 @@ public class CurrentSubjectActivity extends SuperActivity {
 
     // http://stackoverflow.com/questions/14154104/how-to-take-a-photo-save-it-and-get-the-photo-in-android
     public void makePhotoClick(View v){
-        makePhotoAlertDialog();
+        makePhotoAlertDialog(getString(R.string.feedback_name));
     }
 
     @Override
